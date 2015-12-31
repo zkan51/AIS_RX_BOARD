@@ -1,0 +1,15 @@
+
+
+
+System_stm32F40_41xxx.c  第316行 #define PLL_M 25  改成8，因为使用的8M晶振
+stm32f4xx.h 第123行  HSE_CALUE 25  改成 8
+
+UART1：与FPGA通信  115200  DMA2 数据流5 通道4
+UART2：接收GPS信息 9600    DMA1 数据流5 通道4
+UART3：上位机      38400   DMA1 数据流1 通道4
+UART4：FPGA        115200
+
+SPI1：
+SPI2： FPGA 接收1371消息
+SPI3：
+
