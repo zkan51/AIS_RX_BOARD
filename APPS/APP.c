@@ -20,21 +20,26 @@
 #include "SPI.h"
 #include "RNG.h"
 #include "ucos_ii.h"
+#include "AIS_PS_Interface.h"
 #define LED_TASK_PRIO 60
 #define LED_STK_SIZE  64
-OS_STK  LED_TASK_STK[LED_STK_SIZE];
+OS_STK  LED_TASK_STK[LED_STK_SIZE];/****LED任务*******/
 
 #define FLOAT_TASK_PRIO   15
 #define FLOAT_STK_SIZE 128
-OS_STK  FLOAT_TASK_STK[FLOAT_STK_SIZE];
+OS_STK  FLOAT_TASK_STK[FLOAT_STK_SIZE];/****浮点任务****/
 
 #define AIS_Tran_PRIO   10
 #define AIS_TRAN_STK_SIZE 128
-OS_STK  AIS_TASK_STK[AIS_TRAN_STK_SIZE];
+OS_STK  AIS_TASK_STK[AIS_TRAN_STK_SIZE];/**AIS接收缓存任务**/
 
 #define GPS_Tran_PRIO   11
 #define GPS_TRAN_STK_SIZE 128
-OS_STK  GPS_TASK_STK[GPS_TRAN_STK_SIZE];
+OS_STK  GPS_TASK_STK[GPS_TRAN_STK_SIZE];/*GPS接收并解析任务*/
+
+#define AIS_Analysis_PRIO 12
+#define AIS_Analysis_STK_SIZE 128
+OS_STK  AIS_Analysis_TASK_STK[AIS_Analysis_STK_SIZE];/*SPI数据解析并归类任务*/
 
 OS_FLAG_GRP *AIS_FLAG;//定义SPI2(AIS数据)标志组指针
 OS_FLAG_GRP *GPS_FLAG;//定义UART2(GPS数据)标志组指针
@@ -87,7 +92,7 @@ void ais_tran_task(void *pdata)
 * Return    : void
 ***********************************************************************************/
 void gps_tran_task(void *pdata)
-{    OS_CPU_SR cpu_sr=0;
+{ OS_CPU_SR cpu_sr=0;
 	u32 i=0,GPS_length;
 	INT8U err;
 	GPS_RMCMsgStruct GPS_RMC_Message;
@@ -121,6 +126,19 @@ void gps_tran_task(void *pdata)
 			//OS_EXIT_CRITICAL();//开启全局中断
 		  OSTimeDly(3);
 	}
+}
+/**********************************************************************************
+* Name      : ais_analysis_task
+* Brief     : 将AIS消息队列里面的数据解析出来并且分类打包
+*
+* Param     : *pdata
+* Return    : void
+***********************************************************************************/
+void ais_analysis_task(void *pdata)
+{
+	u8 *s;u8 err;
+	s = OSQPend(QSem,0,&err);//从消息队列中获取消息
+	SIG_PS_FPGA_ParseRecData(s);
 }
 /**********************************************************************************
 * Name      : led_task
@@ -181,6 +199,7 @@ void App_TaskStart(void)//
 	OSTaskCreate(float_task,(void*)0,(OS_STK*)&FLOAT_TASK_STK[LED_STK_SIZE-1],FLOAT_TASK_PRIO);
 	OSTaskCreate(ais_tran_task, (void*)0,(OS_STK*)&AIS_TASK_STK[AIS_TRAN_STK_SIZE-1],AIS_Tran_PRIO);
   OSTaskCreate(gps_tran_task, (void*)0,(OS_STK*)&GPS_TASK_STK[GPS_TRAN_STK_SIZE-1],GPS_Tran_PRIO);
+	//OSTaskCreate(ais_analysis_task,(void*)0,(OS_STK*)&AIS_Analysis_TASK_STK[AIS_Analysis_STK_SIZE-1],AIS_Analysis_PRIO);
 	OSStart();	
 }
 

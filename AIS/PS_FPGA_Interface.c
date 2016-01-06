@@ -22,7 +22,7 @@
 /************************************************************************/
 
 /* SPI数据缓冲存储区 */
-u8 FPGA_VDL_DATA_BUFFER[MAX_FPGA_VDL_DATA_LEN];
+//u8 FPGA_VDL_DATA_BUFFER[MAX_FPGA_VDL_DATA_LEN];
 
 //--------------------------------------
 // 指示数据缓冲区数据是否有新的数据
@@ -59,7 +59,8 @@ const static u8 FPGA_VDL_FRAME_HEADER = 0xAD;
 * Param  : void
 * Return : void
 ************************************************************************/
-void SIG_PS_FPGA_ParseRecData(void){
+void SIG_PS_FPGA_ParseRecData(u8 *FPGA_VDL_DATA_BUFFER)
+{
 
 	u16 headerIdx = 0;           // 帧头位置
 	u8 frameLen;                 // 帧长

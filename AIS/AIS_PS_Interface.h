@@ -50,7 +50,7 @@ extern FPGAVDLData otherShipMsg;
 extern FlagStatus isOtherShipMsgNewIn;
 
 /* 解析FPGA上报的信息 */
-void SIG_PS_FPGA_ParseRecData(void);
+void SIG_PS_FPGA_ParseRecData(u8 *FPGA_VDL_DATA_BUFFER);
 
 void SIG_PS_FPGA_POWER_DOWN_REQ(void);
 
