@@ -18,7 +18,8 @@
 #include "UART1.h"
 #include "UART2.h"
 #include "SPI.h"
-
+#include "RNG.h"
+#include "ucos_ii.h"
 #define LED_TASK_PRIO 60
 #define LED_STK_SIZE  64
 OS_STK  LED_TASK_STK[LED_STK_SIZE];
@@ -37,6 +38,12 @@ OS_STK  GPS_TASK_STK[GPS_TRAN_STK_SIZE];
 
 OS_FLAG_GRP *AIS_FLAG;//定义SPI2(AIS数据)标志组指针
 OS_FLAG_GRP *GPS_FLAG;//定义UART2(GPS数据)标志组指针
+
+/*SPI AIS数据消息队列*/
+OS_EVENT *QSem;//定义消息队列指针
+void *MsgQeueTb[MSG_QUEUE_TABNUM];//定义消息指针数组，长度为20
+OS_MEM   *PartitionPt;//定义内存分区指针
+uint8_t  Partition[MSG_QUEUE_TABNUM][400];
 
 /**********************************************************************************
 * Name      : ais_tran_task
@@ -65,6 +72,7 @@ void ais_tran_task(void *pdata)
 			     {Putc_UART1(SPI2_RX1[i]);}
 				 Putc_UART1('b');
 			}
+			OSQPost(QSem,(void*)SPI2_RX1);//发送到消息队列缓存
 //			OS_EXIT_CRITICAL();//开启全局中断
 //			SPI2_DMA_Tran=0;
 		
@@ -73,8 +81,8 @@ void ais_tran_task(void *pdata)
 }
 /**********************************************************************************
 * Name      : gps_tran_task
-* Brief     : 将UART2 FIFO中的GPS数据轮流读出来
-*
+* Brief     : 将UART2 FIFO中的GPS数据轮流读出来，并使用Get_GPS_RMCMsg解析
+              GPSRMC数据放到GPS_RMC_Message结构体
 * Param     : *pdata
 * Return    : void
 ***********************************************************************************/
@@ -95,44 +103,21 @@ void gps_tran_task(void *pdata)
 			Putc_UART1(Uart2_GPS1[i]);
 		}
 			Get_GPS_RMCMsg(Uart2_GPS1,&GPS_RMC_Message,i);
-			printf("\r\n%d",GPS_RMC_Message.utcTime);
-			printf("\r\n%d",GPS_RMC_Message.status);
-			printf("\r\n%d",GPS_RMC_Message.latitudeH);
-			printf("\r\n%d",GPS_RMC_Message.latitudeL);
-			printf("\r\n%d",GPS_RMC_Message.longitudeDir);
-			printf("\r\n%d",GPS_RMC_Message.longitudeH);
-			printf("\r\n%d",GPS_RMC_Message.longitudeL);
-			printf("\r\n%d",GPS_RMC_Message.longitudeDir);
-			printf("\r\n%d",GPS_RMC_Message.sog);
-			printf("\r\n%d",GPS_RMC_Message.cog);
-			printf("\r\n%d",GPS_RMC_Message.date);
-			printf("\r\n%d",GPS_RMC_Message.modeIndicator);
-			printf("\r\n%d",GPS_RMC_Message.magneticVar);
-			printf("\r\n%d",GPS_RMC_Message.magneticVarDir);
-
-		
-		
+			printf("\r\n%x",GPS_RMC_Message.utcTime);
+//			printf("\r\n%d",GPS_RMC_Message.status);
+//			printf("\r\n%d",GPS_RMC_Message.latitudeH);
+//			printf("\r\n%d",GPS_RMC_Message.latitudeL);
+//			printf("\r\n%d",GPS_RMC_Message.longitudeDir);
+//			printf("\r\n%d",GPS_RMC_Message.longitudeH);
+//			printf("\r\n%d",GPS_RMC_Message.longitudeL);
+//			printf("\r\n%d",GPS_RMC_Message.longitudeDir);
+//			printf("\r\n%d",GPS_RMC_Message.sog);
+//			printf("\r\n%d",GPS_RMC_Message.cog);
+//			printf("\r\n%d",GPS_RMC_Message.date);
+//			printf("\r\n%d",GPS_RMC_Message.modeIndicator);
+//			printf("\r\n%d",GPS_RMC_Message.magneticVar);
+//			printf("\r\n%d",GPS_RMC_Message.magneticVarDir);
 		DMA_Cmd(DMA1_Stream5, ENABLE);
-//			if(DMA_GetCurrentMemoryTarget(DMA1_Stream5) == 1)
-//			{
-//				for(i=0;i<GPS_length;i++)
-//			     {Putc_UART1(Uart2_GPS1[i]);}
-//				 Putc_UART1(0x0D);
-//				 Putc_UART1(0x0A);
-//				for(i=0;i<30;i++)
-//					 Putc_UART1(0x2A);
-//					  Putc_UART1('a');
-//			}
-//			else
-//			{
-//				for(i=0;i<GPS_length;i++)
-//			     {Putc_UART1(Uart2_GPS2[i]);}
-//				 			 Putc_UART1(0x0D);
-//				 Putc_UART1(0x0A);
-//				for(i=0;i<30;i++)
-//					 Putc_UART1(0x2A);
-//					 Putc_UART1('b'); 
-//			}
 			//OS_EXIT_CRITICAL();//开启全局中断
 		  OSTimeDly(3);
 	}
@@ -148,14 +133,15 @@ void led_task(void *pdata)
 {
   while(1)
 	{
-    GPIO_SetBits(GPIOC,GPIO_Pin_6);OSTimeDly(1000); 
-		GPIO_SetBits(GPIOC,GPIO_Pin_7);OSTimeDly(1000);
-		GPIO_SetBits(GPIOC,GPIO_Pin_8);OSTimeDly(1000); 
-		GPIO_SetBits(GPIOC,GPIO_Pin_9);OSTimeDly(1000); 
-		GPIO_ResetBits(GPIOC,GPIO_Pin_6);OSTimeDly(1000);
-    GPIO_ResetBits(GPIOC,GPIO_Pin_7);OSTimeDly(1000);   
-	  GPIO_ResetBits(GPIOC,GPIO_Pin_8);OSTimeDly(1000);	
-    GPIO_ResetBits(GPIOC,GPIO_Pin_9);OSTimeDly(1000); 
+    GPIO_SetBits(GPIOC,GPIO_Pin_6);OSTimeDly(300); 
+		GPIO_SetBits(GPIOC,GPIO_Pin_7);OSTimeDly(300);
+		GPIO_SetBits(GPIOC,GPIO_Pin_8);OSTimeDly(300); 
+		GPIO_SetBits(GPIOC,GPIO_Pin_9);OSTimeDly(300); 
+		GPIO_ResetBits(GPIOC,GPIO_Pin_6);OSTimeDly(300);
+		GPIO_ResetBits(GPIOC,GPIO_Pin_7);OSTimeDly(300);   
+		GPIO_ResetBits(GPIOC,GPIO_Pin_8);OSTimeDly(300);	
+		GPIO_ResetBits(GPIOC,GPIO_Pin_9);OSTimeDly(1300); 
+		printf("\r\nRNG: %d",RNG_Get_RandomRange(0,255));
 	}
 }
 /**********************************************************************************
@@ -173,7 +159,6 @@ void float_task(void *pdata)
 	 {  
 		float_num+=0.01f; 
 		//OS_ENTER_CRITICAL(); // 开中断 
-		//printf("\r\n%d",float_num); //串口打印结果
 		//OS_EXIT_CRITICAL(); // 关中断 
 		OSTimeDly(500); 
 	 }	

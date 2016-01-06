@@ -14,38 +14,38 @@ static  TIM_OCInitTypeDef  TIM2_OCInitStructure;
 extern OS_FLAG_GRP *GPS_FLAG;//定义GPS标志组指针
 static INT8U err;
 
-static void TIM2_SlaveTimer_SetConfig(void)
-{
-  uint32_t tmpsmcr = 0;
-  uint32_t tmpccmr1 = 0;
-  uint32_t tmpccer = 0;
+//static void TIM2_SlaveTimer_SetConfig(void)
+//{
+//  uint32_t tmpsmcr = 0;
+//  uint32_t tmpccmr1 = 0;
+//  uint32_t tmpccer = 0;
 
- /* Get the TIMx SMCR register value */
-  tmpsmcr = TIM2->SMCR;
-  /* Reset the Trigger Selection Bits */
-  tmpsmcr &= ~TIM_SMCR_TS;
-  /* Set the Input Trigger source */
-  tmpsmcr |= TIM_TS_TI1F_ED;
-  /* Reset the slave mode Bits */
-  tmpsmcr &= ~TIM_SMCR_SMS;
-  /* Set the slave mode */
-  tmpsmcr |=((uint32_t)0x0004);
-  /* Write to TIMx SMCR */
-  TIM2->SMCR = tmpsmcr;
+// /* Get the TIMx SMCR register value */
+//  tmpsmcr = TIM2->SMCR;
+//  /* Reset the Trigger Selection Bits */
+//  tmpsmcr &= ~TIM_SMCR_TS;
+//  /* Set the Input Trigger source */
+//  tmpsmcr |= TIM_TS_TI1F_ED;
+//  /* Reset the slave mode Bits */
+//  tmpsmcr &= ~TIM_SMCR_SMS;
+//  /* Set the slave mode */
+//  tmpsmcr |=((uint32_t)0x0004);
+//  /* Write to TIMx SMCR */
+//  TIM2->SMCR = tmpsmcr;
 
-	/* Disable the Channel 1: Reset the CC1E Bit */
-	tmpccer = TIM2->CCER;
-	TIM2->CCER &= ~TIM_CCER_CC1E;
-	tmpccmr1 = TIM2->CCMR1;    
+//	/* Disable the Channel 1: Reset the CC1E Bit */
+//	tmpccer = TIM2->CCER;
+//	TIM2->CCER &= ~TIM_CCER_CC1E;
+//	tmpccmr1 = TIM2->CCMR1;    
 
-	/* Set the filter */
-	tmpccmr1 &= ~TIM_CCMR1_IC1F;
-	tmpccmr1 |= ((0) << 4);
+//	/* Set the filter */
+//	tmpccmr1 &= ~TIM_CCMR1_IC1F;
+//	tmpccmr1 |= ((0) << 4);
 
-	/* Write to TIMx CCMR1 and CCER registers */
-	TIM2->CCMR1 = tmpccmr1;
-	TIM2->CCER = tmpccer;  	
-}
+//	/* Write to TIMx CCMR1 and CCER registers */
+//	TIM2->CCMR1 = tmpccmr1;
+//	TIM2->CCER = tmpccer;  	
+//}
 //通用定时器2中断初始化
 //这里时钟选择为APB1的2倍，而APB1为42M
 //arr：自动重装值。

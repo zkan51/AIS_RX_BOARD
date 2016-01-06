@@ -118,21 +118,23 @@ typedef struct
 */
 
 /////////////////////////////////////////外部接口申明区//////////////////////////////////////////////////////
-extern GPS_FrameStruct gps_frameStruct;
+//extern GPS_FrameStruct gps_frameStruct;
 extern GPS_InfoStruct gps_infoStruct;
 extern GPS_RMCMsgStruct gps_RMCMsgStruct;
-extern GPS_VTGMsgStruct gps_VTGMsgStruct;
+//extern GPS_VTGMsgStruct gps_VTGMsgStruct;
 
 ////////////////////////////////fuction 定义区 /////////////////////////////////////////////////////
-void rstGPSFrameStruct(GPS_FrameStruct * gps_frameStruct);
+//void rstGPSFrameStruct(GPS_FrameStruct * gps_frameStruct);
 void rstGPSInfoStruct(GPS_InfoStruct *gps_infoStruct);
-void getGPSInfo(GPS_FrameStruct * gps_frameStruct,GPS_RMCMsgStruct * gps_RMCMsgStruct,GPS_VTGMsgStruct * gps_VTGMsgStruct);
-u8 changeASCToDigital(u8 data);
-void getGPSRMCMsgInfo(GPS_FrameStruct * gps_frameStruct,GPS_RMCMsgStruct * gps_RMCMsgStruct);
-void getGPSVTGMsgInfo(GPS_FrameStruct * gps_frameStruct,GPS_VTGMsgStruct * gps_VTGMsgStruct);
-void getGPSGGAMsgInfo(GPS_FrameStruct * gps_frameStruct,GPS_GGAMsgStruct * gps_GGAMsgStruct);
+//void getGPSInfo(GPS_FrameStruct * gps_frameStruct,GPS_RMCMsgStruct * gps_RMCMsgStruct,GPS_VTGMsgStruct * gps_VTGMsgStruct);
+//u8 changeASCToDigital(u8 data);
+//void getGPSRMCMsgInfo(GPS_FrameStruct * gps_frameStruct,GPS_RMCMsgStruct * gps_RMCMsgStruct);
+//void getGPSVTGMsgInfo(GPS_FrameStruct * gps_frameStruct,GPS_VTGMsgStruct * gps_VTGMsgStruct);
+//void getGPSGGAMsgInfo(GPS_FrameStruct * gps_frameStruct,GPS_GGAMsgStruct * gps_GGAMsgStruct);
 
-
+void updataGPSInfoStruct(GPS_InfoStruct * gps_infoStruct,GPS_RMCMsgStruct * gps_RMCMsgStruct);
+void Get_GPS_RMCMsg(u8 * buff,GPS_RMCMsgStruct * gps_RMCMsgStruct,u16 length);
+void getGPSInfomation(u8 * buff,u16 length, GPS_InfoStruct * gps_infoStruct);
 
 /////////////for test///////////////
 void testGPS_InfoStruct(GPS_InfoStruct * gps_infoStruct);
@@ -140,5 +142,5 @@ void testGPS_InfoStructPara(GPS_InfoStruct * gps_infoStruct,u32 lati,u32 longi,u
 void UART2_Config(u32 bound);
 void  Putc_UART2(u8 ch);
 
-void Get_GPS_RMCMsg(u8 *buff,GPS_RMCMsgStruct *gps_RMCMsgStruct,u16 length);
+
 #endif

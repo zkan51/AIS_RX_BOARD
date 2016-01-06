@@ -77,7 +77,7 @@ typedef struct{
 
 /////////////////////////////////////////外部接口申明区//////////////////////////////////////////////////////
 
-extern MKD_FrameStruct mkd_frameStruct;
+//extern MKD_FrameStruct mkd_frameStruct;
 extern AIS_RcvMsgIDStruct ais_rcvMsgIDStruct;
 extern AIS_StaticDataStruct ais_staticDataStruct;
 extern AIS_BBMMsgStruct ais_bbmMsgStruct;
@@ -92,11 +92,11 @@ void usartMDKInit(void);
 void setSupplierInfo(AIS_StaticDataStruct * ais_staicDataStruct);
 void change8bitASCIItoBit(u8 len,u8 * sour,_Bool * dest);
 void changeMKD6bitASCIItoBit(u8 len,u8 *sour,_Bool * dest);
-void getMKDAISInfo(MKD_FrameStruct * mkd_frameStruct,AIS_StaticDataStruct * ais_staticDataStruct,AIS_BBMMsgStruct * ais_bbmMsgStruct,AIS_RcvMsgIDStruct * ais_msgIDStruct);
-void getVSDStaticInfo(MKD_FrameStruct * mkd_frameStruct,AIS_StaticDataStruct * ais_staticDataStruct);
-void getSSDStaticInfo(MKD_FrameStruct * mkd_frameStruct,AIS_StaticDataStruct * ais_staticDataStruct);
-void getBBMMsgInfo(MKD_FrameStruct * mkd_frameStruct,AIS_BBMMsgStruct * ais_bbmMsgStruct);
-void rstMKDFrameStruct(MKD_FrameStruct * mkd_frameStruct);
+void getMKDAISInfo(u8 * buf,u16 length,AIS_StaticDataStruct * ais_staticDataStruct,AIS_BBMMsgStruct * ais_bbmMsgStruct,AIS_RcvMsgIDStruct * ais_msgIDStruct);
+void getVSDStaticInfo(u8 * buf,AIS_StaticDataStruct * ais_staticDataStruct);
+void getSSDStaticInfo(u8 * buf,u16 length,AIS_StaticDataStruct * ais_staticDataStruct);
+void getBBMMsgInfo(u8 * buf,u16 length,AIS_BBMMsgStruct * ais_bbmMsgStruct);
+//void rstMKDFrameStruct(MKD_FrameStruct * mkd_frameStruct);
 
 
 

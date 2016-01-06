@@ -21,7 +21,7 @@ uint8_t Uart3_Rx2[UART3_RX2_LEN];//UART1接收数组
 
 
 
-MKD_FrameStruct mkd_frameStruct;
+//MKD_FrameStruct mkd_frameStruct;
 AIS_RcvMsgIDStruct ais_rcvMsgIDStruct;
 AIS_StaticDataStruct ais_staticDataStruct;
 AIS_BBMMsgStruct ais_bbmMsgStruct;
@@ -55,7 +55,7 @@ void UART3_Config(u32 bound)
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//打开发送和接收
     USART_Init(USART3, &USART_InitStructure); //初始化串口1
 	
-    USART_Cmd(USART3, ENABLE);  //开启串口1 
+    USART_Cmd(USART3, ENABLE);  //开启串口1
 	USART_DMACmd(USART3, USART_DMAReq_Rx, ENABLE);
 	
 	//USART_ClearFlag(USART1, USART_FLAG_TC);	
@@ -67,27 +67,27 @@ void UART3_Config(u32 bound)
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
 	NVIC_Init(&NVIC_InitStructure);	//初始化
 	//DMA使能
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);  //打开DMA2的时钟  
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);  //打开DMA2的时钟
 
 	DMA_DeInit(DMA1_Stream1); 	//DeInit   
 	
     DMA_InitStructure.DMA_Channel = DMA_Channel_4;  //通道选择
-	DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)(&(USART3->DR));//源地址 
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)(&(USART3->DR));//源地址
 	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)Uart3_Rx1;     //目的地址
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;            //外设到内存
 	DMA_InitStructure.DMA_BufferSize = UART3_RX1_LEN;               //数据传输量
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;//外设非增量模式
 	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;      //内存增量模式
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;//数据长度8bit
-	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;    //存储器数据长度8bit 
-	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;                //普通模式 
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;    //存储器数据长度8bit
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;                //普通模式
 	DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;      // 优先级高
     DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Enable;         
     DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;	
     DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;//存储器突发单次传输
     DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;//外设突发单次传输
     DMA_Init(DMA1_Stream1, &DMA_InitStructure);//初始化
-	DMA_Cmd(DMA1_Stream1,ENABLE);     //使能  
+	DMA_Cmd(DMA1_Stream1,ENABLE);     //使能
 }
 
 void USART3_IRQHandler(void)                                 
@@ -101,8 +101,8 @@ void USART3_IRQHandler(void)
 		//flag_translate=1;
 		  DMA_Cmd(DMA1_Stream1,DISABLE); 
 		  Length = USART3->SR;  
- 		  Length = USART3->DR; //清除标志位 
- 			Length = UART3_RX1_LEN - DMA_GetCurrDataCounter(DMA1_Stream1);		
+ 		  Length = USART3->DR; //清除标志位
+ 			Length = UART3_RX1_LEN - DMA_GetCurrDataCounter(DMA1_Stream1);
       //if(45<Length<55)
 			//{		
 					//OSQPost(QSem,(void *)Uart_Rx);
@@ -133,7 +133,7 @@ void USART3_IRQHandler(void)
 		  //}		
       DMA_SetCurrDataCounter(DMA1_Stream1,UART3_RX1_LEN); 				 
 		 // DMA2_Stream2->NDTR = UART1_RX_LEN;//重装填，并让接收地址从0开始
-		  DMA_Cmd(DMA1_Stream1, ENABLE);//处理完,重开DMA   
+		  DMA_Cmd(DMA1_Stream1, ENABLE);//处理完,重开DMA
 	}
 
 	__nop();   
@@ -145,136 +145,48 @@ void  Putc_UART3(u8 ch)
 	USART_SendData(USART3, ch);	
 }
 
-	/************************************************************************
-	* Name      : usartMDKInit
-	* Brief     : 
-	*
-	* Author    : Digital Design Team
-	* Param     : 
-	* Return    : void
-	************************************************************************/
-	//void usartMDKInit(void)
-	//{
-	//	GPIO_InitTypeDef GPIO_InitStructure;
-	//	NVIC_InitTypeDef NVIC_InitStructure;
-	//	USART_InitTypeDef USART_InitStructure;
-	//	
-	//	// Enable GPIO clock 
-	//	RCC_APB2PeriphClockCmd(USARTz_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE);
-	//	RCC_APB1PeriphClockCmd(USARTz_CLK,ENABLE);
-	//	// Configure USARTy Rx as input floating 
-	//	GPIO_InitStructure.GPIO_Pin = USARTz_RxPin;
-	//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	//	GPIO_Init(USARTz_GPIO, &GPIO_InitStructure); 
-	//	// Configure USARTy Tx as alternate function push-pull 
-	//	GPIO_InitStructure.GPIO_Pin = USARTz_TxPin;
-	//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	//	GPIO_Init(USARTz_GPIO, &GPIO_InitStructure);
-	//	
-	//	// Configure the NVIC Preemption Priority Bits  
-	//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);  
-	//	// Enable the USARTy Interrupt
-	//	NVIC_InitStructure.NVIC_IRQChannel = USARTz_IRQn;
-	//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	//	NVIC_Init(&NVIC_InitStructure);
-	//	
-	//	USART_DeInit(USARTz);
-	//	USART_InitStructure.USART_BaudRate = 4800;
-	//	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-	//	USART_InitStructure.USART_StopBits = USART_StopBits_1;
-	//	USART_InitStructure.USART_Parity = USART_Parity_No;
-	//	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-	//	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-	//	USART_Init(USARTz, &USART_InitStructure);
-	//	// Enable USARTy Receive interrupts 
-	//	USART_ITConfig(USARTz, USART_IT_RXNE, ENABLE);
-	//	// Enable the USARTy 
-	//	USART_Cmd(USARTz, ENABLE);
-	//}
-	//
-
-	/************************************************************************
-	* Name      : getMKDAISInfo
-	* Brief     : 根据接收的帧格式数据不同保存到相应的结构体中
-	*
-	* Author    : Digital Design Team
-	* Param     : mkd_frameStruct-mkd上位机接收的一帧数据结构体
-	* Param     : ais_staticDataStruct-ais相关的静态数据结构体
-	* Param     : ais_bbmMsgStruct-ais消息中的BBM数据结构体
-	* Param     : ais_msgIDStruct-记录消息ID号的结构体
-	* Return    : void
-	************************************************************************/
-	//void getMKDAISInfo(MKD_FrameStruct * mkd_frameStruct,AIS_StaticDataStruct * ais_staticDataStruct,AIS_BBMMsgStruct * ais_bbmMsgStruct,AIS_RcvMsgIDStruct * ais_msgIDStruct)
-	//{
-	//	u8 i;
-	//	char dataTmp[5];
-	//	for(i = 0; i < 5; i++)
-	//	{
-	//		dataTmp[i] = mkd_frameStruct->rcvBuffer[i+1];
-	//	}
-	//	if(strcmp(dataTmp,"AIVSD")==0)//静态消息
-	//	{
-	//		getVSDStaticInfo(mkd_frameStruct,ais_staticDataStruct);
-	//	}
-	//	else if(strcmp(dataTmp,"AISSD")==0)//静态消息
-	//	{
-	//		getSSDStaticInfo(mkd_frameStruct,ais_staticDataStruct);
-	//	}
-	//	else if(strcmp(dataTmp,"AIBBM")==0)//报警消息
-	//	{
-	//		getBBMMsgInfo(mkd_frameStruct,ais_bbmMsgStruct);
-	//		if (ais_msgIDStruct->msgState != MSGNEW && ais_bbmMsgStruct->rcvStateFlag == RECEIVED)//BBM消息接收完成，添加新的消息
-	//		{
-	//			ais_msgIDStruct->msgID = 14;
-	//			ais_msgIDStruct->msgState = MSGNEW;
-	//		}
-	//	}
-	//}
-	//
 
 	/************************************************************************
 	* Name      : getVSDStaticInfo
-	* Brief     : 将接收的一帧VSD格式数据保存到staticData结构体中
-	*
+	* Brief     : 将接收的一帧VSD格式数据中的船类型，并保存到staticData结构体中
+	*			VSD格式：$AIVSD,x.x,x.x,x.x,c--c,hhmmss.ss,xx,xx,x.x,x.x*hh<CR><LF>
+	*							船类型(第一个字节，后续内容暂不做提取)
 	* Author    : Digital Design Team
-	* Param     : mkd_frameStruct-MKD串口接收到的一帧数据数据结构体
+	* Param     : buf-MKD串口接收到的一帧VSD数据的指针地址
 	* Param     : ais_staticDataStruct-静态数据相关的数据结构体
 	* Return    : void
 	************************************************************************/
-	//void getVSDStaticInfo(MKD_FrameStruct * mkd_frameStruct,AIS_StaticDataStruct * ais_staticDataStruct)
-	//{
-	//	u8 fieldTmp[5];
-	//	u8 fieldTmpNum = 0;
-	//	u8 i = 0;
-	//	//fieldTmpNum = 0;
-	//	//i = 0;
-	//	while(mkd_frameStruct->rcvBuffer[i] != 0x2C)//找","
-	//	{
-	//		i ++;
-	//	}
-	//	i ++;
-	//	while(mkd_frameStruct->rcvBuffer[i] != 0x2C)//找","
-	//	{
-	//		fieldTmp[fieldTmpNum] = mkd_frameStruct->rcvBuffer[i];//取第一个字段的船舶类型
-	//		fieldTmpNum ++;
-	//		i ++;
-	//	}
-	//	switch(fieldTmpNum)
-	//	{
-	//		case 1: ais_staticDataStruct->shipType = (fieldTmp[0]-0x30);break;
-	//		case 2: ais_staticDataStruct->shipType = (fieldTmp[0]-0x30)*10 + (fieldTmp[1]-0x30);break;
-	//		case 3: ais_staticDataStruct->shipType = (fieldTmp[0]-0x30)*100+(fieldTmp[1]-0x30)*10+(fieldTmp[2]-0x30);break;
-	//		default: ais_staticDataStruct->shipType = 0;//不可用或无船舶
-	//	}
-	//}
-	//
+	void getVSDStaticInfo(u8 * buf,AIS_StaticDataStruct * ais_staticDataStruct)
+	{
+		u8 fieldTmp[5];
+		u8 fieldTmpNum = 0;
+		u8 i = 0;
+		//fieldTmpNum = 0;
+		//i = 0;
+		while(buf[i] != 0x2C)//找","
+		{
+			i ++;
+		}
+		i ++;
+		while(buf[i] != 0x2C)//找","
+		{
+			fieldTmp[fieldTmpNum] = buf[i];//取第一个字段的船舶类型
+			fieldTmpNum ++;
+			i ++;
+		}
+		switch(fieldTmpNum)
+		{
+			case 1: ais_staticDataStruct->shipType = (fieldTmp[0]-0x30);break;
+			case 2: ais_staticDataStruct->shipType = (fieldTmp[0]-0x30)*10 + (fieldTmp[1]-0x30);break;
+			case 3: ais_staticDataStruct->shipType = (fieldTmp[0]-0x30)*100+(fieldTmp[1]-0x30)*10+(fieldTmp[2]-0x30);break;
+			default: ais_staticDataStruct->shipType = 0;//不可用或无船舶
+		}
+	}
 
 	/************************************************************************
 	* Name      : setSupplierInfo
 	* Brief     : 设置供应商的值，供应商的值一般由本地程序中给出
-	*			(根据定义的宏SUPPLIER来获取比特流)
+	*			(根据定义的宏SUPPLIER来获取比特流)  该函数应该在程序初始化时调用
 	* Author    : Digital Design Team
 	* Param     : ais_staicDataStruct- 设定结构体中的supplier数组的值
 	* Return    : void
@@ -315,8 +227,15 @@ void  Putc_UART3(u8 ch)
 	/************************************************************************
 	* Name      : change8bitASCIItoBit
 	* Brief     : 将接收的61162中的标准8bitASCII码转换成1371中规定的6bitASCII码的二进制比特流
-	*
-	* Author    : Digital Design Team
+	*			标准ASCII码和1371中6bitASCII码的对应关系为：
+	*			    32~63(标准ASCII码十进制) ->	32~63（1371中6bitASCII码的十进制）
+	*				64~95					 ->	 0~31
+	*			存放对应关系：
+	*			地址（字节） 0  1   2    ……  len-1
+	*			*sour：     7~0（高字节） 7~0 7~0  …… 7~0（低字节）
+	*			地址（比特）6*len-1  ……      76543210
+	*			*dest:      543210（高字节对应bit）	 543210   …… 543210(低字节对应bit)
+	* Author    : wqdnan
 	* Param     : len- 输入，8bitASCII码字节数据的长度
 	* Param     : sour- 输入，8bitASCII码字节存放的地址
 	* Param     : dest- 输出，转换的13716bit数据比特流的输出地址
@@ -327,6 +246,7 @@ void  Putc_UART3(u8 ch)
 		u8 i = 0;
 		u8 j = 0;
 		u8 tmp = 0;
+		u8 bias = 0;
 		while (i < len)
 		{
 			tmp = *(sour + i);
@@ -341,20 +261,21 @@ void  Putc_UART3(u8 ch)
 			{
 				if (tmp >= 64)
 				{
-					tmp -= tmp;
+					tmp -= 64;
 				}
 				//取低六位的值并存放到目标地址中
 				j = 0;
-				* dest = (* dest << (i * 6));
+				//* dest = (* dest << (i * 6));
+				bias = (len-1) * 6 - i * 6;
 				while(j < 6)
 				{
-					if (tmp >> j)
+					if ((tmp >> j) &0x01)
 					{
-						* (dest + j) = 1;
+						* (dest + j + bias) = 1;
 					}
 					else
 					{
-						* (dest + j) = 0;
+						* (dest + j + bias) = 0;
 					}
 					j ++;
 				}
@@ -370,8 +291,15 @@ void  Putc_UART3(u8 ch)
 	
 	/************************************************************************
 	* Name      : changeMKD6bitASCIItoBit
-	* Brief     : 将接收的61162中的6bitASCII码转换成1371中规定的6bitASCII码的二进制比特流
-	*
+	* Brief     : 将接收的61162中的6bitASCII码，按照每3个字节中完成4个6bitASCII码的提取出封装字节中的实际内容
+	*		      并将其转换成1371中规定的6bitASCII码的二进制比特流
+	*			  转化中先将61162中的6bitASCII码转换为标准的8bitASCII码，再将标准ASCII码转换为1371中的6bitASCII码
+	*			  611626bitASCII码转化为标准ASCII码：
+	*			  若待转换值小于101000，则加上00110000，转换为标准ASCII码
+	*			  若待转换值大于等于101000，则加上00111000，转换为标准ASCII码
+	*			  标准ASCII码转换为1371中的6bitACII码：
+	*			    32~63(标准ASCII码十进制) ->	32~63（1371中6bitASCII码的十进制）
+	*				64~95					 ->	 0~31
 	* Author    : Digital Design Team
 	* Param     : len- 输入，6bitASCII码字节数据的长度
 	* Param     : sour- 输入，6bitASCII码字节存放的地址
@@ -382,87 +310,191 @@ void  Putc_UART3(u8 ch)
 	{
 		u8 tmp[20] = {0};//对于B-CS安全类命令只占一个时隙长度，安全文本最大为16个6bit字符
 		u8 i = 0;
-		//先将61162中的6bitASCII码转换成标准8bitASCII码
-		for (i = 0; i < len; i ++)
+		u8 j = 0;
+		u8 tmp6bit[4] = {0};
+		u8 tmp6bitLen = 0;
+		u8 bias = 0;
+		//先将输入的字段按照6bit分别取出，每次取3个字节，24个bit，可以组成4个6bit数
+		for(j = 0; j < len; j += 3)
 		{
-			if (*(sour+i) < 40) //值小于101000
+			if(j+2 > len)//取的字节不是3的整数
 			{
-				*(tmp+i) = *(sour+i) + 48;//加上00110000 
+				if((len-j)==1)//若正好多1个字节,那么最后4bit是填充的
+				{
+					tmp6bitLen = 2;
+					tmp6bit[0] = (*(sour+j)&0xFC)>>2;
+					tmp6bit[1] = (*(sour+j)&0x03)<<4;;
+				}
+				else //若正好多2个字节,那么最后2bit是填充的
+				{
+					tmp6bitLen = 3;
+					tmp6bit[0] = (*(sour+j)&0xFC)>>2;
+					tmp6bit[1] = (*(sour+j)&0x03)<<4;
+					tmp6bit[1] += (*(sour+j+1)&0xF0)>>4;
+					tmp6bit[2] = (*(sour+j+1)&0x0F)<<2;
+				}
 			}
-			else//值大于等于101000
+			else//正好可以取3个字节
 			{
-				*(tmp+i) = *(sour+i) + 56;//加上00111000
+				tmp6bitLen = 4;
+				tmp6bit[0] = (*(sour+j)&0xFC)>>2;
+				tmp6bit[1] = (*(sour+j)&0x03)<<4;
+				tmp6bit[1] += (*(sour+j+1)&0xF0)>>4;
+				tmp6bit[2] = (*(sour+j+1)&0x0F)<<2;
+				tmp6bit[2] += (*(sour+j+2)&0xC0)>>6;
+				tmp6bit[3] = (*(sour+j+2)&0x3F);
+			}
+			//先将61162中的6bitASCII码转换成标准8bitASCII码
+			for(i = 0; i < tmp6bitLen; i ++)
+			{
+				if(tmp6bit[i] < 40)//值小于101000
+				{
+					tmp[i+bias] = tmp6bit[i] + 48;//加上00110000
+				}
+				else
+				{
+					tmp[i+bias] = tmp6bit[i] + 56;//加上00111000
+				}
+			}
+			bias += tmp6bitLen;
+
+		}
+		//bias += 1;
+		change8bitASCIItoBit(bias,tmp,dest);
+	}
+	/************************************************************************
+	* Name      : getMKDAISInfo   （与外部的接口函数，在串口任务中调用以提取相应的内容）
+	* Brief     : 从上位机串口一次接收中断识别VSD、SSD、BBM消息，并进行相应的操作如下：
+	*			  若是VSD，则提取船类型到静态信息结构体中保存
+	*			  若是SSD，则提取船的呼号，船的尺寸，DTE指示标志位到静态信息结构体中保存
+	*			  若是BBM，则提取安全相关的文本信息，并将文本格式按照1371中的格式进行转换，并保存至安全信息结构体中
+	* Author    : Digital Design Team
+	* Param     : mkd_frameStruct-mkd上位机接收的一帧数据结构体
+	* Param     : ais_staticDataStruct-ais相关的静态数据结构体
+	* Param     : ais_bbmMsgStruct-ais消息中的BBM数据结构体
+	* Param     : ais_msgIDStruct-记录消息ID号的结构体
+	* Return    : void
+	************************************************************************/
+	void getMKDAISInfo(u8 * buf,u16 length,AIS_StaticDataStruct * ais_staticDataStruct,AIS_BBMMsgStruct * ais_bbmMsgStruct,AIS_RcvMsgIDStruct * ais_msgIDStruct)
+	{
+		u16 i = 0;
+		u8 * p_data = NULL;
+		u8 flag = 0;
+		u16 bias = 0;
+		char tmp[5] = {0};
+		u8 len_data = 0;
+		for (i = 0; i < length; i ++)
+		{
+			if (buf[i] == '$' || buf[i] == '!')//接收到起始符
+			{
+				//取5个字节判断是否为GPRMC
+				bias = i + 5;
+				while (i < bias)
+				{
+					i ++;
+					tmp[bias-i] = buf[i];
+				}
+				//if (strcmp(&tmp[0],"CMRPG") == 0)//是GPVSD GPSSD GPBBM 中的一种
+				if (tmp[4] =='A' && tmp[3] =='I' && tmp[2] =='V' && tmp[1] =='S' && tmp[0] =='D' ||
+					tmp[4] =='A' && tmp[3] =='I' && tmp[2] =='S' && tmp[1] =='S' && tmp[0] =='D' ||
+					tmp[4] =='A' && tmp[3] =='I' && tmp[2] =='B' && tmp[1] =='B' && tmp[0] =='M')
+				{
+					flag = 1;
+					p_data = (buf+i);
+				}
+			}
+			else if (flag == 1 && buf[i] == 0x0A && buf[i-1] == 0x0D)//接收到结束符
+			{
+				flag = 2;
+				break;
+			}
+			else if (flag == 1)//在接收到RMC帧头后开始计数RMC的帧长
+			{
+				len_data ++;
+			}
+
+		}
+		if (flag == 2)//正确接收到三种数据帧中的一种
+		{
+			//if(strcmp(datatmp,"aivsd")==0)//静态消息
+			if (tmp[4] =='A' && tmp[3] =='I' && tmp[2] =='V' && tmp[1] =='S' && tmp[0] =='D')
+			{
+				getVSDStaticInfo(p_data,ais_staticDataStruct);
+			}
+			//else if(strcmp(datatmp,"aissd")==0)//静态消息
+			else if (tmp[4] =='A' && tmp[3] =='I' && tmp[2] =='S' && tmp[1] =='S' && tmp[0] =='D')
+			{
+				getSSDStaticInfo(p_data,len_data,ais_staticDataStruct);
+			}
+			//else if(strcmp(datatmp,"aibbm")==0)//报警消息
+			else if (tmp[4] =='A' && tmp[3] =='I' && tmp[2] =='B' && tmp[1] =='B' && tmp[0] =='M')
+			{
+				getBBMMsgInfo(p_data,len_data,ais_bbmMsgStruct);
+				if (ais_msgIDStruct->msgState != MSGNEW && ais_bbmMsgStruct->rcvStateFlag == RECEIVED)//bbm消息接收完成，添加新的消息
+				{
+					ais_msgIDStruct->msgID = 14;
+					ais_msgIDStruct->msgState = MSGNEW;
+				}
 			}
 		}
-		change8bitASCIItoBit(len,tmp,dest);
 	}
-
 	/************************************************************************
 	* Name      : getSSDStaticInfo
 	* Brief     : 将接收的一帧SSD格式数据保存到staticData结构体中
-	*
+	*			SSD格式：$AISSD,c--c,c--c,xxx,xxx,xx,xx,c,aa*hh<CR><LF>
+	*			对应数据		船呼号|船名|A|B|C|D|DTE标志位|信息源指示器
+	*			对其中的船呼号,船名，船的尺寸ABCD的信息进行提取
 	* Author    : Digital Design Team
-	* Param     : mkd_frameStruct-MKD串口接收到的一帧数据数据结构体
+	* Param     : buf-MKD串口接收到的一帧SSD数据数据的地址指针
+	* Param		: length-SSD一帧数据长度
 	* Param     : ais_staticDataStruct-静态数据相关的数据结构体
 	* Return    : void
 	************************************************************************/
-	void getSSDStaticInfo(MKD_FrameStruct * mkd_frameStruct,AIS_StaticDataStruct * ais_staticDataStruct)
+	void getSSDStaticInfo(u8 * buf,u16 length,AIS_StaticDataStruct * ais_staticDataStruct)
 	{
 		u8 fieldTmp[22];
 		u8 fieldTmpNum = 0;
-		u8 i=0;//j=0;
+		u8 i=0,j=0;
 		u32 dataTmp = 0;
 		u8 fieldNum = 0;
 		//fieldTmpNum = 0;
 		//fieldNum = 0;
-		for(i = 0; i < mkd_frameStruct->rcvBufferLength; i ++)
+		for(i = 0; i < length; i ++)
 		{
-			if(mkd_frameStruct->rcvBuffer[i] == 0x2C)//找到了“,”
+			if(buf[i] == 0x2C)//找到了“,”
 			{
 				switch(fieldNum)
 				{
 					case 1://呼号,按照8bit ASCII码存放，高位存在低地址 最多可能存放42bit的数据
 					{
-						/*j = 0;
-						while(j < fieldTmpNum)
-						{
-							ais_staticDataStruct->shipCall[j] = fieldTmp[j];
-							j ++;
-						}*/
 						change8bitASCIItoBit(fieldTmpNum,&fieldTmp[0],ais_staticDataStruct->shipCall);
 						break;
 					}
 					case 2://船名,按照8bit ASCII码存放，高位存在低地址，最多可能存放120bit
 					{
-						/*j = 0;
-						while(j < fieldTmpNum)
-						{
-							ais_staticDataStruct->shipName[j] = fieldTmp[j];
-							j ++;
-						}*/
 						change8bitASCIItoBit(fieldTmpNum,&fieldTmp[0],ais_staticDataStruct->shipName);
 						break;
 					}
-					case 3://位置A
+					case 3://位置A 固定三位数，放在shipSize[29:21]
 					{
 						dataTmp = ((fieldTmp[0]-0x30)*100 + (fieldTmp[1]-0x30)*10 + (fieldTmp[2]-0x30))&0x000001FF;
-						ais_staticDataStruct->shipSize =0;//先清零，再准备重新赋值
-						ais_staticDataStruct->shipSize |= (dataTmp << 21); 
+						ais_staticDataStruct->shipSize =0;//先清零，再准备重新赋值 ABCD尺寸仿真一个32位的空间内
+						ais_staticDataStruct->shipSize |= (dataTmp << 21);
 						break;
 					}
-					case 4://位置B
+					case 4://位置B 固定三位数，放在shipSize[21:12]
 					{
 						dataTmp = ((fieldTmp[0]-0x30)*100 + (fieldTmp[1]-0x30)*10 + (fieldTmp[2]-0x30))&0x000001FF;
 						ais_staticDataStruct->shipSize |= (dataTmp << 12);
 						break;
 					}
-					case 5://位置C
+					case 5://位置C 固定两位数，放在shipSize[11:6]
 					{
 						dataTmp = ((fieldTmp[0]-0x30)*10 + (fieldTmp[1]-0x30))&0x000000FF;
 						ais_staticDataStruct->shipSize |= (dataTmp << 6);
 						break;
 					}
-					case 6://位置D
+					case 6://位置D 固定两位数，放在shipSize[5:0]
 					{
 						dataTmp = ((fieldTmp[0]-0x30)*10 + (fieldTmp[1]-0x30))&0x0000000FF;
 						ais_staticDataStruct->shipSize |= dataTmp;
@@ -487,7 +519,7 @@ void  Putc_UART3(u8 ch)
 			}			
 			else//存放字段信息
 			{
-				fieldTmp[fieldTmpNum] = mkd_frameStruct->rcvBuffer[i];
+				fieldTmp[fieldTmpNum] = buf[i];
 				fieldTmpNum ++;
 			}
 		}
@@ -497,13 +529,16 @@ void  Putc_UART3(u8 ch)
 	/************************************************************************
 	* Name      : getBBMMsgInfo
 	* Brief     : 将接收的一帧BBM格式数据保存到BBM结构体中
-	*
-	* Author    : Digital Design Team
+	*			BBM格式：!AIBBM,x,x,x,x,x.x,s--s,x*hh<CR><LF>
+	*			对应内容		分段总数量|分段顺序号|序列号|广播信道|安全消息ID|封装数据|填充比特
+	*			安全消息针对A类（消息8）、B类（消息14），暂时只考虑消息14情况，分段总数为1（占用一个时隙）
+	*			广播信道（0-无 1-A 2-B 3-同时在A和B上广播）
+	* Author    : wqdnan
 	* Param     : mkd_frameStruct-MKD串口接收到的一帧数据数据结构体
 	* Param     : ais_bbmMsgStruct-BBM报警消息相关的数据结构体
 	* Return    : void
 	************************************************************************/
-	void getBBMMsgInfo(MKD_FrameStruct * mkd_frameStruct,AIS_BBMMsgStruct * ais_bbmMsgStruct)
+	void getBBMMsgInfo(u8 * buf,u16 length,AIS_BBMMsgStruct * ais_bbmMsgStruct)
 	{
 		u8 fieldTmp[62];
 		u8 fieldTmpNum = 0;
@@ -512,9 +547,9 @@ void  Putc_UART3(u8 ch)
 		u8 i,j;
 		fieldTmpNum = 0;
 		fieldNum = 0;
-		for(i = 0; i < mkd_frameStruct->rcvBufferLength; i ++)
+		for(i = 0; i < length; i ++)
 		{
-			if(mkd_frameStruct->rcvBuffer[i] == 0x2C)//找到","
+			if(buf[i] == 0x2C)//找到","
 			{
 				switch(fieldNum)
 				{
@@ -604,15 +639,14 @@ void  Putc_UART3(u8 ch)
 						{
 							//此处将61162规定的6bitASCII码转换成1371规定的6bitASCII码对应的二进制流
 							changeMKD6bitASCIItoBit(fieldTmpNum,fieldTmp,&ais_bbmMsgStruct->encapsulatedData[ais_bbmMsgStruct->encapsulatedDataLength]);
-							ais_bbmMsgStruct->encapsulatedDataLength += (fieldTmpNum * 6);
-							/*for(j= 0;j<fieldTmpNum;j++)
+							ais_bbmMsgStruct->encapsulatedDataLength += ((fieldTmpNum*8)/6)*6;
+							if ((fieldTmpNum * 8)%6)//有余数
 							{
-								ais_bbmMsgStruct->encapsulatedData[ais_bbmMsgStruct->encapsulatedDataLength] = fieldTmp[j];
-								ais_bbmMsgStruct->encapsulatedDataLength ++;
-							}*/
+								ais_bbmMsgStruct->encapsulatedDataLength += 6;
+							}
 						}
-						if(ais_bbmMsgStruct->sentenceTotalNum == ais_bbmMsgStruct->sentenceOrderNum)//测试用，当接收完成，则可以重新接收新的一帧数据
-							ais_bbmMsgStruct->msgOldFlag = MSGOLD;
+						//if(ais_bbmMsgStruct->sentenceTotalNum == ais_bbmMsgStruct->sentenceOrderNum)//测试用，当接收完成，则可以重新接收新的一帧数据
+						//	ais_bbmMsgStruct->msgOldFlag = MSGOLD;
 						break;
 					}
 					default:;
@@ -626,31 +660,11 @@ void  Putc_UART3(u8 ch)
 			}
 			else
 			{
-				fieldTmp[fieldTmpNum] = mkd_frameStruct->rcvBuffer[i];
+				fieldTmp[fieldTmpNum] = buf[i];
 				fieldTmpNum ++;
 			}
 		}
 	}
-
-	/************************************************************************
-	* Name      : rstMKDFrameStruct
-	* Brief     : 清空MKD一帧数据结构体的内容
-	*
-	* Author    : Digital Design Team
-	* Param     : mkd_frameStruct-MKD串口接收到的一帧数据数据结构体
-	* Return    : void
-	************************************************************************/
-	//void rstMKDFrameStruct(MKD_FrameStruct * mkd_frameStruct)
-	//{
-	//	u8 i;
-	//	mkd_frameStruct->receivingFlag = 0;
-	//	mkd_frameStruct->receiveWrong = 0;
-	//	mkd_frameStruct->receivedFlag = 0;
-	//	for(i = 0;i <= mkd_frameStruct->rcvBufferLength; i++)
-	//		mkd_frameStruct->rcvBuffer[i] = 0;
-	//	mkd_frameStruct->rcvBufferLength = 0;
-	//}
-
 
 	////////////////for test ////////////////////////////////
 	void testAIS_StaticStruct(AIS_StaticDataStruct * ais_staticDataStruct)

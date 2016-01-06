@@ -481,6 +481,11 @@
               <FileType>1</FileType>
               <FilePath>.\HARDWARE\TIMER2.c</FilePath>
             </File>
+            <File>
+              <FileName>RNG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HARDWARE\RNG.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -515,6 +520,16 @@
               <FileName>testFSMControl.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\AIS\testFSMControl.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_MKD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\AIS\test_MKD.c</FilePath>
+            </File>
+            <File>
+              <FileName>testMKDControl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\AIS\testMKDControl.c</FilePath>
             </File>
           </Files>
         </Group>

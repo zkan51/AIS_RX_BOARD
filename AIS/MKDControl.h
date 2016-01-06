@@ -20,6 +20,7 @@
 #include "UART2.h"
 #include "UART3.h"
 
+
 #include "FSMControl.h"
 
 ////////////////////////////////////define 声明区////////////////////////////////////////////////////
@@ -35,12 +36,20 @@ typedef enum{
 
 }MKD_MsgTypeIndicator;
 
+typedef enum{
+	VDM = 1,
+	VDO = 2,
+	ABK = 3,
+	ALR = 4,
+	TXT = 5
+}MKD_IdIndicator;
+
 ////////////////////////////////////struct 声明区////////////////////////////////////////////////////
 typedef struct{
 	u8 frameType;//用于区分 固定格式$，或者是非固定格式!
 	u8 frameHead[5];//用于存放消息类型号
-	u8 totalNum;//总分段数，1~9
-	u8 sentenceNum;//在总分段数中的顺序号，1~9
+	u8 totalNum;//总分段数，取值1~9
+	u8 sentenceNum;//在总分段数中的顺序号，取值1~9
 	u8 aisChannel;//在AIS信道上发送的指示，用A或B来指代
 	u8 sequenceNum;//用于区分不同消息的序列号，在0~9之间循环
 	u8 frameEncapContentByte[120];//存放1371按照61162协议格式对应的消息内容 ,可能会超过1个时隙长度 60+60
@@ -50,7 +59,7 @@ typedef struct{
 
 typedef struct{
 
-	u8 mkd_encapDataByte[80];//61162协议内容，按照字节的形式进行存储 
+	u8 mkd_encapDataByte[82];//61162协议内容，按照字节的形式进行存储 
 	//封装内容按照协议内容顺序，按照数组下标从低到高，顺序依次写入
 	u8 mkd_encapDataByteLen;//封装内容长度  字节长度
 	BchannelIndicator mkd_broadChannel;//广播信道   
@@ -69,7 +78,7 @@ typedef struct{
 
 typedef struct  
 {
-	u8 vdl_encapDataByte[21];//FPGA串口接收的它船的vdl链路的完整消息，
+	u8 vdl_encapDataByte[40];//FPGA串口接收的它船的vdl链路的完整消息，考虑到1371中的消息19可能占到2个时隙，最大长度是312/8=39
 	u8 vdl_encapDataByteLen;//FPGA串口接收的它船vdl链路消息的字节长度
 	u8 vdl_channel;//消息的接收信道，A或B
 	MsgHandleState vdlMsgState;// 接收消息的处理状态，MSGNEW 或者 MSGOLD
@@ -79,14 +88,14 @@ typedef struct
 typedef struct{
 
 	MKD_ContentToBeFramedStruct mkd_toBeFrameStruct;//存放待组帧的通用消息结构体
-	OwnShipInfo_Struct ownShipInfoStruct[MAXOWNINFOLEN];//自船vdl信息结构体
-
+	OwnShipInfo_Struct ownShipInfoStruct[MAXOWNINFOLEN];//自船存放的vdl封装信息结构体数组
+	u8 ownShipInfoBias;//自船vdl信息结构体中信息处理的偏置，取值为0~MAXOWNINFOLEN-1
 
 }MKD_ControlStruct;
 
 typedef struct{
 
-	MKD_FramedStruct mkd_framStruct[MAXMKDFRAMELEN];//存放打包好的向上位机汇报的满足61162格式的消息
+	MKD_FramedStruct mkd_framedStruct[MAXMKDFRAMELEN];//存放打包好的向上位机汇报的满足61162格式的消息
 
 }MKD_DataStruct;//上位机中存放的用于和上位机交互的消息及其辅助内容
 
@@ -106,13 +115,17 @@ void rstMKDContentToBeFramedStruct(MKD_ContentToBeFramedStruct * mkd_toBeframeSt
 
 void chnage611626bitASCIIto8bitASCII(u8 len,u8 * sour,u8 * dest);
 void change1371ContentsT61162(FSM_FrameStruct * fsm_frameStruct,MKD_ContentToBeFramedStruct * mkd_toBeframeStruct);
-void changeOtherShipContentTo61162(FPGAVDLData * otherShipMsg,MKD_ContentToBeFramedStruct *mkd_toBeframeStruct);
+void changeOtherShipCntentTo61162(FPGAVDLData * otherShipMsg,MKD_ContentToBeFramedStruct *mkd_toBeframeStruct);
+void changeOwnShipContentTo61162(OwnShipInfo_Struct * ownShipInfo_struct,MKD_ContentToBeFramedStruct * mkd_toBeframeStruct);
+void updataToBeFrameInfo(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_IdIndicator id);
 
 void updataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_DataStruct * mkd_dataStruct);
 
-void MKDInit(MKD_ControlStruct * mkd_controlStruct);
-void mkd_collectOtherShipMsg(FPGAVDLData * vdlOtherData,MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct);
-
+void MKDInit(MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct);
+void getOwn61162ToBeFramedInfo(MKD_ControlStruct * mkd_controlStruct,FSM_DataStruct * fsm_dataStruct);
+//void mkd_collectOtherShipMsg(FPGAVDLData * vdlOtherData,MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct);
+void mkd_collecVDLShipMsg(FPGAVDLData * vdlOtherData,MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct,MKD_IdIndicator id);
+void mkd_collectNewMsg(FlagStatus * isOtherShipMsgNewIn,FPGAVDLData * vdlOtherData,MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct);
 
 
 ////////////////////////////////////others////////////////////////////////////////////////////
