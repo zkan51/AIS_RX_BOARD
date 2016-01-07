@@ -1,10 +1,12 @@
 #include "spi.h"
 #include "uart1.h"
 #include "includes.h"
+#include "APP.h"
+
 u8 SPI2_RX0[SPI2_RX_LEN];
 u8 SPI2_RX1[SPI2_RX_LEN];
 //u8 SPI2_DMA_Tran=0 ;
-extern OS_FLAG_GRP *AIS_FLAG;//定义SPI2标志组指针
+//extern OS_FLAG_GRP *AIS_FLAG;//定义SPI2标志组指针
 static INT8U err;
 void SPI2_Init(void)
 {	 

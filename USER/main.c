@@ -10,6 +10,8 @@
 #include "FSMControl.h"
 #include "testFSMControl.h"
 #include "test.h"
+#include "test_MKD.h"
+#include "MKDControl.h"
 
 void Systick_Init(u8 SYSCLK)
 {
@@ -20,14 +22,14 @@ void Systick_Init(u8 SYSCLK)
 	reload*=1000000/OS_TICKS_PER_SEC;//根据设定溢出时间
 	SysTick->CTRL|=SysTick_CTRL_TICKINT_Msk;   	//开启SYSTICK中断
 	SysTick->LOAD=reload; 	//每1/OS_TICKS_PER_SEC秒中断一次
-	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;   	//开启SYSTICK 
+	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;   	//开启SYSTICK
 	
 //  NVIC_InitStructure.NVIC_IRQChannel = SysTick_IRQn;//串口1中断通道
 //	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;//抢占优先级3
 //	NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;		//子优先级3
 //	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
 //	NVIC_Init(&NVIC_InitStructure);	//初始化
-}	
+}
 
 int main(void)
 { 
@@ -39,9 +41,10 @@ int main(void)
 	UART1_Config(115200);
 	UART2_Config(9600);//GPS数据传输接口
 	TIM2_Int_Init();
-	//UART3_Config(38400);//上位机数据传输接口
+	UART3_Config(38400);//上位机数据传输接口
 	//SPI2_Init();//AIS数据传输接口
-
+	MKDInit(&mkd_controlStruct,&mkd_dataStruct);
+	testVDMFunction(1);//产生VDM的测试数据
 	//FSMInit(&fsm_controlStruct);
 	//testMsg20(2);
 	//printf("\n");

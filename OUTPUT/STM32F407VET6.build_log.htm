@@ -1,0 +1,61 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¶ÃVision V5.16a
+Copyright (C) 2015 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 Microsoft, Microsoft, LIC=TIVHL-0M8NH-73FM8-3M9X7-40UQ6-QJNQ9
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Standard  Version: 5.16a
+Toolchain Path:  D:\Keil_v5.16\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 (build 20)
+Assembler:       Armasm.exe V5.06 (build 20)
+Linker/Locator:  ArmLink.exe V5.06 (build 20)
+Library Manager: ArmAr.exe V5.06 (build 20)
+Hex Converter:   FromElf.exe V5.06 (build 20)
+CPU DLL:         SARMCM3.DLL V5.16a
+Dialog DLL:      DCM.DLL V1.13.2.0
+Target DLL:      Segger\JL2CM3.dll V2.99.15.2
+Dialog DLL:      TCM.DLL V1.14.5.0
+ 
+<h2>Project:</h2>
+D:\ACM\workspace\AIS_407Ucos\AIS_RX_BOARD-master_1\STM32F407VET6.uvprojx
+Project File Date:  01/04/2016
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 (build 20)', folder: 'D:\Keil_v5.16\ARM\ARMCC\Bin'
+Build target 'AIX_RX'
+compiling APP.c...
+APPS\APP.c(56): warning:  #9-D: nested comment is not allowed
+  /*  SPI AISÊï?Êç?Ê∂?ÊÅ?Èò?Âà?  */
+APPS\APP.c(79): warning:  #177-D: variable "cpu_sr" was declared but never referenced
+  {    OS_CPU_SR cpu_sr=0;
+APPS\APP.c(113): warning:  #177-D: variable "cpu_sr" was declared but never referenced
+  { OS_CPU_SR cpu_sr=0;
+APPS\APP.c(116): warning:  #177-D: variable "GPS_RMC_Message" was declared but never referenced
+  	GPS_RMCMsgStruct GPS_RMC_Message;
+APPS\APP.c(212): warning:  #177-D: variable "cpu_sr" was declared but never referenced
+     OS_CPU_SR cpu_sr=0;
+APPS\APP.c(290): warning:  #177-D: variable "cpu_sr" was declared but never referenced
+  	OS_CPU_SR  cpu_sr;
+APPS\APP.c: 6 warnings, 0 errors
+compiling main.c...
+.\AIS\test_MKD.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif
+USER\main.c: 1 warning, 0 errors
+linking...
+Program Size: Code=58270 RO-data=1402 RW-data=208 ZI-data=34584  
+FromELF: creating hex file...
+".\OUTPUT\STM32F407VET6.axf" - 0 Error(s), 7 Warning(s).
+
+<h2>Collection of Component include folders:</h2>
+  D:\ACM\workspace\AIS_407Ucos\AIS_RX_BOARD-master_1\RTE
+  D:\Keil_v5.16\ARM\PACK\Keil\STM32F4xx_DFP\2.4.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+Build Time Elapsed:  00:00:03
+</pre>
+</body>
+</html>
