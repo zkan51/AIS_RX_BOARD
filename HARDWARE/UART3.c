@@ -73,7 +73,7 @@ void UART3_Config(u32 bound)
 	
     DMA_InitStructure.DMA_Channel = DMA_Channel_4;  //通道选择
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)(&(USART3->DR));//源地址
-	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)Uart3_Rx1;     //目的地址
+	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)(Uart3_Rx1);     //目的地址
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;            //外设到内存
 	DMA_InitStructure.DMA_BufferSize = UART3_RX1_LEN;               //数据传输量
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;//外设非增量模式
@@ -144,7 +144,25 @@ void  Putc_UART3(u8 ch)
 	while((USART3->SR&0X40)==0);
 	USART_SendData(USART3, ch);	
 }
+//标准库需要的支持函数
+struct __FILE 
+{ 
+	int handle; 
+}; 
 
+FILE __stdout;       
+//定义_sys_exit() 避免办主机模式  
+_sys_exit(int x) 
+{ 
+	x = x; 
+} 
+//重定义fputc函数 
+int fputc(int ch, FILE *f)
+{ 	
+	while((USART3->SR&0X40)==0);//Ñ­»··¢ËÍ,Ö±µ½·¢ËÍÍê±Ï   
+	USART3->DR = (u8) ch;      
+	return ch;
+}
 
 	/************************************************************************
 	* Name      : getVSDStaticInfo

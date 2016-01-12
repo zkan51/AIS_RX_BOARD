@@ -3,10 +3,10 @@
 #include "stm32f4xx.h" 
 #include "stdio.h"
 
-#define UART1_RX1_LEN     20 
-#define UART1_RX2_LEN     20 
-extern uint8_t Uart_Rx1[UART1_RX1_LEN];//UART1����
-extern uint8_t Uart_Rx2[UART1_RX2_LEN];//UART1ޓ˕
+#define UART1_RX1_LEN     100 
+#define UART1_TX1_LEN     800 
+extern uint8_t Uart1_Rx1[UART1_RX1_LEN];//UART1接收缓存地址
+extern uint8_t Uart1_Tx1[UART1_TX1_LEN];//UART1发送缓存地址
 
 //u8 Flag_Uart_Send = 0;
 

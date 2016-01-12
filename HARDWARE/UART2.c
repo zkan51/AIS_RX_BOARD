@@ -56,7 +56,7 @@ void UART2_Config(u32 bound)
 //USART_ClearFlag(USART2, USART_FLAG_TC);	
 //中断设置,使用定时器的断帧检测，不需要开启
 //	USART_ITConfig(USART2, USART_IT_IDLE, ENABLE);//空闲中断
-//    NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;//串口2中断通道
+//  NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;//串口2中断通道
 //	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=3;//抢占优先级3
 //	NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;		//子优先级0
 //	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
@@ -94,23 +94,10 @@ void USART2_IRQHandler(void)
 	u16 GPS_length;
 	if(USART_GetITStatus(USART2, USART_IT_IDLE) != RESET)  
 	{  
-		  //DMA_Cmd(DMA1_Stream5,DISABLE); 
 		  GPS_length = USART2->SR;  
  		  GPS_length = USART2->DR; //清除标志位
  			GPS_length = Uart2_GPS1_LEN - DMA_GetCurrDataCounter(DMA1_Stream5);
-//    for(i=0;i<GPS_length;i++)
-//		{
-////// 		Message_AIS[i]=Uart_Rx[i];//Message_AIS++;
-// 				Putc_UART1(Uart2_GPS1[i]);
-//    }
-//    if(DMA_GetCurrentMemoryTarget(DMA1_Stream5) == 1)
-//		{DMA_MemoryTargetConfig(DMA1_Stream5,(u32)&Uart2_GPS1,DMA_Memory_0);}
-//		else
-//		{DMA_MemoryTargetConfig(DMA1_Stream5,(u32)&Uart2_GPS2,DMA_Memory_1);}
-//    DMA_ClearITPendingBit(DMA1_Stream5,DMA_IT_TCIF5);	
-//		OSFlagPost(GPS_FLAG,0x01,OS_FLAG_SET,&err);
 			printf("\r\n%d\r\n",GPS_length);				 
-		  //DMA_Cmd(DMA1_Stream5, ENABLE);//处理完,重开DMA
 	}
 	__nop();   
 }

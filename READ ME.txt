@@ -1,4 +1,5 @@
-﻿20160108 test
+
+20160108 test
 
 
 
@@ -7,12 +8,13 @@
 System_stm32F40_41xxx.c  第316行 #define PLL_M 25  改成8，因为使用的8M晶振
 stm32f4xx.h 第123行  HSE_CALUE 25  改成 8
 
-UART1：与FPGA通信  115200  DMA2 数据流5 通道4
-UART2：接收GPS信息 9600    DMA1 数据流5 通道4
-UART3：上位机      38400   DMA1 数据流1 通道4
-UART4：FPGA        115200
+UART1：与上位机通信  38400     DMA2 RX：数据流5 通道4 TX：数据流7 通道4
+UART2：接收GPS信息   115200    DMA1 数据流5 通道4
+UART3： debug        115200    
+UART4：FPGA时隙      115200        
+UART5：
 
 SPI1：
 SPI2： FPGA 接收1371消息
-SPI3：
+SPI3： 发送调度表
 

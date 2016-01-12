@@ -123,10 +123,12 @@ void DMA1_Stream3_IRQHandler(void)
 	  // DMA_InitTypeDef DMA_InitStructure;
 	if(DMA_GetITStatus(DMA1_Stream3,DMA_IT_TCIF3) != RESET)
 	{
+		OSIntEnter();
 	   DMA_ClearITPendingBit(DMA1_Stream3,DMA_IT_TCIF3);
 	  // printf("\r\nSPI2");
 	   //SPI2_DMA_Tran = 1;//有准备好的数据了
 		OSFlagPost(AIS_FLAG,0x01,OS_FLAG_SET,&err);
+		OSIntExit();
 	}
 }
 

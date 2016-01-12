@@ -380,6 +380,7 @@ void updataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_D
 	u8 tmp = 0;
   	u8 subSection = 0;
 	u8 subSectionLen = 0;
+	static u8 MsgQueueBias;
 	while (subSection < mkd_toBeframeStruct->totalNum)//subSection 对应相应的分段顺序号
 	{
 		//清零mkd_frameStruct结构体
@@ -500,14 +501,14 @@ void updataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_D
 			mkd_dataStruct->mkd_framedStruct[i].mkd_msgState = MSGNEW;
 			mkd_dataStruct->mkd_framedStruct[i].mkd_broadChannel = mkd_toBeframeStruct->aisChannel;
 			//生成好的它船或自船消息字节流以FIFO方式压入消息队列开始
-			MsgQueue[MsgQueueBias][0] = 0;//第一个字节记录消息内容的长度
-			MsgQueue[MsgQueueBias][1] = mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen;//第一个字节记录消息内容的长度
+			MsgQ_Mkd_Buf[MsgQueueBias][0] = 0;//第一个字节记录消息内容的长度
+			MsgQ_Mkd_Buf[MsgQueueBias][1] = mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen;//第一个字节记录消息内容的长度
 			for(j = 0; j < mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen; j ++)
 			{
 				//将封装消息存放到二维数组中
-				MsgQueue[MsgQueueBias][j+2] = mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[j];
+				MsgQ_Mkd_Buf[MsgQueueBias][j+2] = mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[j];
 			}
-			OSQPost(Q_mkd,&MsgQueue[MsgQueueBias]);
+			OSQPost(Q_mkd_ais,&MsgQ_Mkd_Buf[MsgQueueBias]);
 			MsgQueueBias ++;
 			MsgQueueBias %= MSG_QUEUE_MKD_NUM;
 			//压入消息队列结束

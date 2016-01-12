@@ -10,6 +10,7 @@ extern u8 SPI2_RX1[];
 
 extern OS_FLAG_GRP *AIS_FLAG;//定义SPI2标志组指针
 extern OS_FLAG_GRP *GPS_FLAG;//定义GPS标志组指针
+extern OS_EVENT *UART1_Tx_FLAG;//OS_FLAG_GRP *UART1_TX_FLAG;//定义UART1发送标志组指针
 /*SPI AIS数据消息队列*/
 #define MSG_QUEUE_TABNUM 20
 extern OS_EVENT *QSem;//
@@ -19,9 +20,8 @@ extern  void *MsgQeueTb[MSG_QUEUE_TABNUM];
 
 /* AIS 向上位机上报61162消息的消息队列  */
 #define MSG_QUEUE_MKD_NUM 20
-extern OS_EVENT *Q_mkd;
-extern u8 MsgQueue[MSG_QUEUE_MKD_NUM][600];
-extern u8 MsgQueueBias;
+extern OS_EVENT *Q_mkd_ais;
+extern u8 MsgQ_Mkd_Buf[MSG_QUEUE_MKD_NUM][200];
 
 void led_task(void *pdata);
 void float_task(void *pdata);

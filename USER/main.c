@@ -6,16 +6,16 @@
 #include "UART2.h"
 #include "SPI.h"
 #include "TIMER2.h"
+#include "RNG.h"
 //#include "stdio.h"
 #include "FSMControl.h"
 #include "testFSMControl.h"
 #include "test.h"
 #include "test_MKD.h"
 #include "MKDControl.h"
-
+//系统时钟初始化1ms，作为ucos的心跳
 void Systick_Init(u8 SYSCLK)
 {
-//	NVIC_InitTypeDef NVIC_InitStructure;
 	u32 reload;
  	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
 	reload=SYSCLK/8;		// 每秒钟的计数   单位K
@@ -23,12 +23,6 @@ void Systick_Init(u8 SYSCLK)
 	SysTick->CTRL|=SysTick_CTRL_TICKINT_Msk;   	//开启SYSTICK中断
 	SysTick->LOAD=reload; 	//每1/OS_TICKS_PER_SEC秒中断一次
 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;   	//开启SYSTICK
-	
-//  NVIC_InitStructure.NVIC_IRQChannel = SysTick_IRQn;//串口1中断通道
-//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;//抢占优先级3
-//	NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;		//子优先级3
-//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
-//	NVIC_Init(&NVIC_InitStructure);	//初始化
 }
 
 int main(void)
@@ -38,18 +32,19 @@ int main(void)
 
 	LED_Init();		
 	GPIO_SetBits(GPIOC,GPIO_Pin_2);//打开GPS电源，IO在LED里面设置
-	UART1_Config(115200);
+	UART1_Config(38400);//上位机数据传输接口
 	UART2_Config(9600);//GPS数据传输接口
-	TIM2_Int_Init();
-	UART3_Config(38400);//上位机数据传输接口
+	TIM2_Int_Init();//结合UART2进行不定长数据接收
+	UART3_Config(115200);//测试串口
 	//SPI2_Init();//AIS数据传输接口
+	RNG_Init();
+	
+	
 	MKDInit(&mkd_controlStruct,&mkd_dataStruct);
 	testVDMFunction(1);//产生VDM的测试数据
 	//FSMInit(&fsm_controlStruct);
 	//testMsg20(2);
-	//printf("\n");
-	//printf("all functions are tested over!!!!\r\n");
-  App_TaskStart();
+  App_TaskStart();//开启U/COS
 
 	while(1);
 }
