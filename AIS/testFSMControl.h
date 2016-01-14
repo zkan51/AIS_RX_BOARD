@@ -5,7 +5,7 @@
 * @version   V3.5.0
 * @date      2015/11/23   16:10
 ********************************************************************
-* @brief     å®šä¹‰æµ‹è¯•FSMControl.cä¸­åŠŸèƒ½å‡½æ•°å®ä½“çš„å¯¹åº”æµ‹è¯•å‡½æ•°ï¼Œä¸»è¦æµ‹è¯•å‡½æ•°çš„è¾“å…¥å’Œè¾“å‡º
+* @brief     ¶¨Òå²âÊÔFSMControl.cÖĞ¹¦ÄÜº¯ÊıÊµÌåµÄ¶ÔÓ¦²âÊÔº¯Êı£¬Ö÷Òª²âÊÔº¯ÊıµÄÊäÈëºÍÊä³ö
 *
 * Copyright (C) NanJing Sandemarine Electric Co., Ltd
 * All Rights Reserved
@@ -15,9 +15,11 @@
 #define __TESTFSMCONTROL_H
 
 #include "FSMControl.h"
+#include "gps.h"
+#include "mkdData.h"
 
-#include "UART2.h"
-#include "UART3.h"
+
+extern u8 fillBias;//for test
 
 ////////////////////////for test //////////////////////////////////////////////////
 void printfBinary(u8 num);

@@ -26,8 +26,5 @@ void testMkd_collectOtherShipMsg(FPGAVDLData * vdlOtherData,MKD_ControlStruct * 
 
 void testUpdataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_FramedStruct * mkd_framedStruct);
 void mkd_collecVDLShipMsg(FPGAVDLData * vdlOtherData,MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct,MKD_IdIndicator id);
-
-
-extern u8 fillBias;
 #endif
 

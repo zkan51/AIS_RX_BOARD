@@ -5,7 +5,7 @@
 * @version   V3.5.0
 * @date      2015/11/23   12:16
 ********************************************************************
-* @brief     ç¼–å†™Msg14ã€Msg18ã€Msg19ã€Msg24åœ¨å„ä¸ªæ¡ä»¶ä¸‹ç”Ÿæˆçš„å†…å®¹
+* @brief     ±àĞ´Msg14¡¢Msg18¡¢Msg19¡¢Msg24ÔÚ¸÷¸öÌõ¼şÏÂÉú³ÉµÄÄÚÈİ
 *
 * Copyright (C) NanJing Sandemarine Electric Co., Ltd
 * All Rights Reserved
@@ -13,144 +13,151 @@
 */
 #include "test.h"
 
+/////////////////////////gobal data////////////////////////////////////
+u8 gpsTestData[500] = {0};
+
+void testGPSInfo(u8 * buf,GPS_InfoStruct * gps_infoStruct)
+{
+	
 
 
+}
 /************************************************************************
 * Name      : testMsg14
-* Brief     : æµ‹è¯•Msg14çš„å†…å®¹
+* Brief     : ²âÊÔMsg14µÄÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : ais_bbmMsgStruct- ä¸Šä½æœºä¾§æ¥æ”¶åˆ°çš„å®‰å…¨ç›¸å…³æ¶ˆæ¯å†…å®¹ç»“æ„ä½“
-* Param     : ais_rcvMsgIDStruct- æŒ‡ç¤ºå½“å‰æœ‰æ–°çš„å®‰å…¨æ¶ˆæ¯14çš„æŒ‡ç¤ºç»“æ„ä½“
+* Param     : ais_bbmMsgStruct- ÉÏÎ»»ú²à½ÓÊÕµ½µÄ°²È«Ïà¹ØÏûÏ¢ÄÚÈİ½á¹¹Ìå
+* Param     : ais_rcvMsgIDStruct- Ö¸Ê¾µ±Ç°ÓĞĞÂµÄ°²È«ÏûÏ¢14µÄÖ¸Ê¾½á¹¹Ìå
 * Return    : void
 ************************************************************************/
 void testMsg14(AIS_BBMMsgStruct * ais_bbmMsgStruct,AIS_RcvMsgIDStruct * ais_rcvMsgIDStruct)
 {
-	testAIS_BBMMsgStruct(ais_bbmMsgStruct);
-	ais_rcvMsgIDStruct->msgState = MSGNEW;
+	//testAIS_BBMMsgStruct(ais_bbmMsgStruct);
+	//ais_rcvMsgIDStruct->msgState = MSGNEW;
 
-	//æ”¶é›†æ–°æ¶ˆæ¯IDå·
+	//ÊÕ¼¯ĞÂÏûÏ¢IDºÅ
 	collectNewMsg(ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
 
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰å®‰å…¨ã€è¯¢é—®ç±»æ¶ˆæ¯ï¼Œåˆ™äº§ç”Ÿ
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞ°²È«¡¢Ñ¯ÎÊÀàÏûÏ¢£¬Ôò²úÉú
 	generateSafeAndInquiryContent(&gps_infoStruct,&ais_staticDataStruct,&recVDLMsg15,&fsm_controlStruct,&fsm_dataStruct);
 }
 
 /************************************************************************
 * Name      : testMsg18Info
-* Brief     : äº§ç”Ÿæµ‹è¯•Msg18æ¡ä»¶çš„å†…å®¹
+* Brief     : ²úÉú²âÊÔMsg18Ìõ¼şµÄÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : ais_rcvMsgIDStruct- è¾“å…¥ï¼Œç”¨äºæŒ‡ç¤ºå½“å‰å®‰å…¨æ¶ˆæ¯14çš„æ–°æ¶ˆæ¯æƒ…å†µ
-* Param     : gps_infoStruct- è¾“å…¥ï¼ŒGPSä¿¡æ¯ç»“æ„ä½“
-* Param     : ais_bbmMsgStruct- è¾“å…¥ï¼Œå®‰å…¨æ¶ˆæ¯14çš„æ¶ˆæ¯å†…å®¹ç»“æ„ä½“
-* Param     : ais_staticDataStruct- è¾“å…¥ï¼Œä¸Šä½æœºå¤„ä¸èˆ¹èˆ¶é™æ€ä¿¡æ¯ç›¸å…³çš„ç»“æ„ä½“
-* Param     : vdlMsg15- è¾“å…¥ï¼Œvdlæ¶ˆæ¯15çš„å†…å®¹ç»“æ„ä½“
-* Param     : vdlMsg20- è¾“å…¥ï¼Œvdlæ¶ˆæ¯20çš„å†…å®¹ç»“æ„ä½“
-* Param     : vdlMsg22- è¾“å…¥ï¼Œvdlæ¶ˆæ¯22çš„å†…å®¹ç»“æ„ä½“
-* Param     : vdlMsg23- è¾“å…¥ï¼Œvdlæ¶ˆæ¯23çš„å†…å®¹ç»“æ„ä½“
-* Param     : fsm_controlStruct- è¾“å‡ºï¼ŒçŠ¶æ€æœºä¸­æ§åˆ¶ç»“æ„ä½“ï¼Œä¸»è¦ä¿®æ”¹æ–°æ¶ˆæ¯çš„IDå·
-* Param     : fsm_dataStruct- è¾“å‡ºï¼ŒçŠ¶æ€æœºä¸­çš„æ•°æ®ç»“æ„ä½“ï¼Œä¸»è¦ä¿®æ”¹å½“å‰çš„æ—¶éš™å·
-* Param     : workType1- è¾“å…¥ï¼Œæ ¹æ®ä¸åŒçš„å·¥ä½œæ¡ä»¶éœ€è¦ï¼Œé€‰æ‹©äº§ç”Ÿä¸åŒçš„åˆå§‹åŒ–ä¿¡æ¯
-* Return    : workTypeIndicator- è¾“å‡ºï¼Œè¿”å›åˆå§‹åŒ–çš„å·¥ä½œçŠ¶æ€
+* Param     : ais_rcvMsgIDStruct- ÊäÈë£¬ÓÃÓÚÖ¸Ê¾µ±Ç°°²È«ÏûÏ¢14µÄĞÂÏûÏ¢Çé¿ö
+* Param     : gps_infoStruct- ÊäÈë£¬GPSĞÅÏ¢½á¹¹Ìå
+* Param     : ais_bbmMsgStruct- ÊäÈë£¬°²È«ÏûÏ¢14µÄÏûÏ¢ÄÚÈİ½á¹¹Ìå
+* Param     : ais_staticDataStruct- ÊäÈë£¬ÉÏÎ»»ú´¦Óë´¬²°¾²Ì¬ĞÅÏ¢Ïà¹ØµÄ½á¹¹Ìå
+* Param     : vdlMsg15- ÊäÈë£¬vdlÏûÏ¢15µÄÄÚÈİ½á¹¹Ìå
+* Param     : vdlMsg20- ÊäÈë£¬vdlÏûÏ¢20µÄÄÚÈİ½á¹¹Ìå
+* Param     : vdlMsg22- ÊäÈë£¬vdlÏûÏ¢22µÄÄÚÈİ½á¹¹Ìå
+* Param     : vdlMsg23- ÊäÈë£¬vdlÏûÏ¢23µÄÄÚÈİ½á¹¹Ìå
+* Param     : fsm_controlStruct- Êä³ö£¬×´Ì¬»úÖĞ¿ØÖÆ½á¹¹Ìå£¬Ö÷ÒªĞŞ¸ÄĞÂÏûÏ¢µÄIDºÅ
+* Param     : fsm_dataStruct- Êä³ö£¬×´Ì¬»úÖĞµÄÊı¾İ½á¹¹Ìå£¬Ö÷ÒªĞŞ¸Äµ±Ç°µÄÊ±Ï¶ºÅ
+* Param     : workType1- ÊäÈë£¬¸ù¾İ²»Í¬µÄ¹¤×÷Ìõ¼şĞèÒª£¬Ñ¡Ôñ²úÉú²»Í¬µÄ³õÊ¼»¯ĞÅÏ¢
+* Return    : workTypeIndicator- Êä³ö£¬·µ»Ø³õÊ¼»¯µÄ¹¤×÷×´Ì¬
 ************************************************************************/
 workTypeIndicator testMsg18Info(AIS_RcvMsgIDStruct * ais_rcvMsgIDStruct,GPS_InfoStruct * gps_infoStruct,AIS_BBMMsgStruct * ais_bbmMsgStruct,AIS_StaticDataStruct * ais_staticDataStruct,VDLMsg15 * vdlMsg15,VDLMsg20 * vdlMsg20,VDLMsg22 * vdlMsg22,VDLMsg23 * vdlMsg23,
 			 FSM_ControlStruct * fsm_controlStruct,FSM_DataStruct * fsm_dataStruct,u8 workType1)
 {
 	workTypeIndicator workType = AUTO;
 	//u8 i = workType1;
-	testGPS_InfoStruct(gps_infoStruct);//è®¾ç½®gpsçš„å€¼
+	testGPS_InfoStruct(gps_infoStruct);//ÉèÖÃgpsµÄÖµ
 	switch(workType1)
 	{
-	case 1://è‡ªä¸»æ¨¡å¼
+	case 1://×ÔÖ÷Ä£Ê½
 		{
 			workType = AUTO;
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
 			break;
 		}
-	case 2://è¯¢é—®æ¨¡å¼ æŒ‡å®šäº†å“åº”æ—¶éš™
+	case 2://Ñ¯ÎÊÄ£Ê½ Ö¸¶¨ÁËÏìÓ¦Ê±Ï¶
 		{
 			testVDL_Msg15(1120,18,10,0,0,0,0,vdlMsg15); 
 			isVDLMsg15NewIn = SET;
 			break;
 		}
-	case 3://è¯¢é—®æ¨¡å¼ æœªæŒ‡å®šå“åº”æ—¶éš™
+	case 3://Ñ¯ÎÊÄ£Ê½ Î´Ö¸¶¨ÏìÓ¦Ê±Ï¶
 		{
 			testVDL_Msg15(1120,18,0,0,0,0,0,vdlMsg15); 
 			isVDLMsg15NewIn = SET;
 			break;
 		}
-	case 4://æŒ‡é…æ¨¡å¼ï¼ŒMsg20ä½œç”¨,éƒ¨åˆ†è¶…æ—¶
+	case 4://Ö¸ÅäÄ£Ê½£¬Msg20×÷ÓÃ,²¿·Ö³¬Ê±
 		{
 			//workType = MSG20;
 			//isVDLMsg20NewIn = SET;
 			testMsg20Info(gps_infoStruct, &recVDLMsg20,&fsm_controlStruct->fsm_msg20Struct,2);
-			testGPS_InfoStructPara(gps_infoStruct,0,0,12,45,0);//è®¾ç½®gpsçš„å€¼ 
+			testGPS_InfoStructPara(gps_infoStruct,0,0,12,45,0);//ÉèÖÃgpsµÄÖµ 
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
 			break;
 		}
-	case 5://æŒ‡é…æ¨¡å¼ï¼ŒMsg22ä½œç”¨,ä¸åœ¨åˆ‡æ¢åŒº
+	case 5://Ö¸ÅäÄ£Ê½£¬Msg22×÷ÓÃ,²»ÔÚÇĞ»»Çø
 		{
 			workType = MSG22;
 			isVDLMsg22NewIn = SET;
-			testMsg22(&recVDLMsg22,gps_infoStruct,1,0);//åœ¨ä¸€å·åŒºåŸŸ
+			testMsg22(&recVDLMsg22,gps_infoStruct,1,0);//ÔÚÒ»ºÅÇøÓò
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
 			break;
 		}
-	case 6://æŒ‡é…æ¨¡å¼ï¼ŒMsg23æœªåœ¨å¯‚é™æœŸ
+	case 6://Ö¸ÅäÄ£Ê½£¬Msg23Î´ÔÚ¼Å¾²ÆÚ
 		{
 			workType = MSG23;
 			isVDLMsg23NewIn = SET;
-			testMsg23Info(gps_infoStruct,3);//æŒ‡é…æœ‰æ•ˆï¼Œæœªåœ¨å¯‚é™æœŸ
+			testMsg23Info(gps_infoStruct,3);//Ö¸ÅäÓĞĞ§£¬Î´ÔÚ¼Å¾²ÆÚ
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
 			break;
 		}
-	case 7://æŒ‡é…æ¨¡å¼ï¼ŒMsg23å¯‚é™æœŸ
+	case 7://Ö¸ÅäÄ£Ê½£¬Msg23¼Å¾²ÆÚ
 		{
 			workType = MSG23SILENCE;
 			isVDLMsg23NewIn = SET;
-			testMsg23Info(gps_infoStruct,2);//æŒ‡é…æœ‰æ•ˆï¼Œåœ¨å¯‚é™æœŸ
+			testMsg23Info(gps_infoStruct,2);//Ö¸ÅäÓĞĞ§£¬ÔÚ¼Å¾²ÆÚ
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
 			break;
 		}
-	case 8://æŒ‡é…æ¨¡å¼ï¼Œå¹¿æ’­Msg22å’ŒMsg23ï¼ˆæœªåœ¨å¯‚é™æœŸï¼‰ä¸€èµ·ä½œç”¨ï¼ŒMsg22ä¸åœ¨åˆ‡æ¢åŒº
+	case 8://Ö¸ÅäÄ£Ê½£¬¹ã²¥Msg22ºÍMsg23£¨Î´ÔÚ¼Å¾²ÆÚ£©Ò»Æğ×÷ÓÃ£¬Msg22²»ÔÚÇĞ»»Çø
 		{
-			testMsg22(&recVDLMsg22,gps_infoStruct,1,0);//åœ¨ä¸€å·åŒºåŸŸ
-			testMsg23Info(gps_infoStruct,4);//æŒ‡é…æœ‰æ•ˆï¼Œä¸åœ¨å¯‚é™æœŸ
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,0,19,59);//ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š119Â°ï¼‰
+			testMsg22(&recVDLMsg22,gps_infoStruct,1,0);//ÔÚÒ»ºÅÇøÓò
+			testMsg23Info(gps_infoStruct,4);//Ö¸ÅäÓĞĞ§£¬²»ÔÚ¼Å¾²ÆÚ
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,0,19,59);//£¨Î³¶È£º48.3¡ã ¾­¶È£º119¡ã£©
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
 			break;
 		}
-	case 9://æŒ‡é…æ¨¡å¼ï¼Œå¯»å€Msg22å’ŒMsg23ï¼ˆæœªåœ¨å¯‚é™æœŸï¼‰ä¸€èµ·ä½œç”¨ï¼ŒMsg22ä¸åœ¨åˆ‡æ¢åŒº
+	case 9://Ö¸ÅäÄ£Ê½£¬Ñ°Ö·Msg22ºÍMsg23£¨Î´ÔÚ¼Å¾²ÆÚ£©Ò»Æğ×÷ÓÃ£¬Msg22²»ÔÚÇĞ»»Çø
 		{
-			testMsg22(&recVDLMsg22,gps_infoStruct,0,0);//åœ¨å¯»å€åŒºåŸŸ
-			testMsg23Info(gps_infoStruct,4);//æŒ‡é…æœ‰æ•ˆï¼Œä¸åœ¨å¯‚é™æœŸ
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,0,19,59);//ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š119Â°ï¼‰
+			testMsg22(&recVDLMsg22,gps_infoStruct,0,0);//ÔÚÑ°Ö·ÇøÓò
+			testMsg23Info(gps_infoStruct,4);//Ö¸ÅäÓĞĞ§£¬²»ÔÚ¼Å¾²ÆÚ
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,0,19,59);//£¨Î³¶È£º48.3¡ã ¾­¶È£º119¡ã£©
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
 			break;
 		}
-	case 10://æŒ‡é…æ¨¡å¼ï¼Œå¹¿æ’­Msg22å’ŒMsg23(æœªåœ¨å¯‚é™æœŸ)ä¸€èµ·ä½œç”¨ï¼ŒMsg22åœ¨åˆ‡æ¢åŒº
+	case 10://Ö¸ÅäÄ£Ê½£¬¹ã²¥Msg22ºÍMsg23(Î´ÔÚ¼Å¾²ÆÚ)Ò»Æğ×÷ÓÃ£¬Msg22ÔÚÇĞ»»Çø
 		{
-			//testMsg22(&recVDLMsg22,gps_infoStruct,10,3);//åŒºåŸŸ3 
+			//testMsg22(&recVDLMsg22,gps_infoStruct,10,3);//ÇøÓò3 
 			testMsg22Handover(&fsm_controlStruct->fsm_msg22Struct,gps_infoStruct);
-			testMsg23Info(gps_infoStruct,5);//æŒ‡é…æœ‰æ•ˆï¼Œä¸åœ¨å¯‚é™æœŸ
-			testGPS_InfoStructPara(gps_infoStruct,28980000,69550200,0,19,59);//ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š115.917Â°ï¼‰
+			testMsg23Info(gps_infoStruct,5);//Ö¸ÅäÓĞĞ§£¬²»ÔÚ¼Å¾²ÆÚ
+			testGPS_InfoStructPara(gps_infoStruct,28980000,69550200,0,19,59);//£¨Î³¶È£º48.3¡ã ¾­¶È£º115.917¡ã£©
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
 			break;
 		}
-	case 11:////æŒ‡é…æ¨¡å¼ï¼ŒMsg22ä½œç”¨,åœ¨åˆ‡æ¢åŒº
+	case 11:////Ö¸ÅäÄ£Ê½£¬Msg22×÷ÓÃ,ÔÚÇĞ»»Çø
 		{
 			workType = MSG22;
 			//isVDLMsg22NewIn = SET;
-			//testMsg22(&recVDLMsg22,gps_infoStruct,10,3);//åœ¨3å·åŒºåŸŸï¼Œä¸Šä¸€ä¸ªåŒºåŸŸæœª2å·
+			//testMsg22(&recVDLMsg22,gps_infoStruct,10,3);//ÔÚ3ºÅÇøÓò£¬ÉÏÒ»¸öÇøÓòÎ´2ºÅ
 			testMsg22Handover(&fsm_controlStruct->fsm_msg22Struct,gps_infoStruct);
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg18Count.countFlag = COUNTED;
@@ -162,162 +169,162 @@ workTypeIndicator testMsg18Info(AIS_RcvMsgIDStruct * ais_rcvMsgIDStruct,GPS_Info
 
 /************************************************************************
 * Name      : testMsg18
-* Brief     : æµ‹è¯•æ¶ˆæ¯18çš„å†…å®¹
+* Brief     : ²âÊÔÏûÏ¢18µÄÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : workType- è¾“å…¥ï¼Œç”¨äºè®¾ç½®å½“å‰äº§ç”ŸMsg18çš„æ¡ä»¶
-*			  1-è‡ªä¸»æ¨¡å¼  2-è¯¢é—®æ¨¡å¼ æŒ‡å®šäº†å“åº”æ—¶éš™  3-è¯¢é—®æ¨¡å¼ æœªæŒ‡å®šå“åº”æ—¶éš™ 
-*			  4-æŒ‡é…æ¨¡å¼ï¼ŒMsg20ä½œç”¨  5-æŒ‡é…æ¨¡å¼ï¼ŒMsg22ä½œç”¨  6-æŒ‡é…æ¨¡å¼ï¼ŒMsg23æœªåœ¨å¯‚é™æœŸ
-*			  7-æŒ‡é…æ¨¡å¼ï¼ŒMsg23å¯‚é™æœŸ  8-å¹¿æ’­Msg22å’ŒMsg23ï¼ˆæœªåœ¨å¯‚é™æœŸï¼‰ä¸€èµ·ä½œç”¨ï¼ŒMsg22ä¸åœ¨åˆ‡æ¢åŒº 
-*			  9-å¯»å€Msg22å’ŒMsg23ï¼ˆæœªåœ¨å¯‚é™æœŸï¼‰ä¸€èµ·ä½œç”¨ï¼ŒMsg22ä¸åœ¨åˆ‡æ¢åŒº
-*			  10-å¹¿æ’­Msg22å’ŒMsg23(æœªåœ¨å¯‚é™æœŸ)ä¸€èµ·ä½œç”¨ï¼ŒMsg22åœ¨åˆ‡æ¢åŒº
-*			  11-Msg22ä½œç”¨,åœ¨åˆ‡æ¢åŒº
+* Param     : workType- ÊäÈë£¬ÓÃÓÚÉèÖÃµ±Ç°²úÉúMsg18µÄÌõ¼ş
+*			  1-×ÔÖ÷Ä£Ê½  2-Ñ¯ÎÊÄ£Ê½ Ö¸¶¨ÁËÏìÓ¦Ê±Ï¶  3-Ñ¯ÎÊÄ£Ê½ Î´Ö¸¶¨ÏìÓ¦Ê±Ï¶ 
+*			  4-Ö¸ÅäÄ£Ê½£¬Msg20×÷ÓÃ  5-Ö¸ÅäÄ£Ê½£¬Msg22×÷ÓÃ  6-Ö¸ÅäÄ£Ê½£¬Msg23Î´ÔÚ¼Å¾²ÆÚ
+*			  7-Ö¸ÅäÄ£Ê½£¬Msg23¼Å¾²ÆÚ  8-¹ã²¥Msg22ºÍMsg23£¨Î´ÔÚ¼Å¾²ÆÚ£©Ò»Æğ×÷ÓÃ£¬Msg22²»ÔÚÇĞ»»Çø 
+*			  9-Ñ°Ö·Msg22ºÍMsg23£¨Î´ÔÚ¼Å¾²ÆÚ£©Ò»Æğ×÷ÓÃ£¬Msg22²»ÔÚÇĞ»»Çø
+*			  10-¹ã²¥Msg22ºÍMsg23(Î´ÔÚ¼Å¾²ÆÚ)Ò»Æğ×÷ÓÃ£¬Msg22ÔÚÇĞ»»Çø
+*			  11-Msg22×÷ÓÃ,ÔÚÇĞ»»Çø
 * Return    : void
 ************************************************************************/
 void testMsg18(u8 workType)
 {
 	workTypeIndicator worktype = testMsg18Info(&ais_rcvMsgIDStruct,&gps_infoStruct,&ais_bbmMsgStruct,&ais_staticDataStruct,&recVDLMsg15,&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,&fsm_controlStruct,&fsm_dataStruct,workType);
-	//æ”¶é›†æ–°æ¶ˆæ¯IDå·
+	//ÊÕ¼¯ĞÂÏûÏ¢IDºÅ
 	collectNewMsg(&ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
 	//testCollectNewMsg(&ais_rcvMsgIDStruct,isVDLMsg15NewIn,&recVDLMsg15,isVDLMsg20NewIn,isVDLMsg22NewIn,isVDLMsg23NewIn,&fsm_controlStruct);
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰æŒ‡é…ç±»æ¶ˆæ¯ï¼Œåˆ™æ›´æ–°ç›¸åº”çš„æŒ‡é…å†…å®¹
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞÖ¸ÅäÀàÏûÏ¢£¬Ôò¸üĞÂÏàÓ¦µÄÖ¸ÅäÄÚÈİ
 	updataAssignContent(&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰å®‰å…¨ã€è¯¢é—®ç±»æ¶ˆæ¯ï¼Œåˆ™äº§ç”Ÿ
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞ°²È«¡¢Ñ¯ÎÊÀàÏûÏ¢£¬Ôò²úÉú
 	generateSafeAndInquiryContent(&gps_infoStruct,&ais_staticDataStruct,&recVDLMsg15,&fsm_controlStruct,&fsm_dataStruct);
 
-	//æ£€æµ‹å½“å‰å·¥ä½œçš„æ¨¡å¼
+	//¼ì²âµ±Ç°¹¤×÷µÄÄ£Ê½
 	worktype = checkAssignValid(&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 
 	setCycleCountNum(&fsm_controlStruct);
-	//æ ¹æ®æŠ¥å‘Šé—´éš”æ—¶é—´æŒ‡ç¤ºï¼Œç”Ÿæˆç›¸åº”çš„å‘¨æœŸæŠ¥å‘Šæ¶ˆæ¯
+	//¸ù¾İ±¨¸æ¼ä¸ôÊ±¼äÖ¸Ê¾£¬Éú³ÉÏàÓ¦µÄÖÜÆÚ±¨¸æÏûÏ¢
 	generateCycleContent(worktype,&gps_infoStruct,&ais_staticDataStruct,&recVDLMsg15,&fsm_controlStruct,&fsm_dataStruct);
 
 }
 
 /************************************************************************
 * Name      : testMsg19
-* Brief     : æµ‹è¯•Msg19çš„å†…å®¹
+* Brief     : ²âÊÔMsg19µÄÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : gps_infoStruct- è¾“å…¥ï¼ŒGPSçš„ä¿¡æ¯ç»“æ„ä½“
-* Param     : ais_staticDataStruct-è¾“å…¥ï¼Œä¸Šä½æœºå¤„çš„èˆ¹èˆ¶é™æ€æ¶ˆæ¯ç»“æ„ä½“
-* Param     : vdlMsg15- è¾“å…¥ï¼Œvdlæ¶ˆæ¯15çš„å†…å®¹ç»“æ„ä½“
-* Param     : vdlMsg20- è¾“å…¥ï¼Œvdlæ¶ˆæ¯20çš„å†…å®¹ç»“æ„ä½“ï¼Œå¥½åƒå’Œæœ¬æ¶ˆæ¯çš„è”ç³»ä¸å¤§
-* Param     : vdlMsg22- è¾“å…¥ï¼Œvdlæ¶ˆæ¯22çš„å†…å®¹ç»“æ„ä½“ï¼Œå¥½åƒä¸æœ¬æ¶ˆæ¯çš„è”ç³»ä¸å¤§
-* Param     : vdlMsg23- è¾“å…¥ï¼Œvdlæ¶ˆæ¯23çš„å†…å®¹ç»“æ„ä½“ï¼Œå¥½åƒä¸æœ¬æ¶ˆæ¯çš„è”ç³»ä¸å¤§
+* Param     : gps_infoStruct- ÊäÈë£¬GPSµÄĞÅÏ¢½á¹¹Ìå
+* Param     : ais_staticDataStruct-ÊäÈë£¬ÉÏÎ»»ú´¦µÄ´¬²°¾²Ì¬ÏûÏ¢½á¹¹Ìå
+* Param     : vdlMsg15- ÊäÈë£¬vdlÏûÏ¢15µÄÄÚÈİ½á¹¹Ìå
+* Param     : vdlMsg20- ÊäÈë£¬vdlÏûÏ¢20µÄÄÚÈİ½á¹¹Ìå£¬ºÃÏñºÍ±¾ÏûÏ¢µÄÁªÏµ²»´ó
+* Param     : vdlMsg22- ÊäÈë£¬vdlÏûÏ¢22µÄÄÚÈİ½á¹¹Ìå£¬ºÃÏñÓë±¾ÏûÏ¢µÄÁªÏµ²»´ó
+* Param     : vdlMsg23- ÊäÈë£¬vdlÏûÏ¢23µÄÄÚÈİ½á¹¹Ìå£¬ºÃÏñÓë±¾ÏûÏ¢µÄÁªÏµ²»´ó
 * Return    : void
 ************************************************************************/
 void testMsg19(GPS_InfoStruct * gps_infoStruct,AIS_StaticDataStruct * ais_staticDataStruct,VDLMsg15 * vdlMsg15,VDLMsg20 * vdlMsg20,VDLMsg22 * vdlMsg22,VDLMsg23 * vdlMsg23)
 {
 	u8 i = 0;
-	testGPS_InfoStruct(gps_infoStruct);//è®¾ç½®gpsçš„å€¼
+	testGPS_InfoStruct(gps_infoStruct);//ÉèÖÃgpsµÄÖµ
 	testAIS_StaticStruct(ais_staticDataStruct);
 	testVDL_Msg15(1120,19,10,0,0,0,0,vdlMsg15); 
 	isVDLMsg15NewIn = SET;
 
 	collectNewMsg(&ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
 	//testCollectNewMsg(&ais_rcvMsgIDStruct,isVDLMsg15NewIn,&recVDLMsg15,isVDLMsg20NewIn,isVDLMsg22NewIn,isVDLMsg23NewIn,&fsm_controlStruct);
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰æŒ‡é…ç±»æ¶ˆæ¯ï¼Œåˆ™æ›´æ–°ç›¸åº”çš„æŒ‡é…å†…å®¹
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞÖ¸ÅäÀàÏûÏ¢£¬Ôò¸üĞÂÏàÓ¦µÄÖ¸ÅäÄÚÈİ
 	updataAssignContent(&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰å®‰å…¨ã€è¯¢é—®ç±»æ¶ˆæ¯ï¼Œåˆ™äº§ç”Ÿ
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞ°²È«¡¢Ñ¯ÎÊÀàÏûÏ¢£¬Ôò²úÉú
 	generateSafeAndInquiryContent(gps_infoStruct,ais_staticDataStruct,&recVDLMsg15,&fsm_controlStruct,&fsm_dataStruct);
 }
 
 /************************************************************************
 * Name      : testMsg24Info
-* Brief     : äº§ç”Ÿæµ‹è¯•Msg24çš„åˆå§‹åŒ–å†…å®¹
+* Brief     : ²úÉú²âÊÔMsg24µÄ³õÊ¼»¯ÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : ais_staticDataStruct- è¾“å…¥ï¼Œä¸Šä½æœºé™æ€æ•°æ®ç»“æ„ä½“
-* Param     : vdlMsg15- è¾“å‡ºï¼Œvdlæ¶ˆæ¯15å†…å®¹ç»“æ„ä½“
-* Param     : vdlMsg20- è¾“å‡ºï¼Œvdlæ¶ˆæ¯20å†…å®¹ç»“æ„ä½“ï¼Œå¥½åƒå’Œæœ¬æ¶ˆæ¯çš„è”ç³»ä¸å¤§
-* Param     : vdlMsg22- è¾“å‡ºï¼Œvdlæ¶ˆæ¯22å†…å®¹ç»“æ„ä½“ï¼Œå¥½åƒå’Œæœ¬æ¶ˆæ¯çš„è”ç³»ä¸å¤§
-* Param     : vdlMsg23- è¾“å‡ºï¼Œvdlæ¶ˆæ¯23å†…å®¹ç»“æ„ä½“ï¼Œå¥½åƒå’Œæœ¬æ¶ˆæ¯çš„è”ç³»ä¸å¤§
-* Param     : fsm_controlStruct- è¾“å‡ºï¼Œç”¨äºè®¾ç½®åœ¨æŒ‡é…æ¡ä»¶ä¸‹ï¼Œç”ŸæˆMsg24æ‰€éœ€çš„åˆå§‹åŒ–æ¡ä»¶
-* Param     : fsm_dataStruct- è¾“å‡ºï¼Œç”¨äºè®¾ç½®å½“å‰çš„æ—¶éš™å·
-* Param     : workType1- è¾“å‡ºï¼Œæµ‹è¯•ç”¨ï¼Œæ— å®é™…ä½œç”¨
-* Return    : workTypeIndicator- æµ‹è¯•ç”¨ï¼Œç”¨äºæŒ‡ç¤ºå½“å‰ç”Ÿæˆæµ‹è¯•æ¡ä»¶çš„çŠ¶æ€
+* Param     : ais_staticDataStruct- ÊäÈë£¬ÉÏÎ»»ú¾²Ì¬Êı¾İ½á¹¹Ìå
+* Param     : vdlMsg15- Êä³ö£¬vdlÏûÏ¢15ÄÚÈİ½á¹¹Ìå
+* Param     : vdlMsg20- Êä³ö£¬vdlÏûÏ¢20ÄÚÈİ½á¹¹Ìå£¬ºÃÏñºÍ±¾ÏûÏ¢µÄÁªÏµ²»´ó
+* Param     : vdlMsg22- Êä³ö£¬vdlÏûÏ¢22ÄÚÈİ½á¹¹Ìå£¬ºÃÏñºÍ±¾ÏûÏ¢µÄÁªÏµ²»´ó
+* Param     : vdlMsg23- Êä³ö£¬vdlÏûÏ¢23ÄÚÈİ½á¹¹Ìå£¬ºÃÏñºÍ±¾ÏûÏ¢µÄÁªÏµ²»´ó
+* Param     : fsm_controlStruct- Êä³ö£¬ÓÃÓÚÉèÖÃÔÚÖ¸ÅäÌõ¼şÏÂ£¬Éú³ÉMsg24ËùĞèµÄ³õÊ¼»¯Ìõ¼ş
+* Param     : fsm_dataStruct- Êä³ö£¬ÓÃÓÚÉèÖÃµ±Ç°µÄÊ±Ï¶ºÅ
+* Param     : workType1- Êä³ö£¬²âÊÔÓÃ£¬ÎŞÊµ¼Ê×÷ÓÃ
+* Return    : workTypeIndicator- ²âÊÔÓÃ£¬ÓÃÓÚÖ¸Ê¾µ±Ç°Éú³É²âÊÔÌõ¼şµÄ×´Ì¬
 ************************************************************************/
 workTypeIndicator testMsg24Info(AIS_StaticDataStruct * ais_staticDataStruct,VDLMsg15 * vdlMsg15,VDLMsg20 * vdlMsg20,VDLMsg22 * vdlMsg22,VDLMsg23 * vdlMsg23,FSM_ControlStruct * fsm_controlStruct,FSM_DataStruct * fsm_dataStruct,u8 workType1)
 {
 	workTypeIndicator workType = AUTO;
 	u8 i = workType1;
-	testAIS_StaticStruct(ais_staticDataStruct);
+	//testAIS_StaticStruct(ais_staticDataStruct);
 
 	switch(i)
 	{
-	case 1://è‡ªä¸»æ¨¡å¼
+	case 1://×ÔÖ÷Ä£Ê½
 		{
 			workType = AUTO;
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg24Count.countFlag = COUNTED;
 			break;
 		}
-	case 2://è¯¢é—®æ¨¡å¼ æŒ‡å®šäº†å“åº”æ—¶éš™
+	case 2://Ñ¯ÎÊÄ£Ê½ Ö¸¶¨ÁËÏìÓ¦Ê±Ï¶
 		{
 			testVDL_Msg15(1120,24,10,0,0,0,0,vdlMsg15); 
 			isVDLMsg15NewIn = SET;
 			break;
 		}
-	case 3://è¯¢é—®æ¨¡å¼ æœªæŒ‡å®šå“åº”æ—¶éš™
+	case 3://Ñ¯ÎÊÄ£Ê½ Î´Ö¸¶¨ÏìÓ¦Ê±Ï¶
 		{
 			testVDL_Msg15(1120,24,0,0,0,0,0,vdlMsg15); 
 			isVDLMsg15NewIn = SET;
 			break;
 		}
-	case 4://æŒ‡é…æ¨¡å¼ï¼ŒMsg20ä½œç”¨ï¼Œéƒ¨åˆ†è¶…æ—¶
+	case 4://Ö¸ÅäÄ£Ê½£¬Msg20×÷ÓÃ£¬²¿·Ö³¬Ê±
 		{
 			//workType = MSG20;
 			//isVDLMsg20NewIn = SET;
 			testMsg20Info(&gps_infoStruct, &recVDLMsg20,&fsm_controlStruct->fsm_msg20Struct,2);
-			testGPS_InfoStructPara(&gps_infoStruct,0,0,12,45,0);//è®¾ç½®gpsçš„å€¼ 
+			testGPS_InfoStructPara(&gps_infoStruct,0,0,12,45,0);//ÉèÖÃgpsµÄÖµ 
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg24Count.countFlag = COUNTED;
 			break;
 		}
-	case 5://æŒ‡é…æ¨¡å¼ï¼ŒMsg22ä½œç”¨ï¼Œä¸åœ¨åˆ‡æ¢åŒº
+	case 5://Ö¸ÅäÄ£Ê½£¬Msg22×÷ÓÃ£¬²»ÔÚÇĞ»»Çø
 		{
 			workType = MSG22;
 			isVDLMsg22NewIn = SET;
-			testMsg22(&recVDLMsg22,&gps_infoStruct,1,0);//åœ¨ä¸€å·åŒºåŸŸ
+			testMsg22(&recVDLMsg22,&gps_infoStruct,1,0);//ÔÚÒ»ºÅÇøÓò
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg24Count.countFlag = COUNTED;
 			break;
 		}
-	case 6://æŒ‡é…æ¨¡å¼ï¼ŒMsg23æœªåœ¨å¯‚é™æœŸ
+	case 6://Ö¸ÅäÄ£Ê½£¬Msg23Î´ÔÚ¼Å¾²ÆÚ
 		{
 			workType = MSG23;
 			isVDLMsg23NewIn = SET;
-			testMsg23Info(&gps_infoStruct,3);//æŒ‡é…æœ‰æ•ˆï¼Œæœªåœ¨å¯‚é™æœŸ
+			testMsg23Info(&gps_infoStruct,3);//Ö¸ÅäÓĞĞ§£¬Î´ÔÚ¼Å¾²ÆÚ
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg24Count.countFlag = COUNTED;
 			break;
 		}
-	case 7://æŒ‡é…æ¨¡å¼ï¼ŒMsg23å¯‚é™æœŸ
+	case 7://Ö¸ÅäÄ£Ê½£¬Msg23¼Å¾²ÆÚ
 		{
 			workType = MSG23SILENCE;
 			isVDLMsg23NewIn = SET;
-			testMsg23Info(&gps_infoStruct,2);//æŒ‡é…æœ‰æ•ˆï¼Œåœ¨å¯‚é™æœŸ
+			testMsg23Info(&gps_infoStruct,2);//Ö¸ÅäÓĞĞ§£¬ÔÚ¼Å¾²ÆÚ
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg24Count.countFlag = COUNTED;
 			break;
 		}
-	case 8://æŒ‡é…æ¨¡å¼ï¼Œå¹¿æ’­Msg22å’ŒMsg23ï¼ˆæœªåœ¨å¯‚é™æœŸï¼‰ä¸€èµ·ä½œç”¨ï¼ŒMsg22æ˜¯å¦åœ¨åˆ‡æ¢åŒºä¸å½±å“ï¼Œä½†æ˜¯æµ‹è¯•ä¸ºMsg22ä¸åœ¨åˆ‡æ¢åŒº
+	case 8://Ö¸ÅäÄ£Ê½£¬¹ã²¥Msg22ºÍMsg23£¨Î´ÔÚ¼Å¾²ÆÚ£©Ò»Æğ×÷ÓÃ£¬Msg22ÊÇ·ñÔÚÇĞ»»Çø²»Ó°Ïì£¬µ«ÊÇ²âÊÔÎªMsg22²»ÔÚÇĞ»»Çø
 		{
-			testMsg22(&recVDLMsg22,&gps_infoStruct,1,0);//åœ¨ä¸€å·åŒºåŸŸ
-			testMsg23Info(&gps_infoStruct,4);//æŒ‡é…æœ‰æ•ˆï¼Œä¸åœ¨å¯‚é™æœŸ
-			testGPS_InfoStructPara(&gps_infoStruct,28980000,71400000,0,19,59);//ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š119Â°ï¼‰
+			testMsg22(&recVDLMsg22,&gps_infoStruct,1,0);//ÔÚÒ»ºÅÇøÓò
+			testMsg23Info(&gps_infoStruct,4);//Ö¸ÅäÓĞĞ§£¬²»ÔÚ¼Å¾²ÆÚ
+			testGPS_InfoStructPara(&gps_infoStruct,28980000,71400000,0,19,59);//£¨Î³¶È£º48.3¡ã ¾­¶È£º119¡ã£©
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg24Count.countFlag = COUNTED;
 			break;
 		}
-	case 9://æŒ‡é…æ¨¡å¼ï¼Œå¯»å€Msg22å’ŒMsg23ï¼ˆæœªåœ¨å¯‚é™æœŸï¼‰ä¸€èµ·ä½œç”¨,Msg22æ˜¯å¦åœ¨åˆ‡æ¢åŒºä¸å½±å“ï¼Œä½†æ˜¯æµ‹è¯•ä¸ºMsg22ä¸åœ¨åˆ‡æ¢åŒº
+	case 9://Ö¸ÅäÄ£Ê½£¬Ñ°Ö·Msg22ºÍMsg23£¨Î´ÔÚ¼Å¾²ÆÚ£©Ò»Æğ×÷ÓÃ,Msg22ÊÇ·ñÔÚÇĞ»»Çø²»Ó°Ïì£¬µ«ÊÇ²âÊÔÎªMsg22²»ÔÚÇĞ»»Çø
 		{
-			testMsg22(&recVDLMsg22,&gps_infoStruct,0,0);//åœ¨å¯»å€åŒºåŸŸ
-			testMsg23Info(&gps_infoStruct,4);//æŒ‡é…æœ‰æ•ˆï¼Œä¸åœ¨å¯‚é™æœŸ
-			testGPS_InfoStructPara(&gps_infoStruct,28980000,71400000,0,19,59);//ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š119Â°ï¼‰
+			testMsg22(&recVDLMsg22,&gps_infoStruct,0,0);//ÔÚÑ°Ö·ÇøÓò
+			testMsg23Info(&gps_infoStruct,4);//Ö¸ÅäÓĞĞ§£¬²»ÔÚ¼Å¾²ÆÚ
+			testGPS_InfoStructPara(&gps_infoStruct,28980000,71400000,0,19,59);//£¨Î³¶È£º48.3¡ã ¾­¶È£º119¡ã£©
 			fsm_dataStruct->realSlot = 1125;
 			fsm_controlStruct->msg24Count.countFlag = COUNTED;
 			break;
@@ -329,16 +336,16 @@ workTypeIndicator testMsg24Info(AIS_StaticDataStruct * ais_staticDataStruct,VDLM
 
 /************************************************************************
 * Name      : testMsg24
-* Brief     : æµ‹è¯•æ¶ˆæ¯24çš„å†…å®¹
+* Brief     : ²âÊÔÏûÏ¢24µÄÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : workType- è¾“å…¥ï¼Œç”¨äºè®¾ç½®å½“å‰äº§ç”ŸMsg24çš„æ¡ä»¶
-*			  1-è‡ªä¸»æ¨¡å¼  2-è¯¢é—®æ¨¡å¼ æŒ‡å®šäº†å“åº”æ—¶éš™  3-è¯¢é—®æ¨¡å¼ æœªæŒ‡å®šå“åº”æ—¶éš™ 
-*			  4-æŒ‡é…æ¨¡å¼ï¼ŒMsg20ä½œç”¨  5-æŒ‡é…æ¨¡å¼ï¼ŒMsg22ä½œç”¨,ä¸åœ¨åˆ‡æ¢åŒº  6-æŒ‡é…æ¨¡å¼ï¼ŒMsg23æœªåœ¨å¯‚é™æœŸ
-*			  7-æŒ‡é…æ¨¡å¼ï¼ŒMsg23å¯‚é™æœŸ  8-å¹¿æ’­Msg22å’ŒMsg23ï¼ˆæœªåœ¨å¯‚é™æœŸï¼‰ä¸€èµ·ä½œç”¨ï¼ŒMsg22ä¸åœ¨åˆ‡æ¢åŒº 
-*			  9-å¯»å€Msg22å’ŒMsg23ï¼ˆæœªåœ¨å¯‚é™æœŸï¼‰ä¸€èµ·ä½œç”¨ï¼ŒMsg22ä¸åœ¨åˆ‡æ¢åŒº
-*			  10-å¹¿æ’­Msg22å’ŒMsg23(æœªåœ¨å¯‚é™æœŸ)ä¸€èµ·ä½œç”¨ï¼ŒMsg22åœ¨åˆ‡æ¢åŒº
-*			  11-Msg22ä½œç”¨,åœ¨åˆ‡æ¢åŒº
+* Param     : workType- ÊäÈë£¬ÓÃÓÚÉèÖÃµ±Ç°²úÉúMsg24µÄÌõ¼ş
+*			  1-×ÔÖ÷Ä£Ê½  2-Ñ¯ÎÊÄ£Ê½ Ö¸¶¨ÁËÏìÓ¦Ê±Ï¶  3-Ñ¯ÎÊÄ£Ê½ Î´Ö¸¶¨ÏìÓ¦Ê±Ï¶ 
+*			  4-Ö¸ÅäÄ£Ê½£¬Msg20×÷ÓÃ  5-Ö¸ÅäÄ£Ê½£¬Msg22×÷ÓÃ,²»ÔÚÇĞ»»Çø  6-Ö¸ÅäÄ£Ê½£¬Msg23Î´ÔÚ¼Å¾²ÆÚ
+*			  7-Ö¸ÅäÄ£Ê½£¬Msg23¼Å¾²ÆÚ  8-¹ã²¥Msg22ºÍMsg23£¨Î´ÔÚ¼Å¾²ÆÚ£©Ò»Æğ×÷ÓÃ£¬Msg22²»ÔÚÇĞ»»Çø 
+*			  9-Ñ°Ö·Msg22ºÍMsg23£¨Î´ÔÚ¼Å¾²ÆÚ£©Ò»Æğ×÷ÓÃ£¬Msg22²»ÔÚÇĞ»»Çø
+*			  10-¹ã²¥Msg22ºÍMsg23(Î´ÔÚ¼Å¾²ÆÚ)Ò»Æğ×÷ÓÃ£¬Msg22ÔÚÇĞ»»Çø
+*			  11-Msg22×÷ÓÃ,ÔÚÇĞ»»Çø
 * Return    : void
 ************************************************************************/
 void testMsg24(u8 workType)
@@ -347,30 +354,30 @@ void testMsg24(u8 workType)
 	
 	collectNewMsg(&ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
 	//testCollectNewMsg(&ais_rcvMsgIDStruct,isVDLMsg15NewIn,&recVDLMsg15,isVDLMsg20NewIn,isVDLMsg22NewIn,isVDLMsg23NewIn,&fsm_controlStruct);
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰æŒ‡é…ç±»æ¶ˆæ¯ï¼Œåˆ™æ›´æ–°ç›¸åº”çš„æŒ‡é…å†…å®¹
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞÖ¸ÅäÀàÏûÏ¢£¬Ôò¸üĞÂÏàÓ¦µÄÖ¸ÅäÄÚÈİ
 	updataAssignContent(&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 
-	//æ£€æµ‹å½“å‰å·¥ä½œçš„æ¨¡å¼
+	//¼ì²âµ±Ç°¹¤×÷µÄÄ£Ê½
 	worktype = checkAssignValid(&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 
 	setCycleCountNum(&fsm_controlStruct);
 
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰å®‰å…¨ã€è¯¢é—®ç±»æ¶ˆæ¯ï¼Œåˆ™äº§ç”Ÿ
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞ°²È«¡¢Ñ¯ÎÊÀàÏûÏ¢£¬Ôò²úÉú
 	generateSafeAndInquiryContent(&gps_infoStruct,&ais_staticDataStruct,&recVDLMsg15,&fsm_controlStruct,&fsm_dataStruct);
 	
-	//æ ¹æ®æŠ¥å‘Šé—´éš”æ—¶é—´æŒ‡ç¤ºï¼Œç”Ÿæˆç›¸åº”çš„å‘¨æœŸæŠ¥å‘Šæ¶ˆæ¯
+	//¸ù¾İ±¨¸æ¼ä¸ôÊ±¼äÖ¸Ê¾£¬Éú³ÉÏàÓ¦µÄÖÜÆÚ±¨¸æÏûÏ¢
 	generateCycleContent(worktype,&gps_infoStruct,&ais_staticDataStruct,&recVDLMsg15,&fsm_controlStruct,&fsm_dataStruct);
 }
 
 /************************************************************************
 * Name      : testMsg20Info
-* Brief     : äº§ç”Ÿæµ‹è¯•Msg20çš„åˆå§‹åŒ–æ¡ä»¶
+* Brief     : ²úÉú²âÊÔMsg20µÄ³õÊ¼»¯Ìõ¼ş
 *
 * Author    : Digital Design Team
-* Param     : gps_infoStruct- è¾“å‡ºï¼Œgpsä¿¡æ¯å†…å®¹ç»“æ„ä½“
-* Param     : vdlMsg20- è¾“å‡ºï¼Œvdlæ¶ˆæ¯20å†…å®¹ç»“æ„ä½“
-* Param     : fsm_msg20Struct- è¾“å‡ºï¼ŒçŠ¶æ€æœºä¸­æ¶ˆæ¯20ç›¸å…³çš„å†…å®¹ç»“æ„ä½“ï¼Œä¸»è¦ç”¨äºåˆå§‹åŒ–æ¶ˆæ¯20å†…å®¹çš„è¶…æ—¶æ— æ•ˆ
-* Param     : worktype- è¾“å…¥ï¼Œå·¥ä½œçŠ¶æ€æµ‹è¯•ï¼Œç”¨äºè®¾ç½®ä¸åŒçš„æµ‹è¯•æ¡ä»¶
+* Param     : gps_infoStruct- Êä³ö£¬gpsĞÅÏ¢ÄÚÈİ½á¹¹Ìå
+* Param     : vdlMsg20- Êä³ö£¬vdlÏûÏ¢20ÄÚÈİ½á¹¹Ìå
+* Param     : fsm_msg20Struct- Êä³ö£¬×´Ì¬»úÖĞÏûÏ¢20Ïà¹ØµÄÄÚÈİ½á¹¹Ìå£¬Ö÷ÒªÓÃÓÚ³õÊ¼»¯ÏûÏ¢20ÄÚÈİµÄ³¬Ê±ÎŞĞ§
+* Param     : worktype- ÊäÈë£¬¹¤×÷×´Ì¬²âÊÔ£¬ÓÃÓÚÉèÖÃ²»Í¬µÄ²âÊÔÌõ¼ş
 * Return    : void
 ************************************************************************/
 void testMsg20Info(GPS_InfoStruct * gps_infoStruct, VDLMsg20 * vdlMsg20,FSM_Msg20Struct * fsm_msg20Struct,u8 worktype)
@@ -379,25 +386,25 @@ void testMsg20Info(GPS_InfoStruct * gps_infoStruct, VDLMsg20 * vdlMsg20,FSM_Msg2
 	initMsg20Struct(fsm_msg20Struct);
 	switch(i)
 	{
-	case 1://è®¾ç½®æ–°çš„Msg20è¾“å…¥ï¼Œè®¾ç½®4ç»„æ–°çš„ä¿ç•™æ—¶éš™
+	case 1://ÉèÖÃĞÂµÄMsg20ÊäÈë£¬ÉèÖÃ4×éĞÂµÄ±£ÁôÊ±Ï¶
 		{
-			initVDLMsg20Struct(vdlMsg20); //è®¾å®šä¸ºå›ºå®šå€¼
+			initVDLMsg20Struct(vdlMsg20); //Éè¶¨Îª¹Ì¶¨Öµ
 			isVDLMsg20NewIn = SET;
-			testGPS_InfoStructPara(gps_infoStruct,0,0,14,0,0);//è®¾ç½®gpsçš„å€¼
+			testGPS_InfoStructPara(gps_infoStruct,0,0,14,0,0);//ÉèÖÃgpsµÄÖµ
 			break;
 		}
-	case 2://Msg20çš„éƒ¨åˆ†ä¿ç•™æ—¶éš™è¶…æ—¶
+	case 2://Msg20µÄ²¿·Ö±£ÁôÊ±Ï¶³¬Ê±
 		{
 			initVDLMsg20StructPara(vdlMsg20,1000,12,40,0, 10,5,5,6, 20,5,6,6, 30,5,5,6, 2000,5,6,0); 
 			isVDLMsg20NewIn = SET;
-			testGPS_InfoStructPara(gps_infoStruct,0,0,12,45,0);//è®¾ç½®gpsçš„å€¼ 
+			testGPS_InfoStructPara(gps_infoStruct,0,0,12,45,0);//ÉèÖÃgpsµÄÖµ 
 			break;
 		}
-	case 3://Msg20çš„å…¨éƒ¨ä¿ç•™æ—¶éš™è¶…æ—¶
+	case 3://Msg20µÄÈ«²¿±£ÁôÊ±Ï¶³¬Ê±
 		{
 			initVDLMsg20StructPara(vdlMsg20,1000,12,40,0, 10,5,5,6, 20,5,5,6, 30,5,5,6, 2000,5,5,0); 
 			isVDLMsg20NewIn = SET;
-			testGPS_InfoStructPara(gps_infoStruct,0,0,12,45,0);//è®¾ç½®gpsçš„å€¼ 
+			testGPS_InfoStructPara(gps_infoStruct,0,0,12,45,0);//ÉèÖÃgpsµÄÖµ 
 			break;
 		}
 	}
@@ -406,37 +413,46 @@ void testMsg20Info(GPS_InfoStruct * gps_infoStruct, VDLMsg20 * vdlMsg20,FSM_Msg2
   
 /************************************************************************
 * Name      : testMsg20
-* Brief     : æµ‹è¯•æ¶ˆæ¯20çš„å†…å®¹
+* Brief     : ²âÊÔÏûÏ¢20µÄÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : workType- è¾“å…¥ï¼Œå·¥ä½œæ¡ä»¶è®¾ç½®
-*			  1-è®¾ç½®æ–°çš„Msg20è¾“å…¥ï¼Œè®¾ç½®4ç»„æ–°çš„ä¿ç•™æ—¶éš™    2-Msg20çš„éƒ¨åˆ†ä¿ç•™æ—¶éš™è¶…æ—¶    3-Msg20çš„å…¨éƒ¨ä¿ç•™æ—¶éš™è¶…æ—¶
+* Param     : workType- ÊäÈë£¬¹¤×÷Ìõ¼şÉèÖÃ
+*			  1-ÉèÖÃĞÂµÄMsg20ÊäÈë£¬ÉèÖÃ4×éĞÂµÄ±£ÁôÊ±Ï¶    2-Msg20µÄ²¿·Ö±£ÁôÊ±Ï¶³¬Ê±    3-Msg20µÄÈ«²¿±£ÁôÊ±Ï¶³¬Ê±
 * Return    : void
 ************************************************************************/
 void testMsg20(u8 workType)
 {
 	testMsg20Info(&gps_infoStruct, &recVDLMsg20,&fsm_controlStruct.fsm_msg20Struct,workType);
-	//æ”¶é›†æ–°æ¶ˆæ¯IDå·
+	//ÊÕ¼¯ĞÂÏûÏ¢IDºÅ
 	collectNewMsg(&ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
 	
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰æŒ‡é…ç±»æ¶ˆæ¯ï¼Œåˆ™æ›´æ–°ç›¸åº”çš„æŒ‡é…å†…å®¹
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞÖ¸ÅäÀàÏûÏ¢£¬Ôò¸üĞÂÏàÓ¦µÄÖ¸ÅäÄÚÈİ
 	updataAssignContent(&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 
-	//æ£€æµ‹å½“å‰èˆ¹ç«™æ˜¯å¦å·¥ä½œåœ¨æŒ‡é…æ¨¡å¼ï¼Œè‹¥åœ¨ï¼Œåˆ™è¿”å›å…·ä½“çš„æ¨¡å¼çŠ¶æ€ä¿¡æ¯ to be done
+	//¼ì²âµ±Ç°´¬Õ¾ÊÇ·ñ¹¤×÷ÔÚÖ¸ÅäÄ£Ê½£¬ÈôÔÚ£¬Ôò·µ»Ø¾ßÌåµÄÄ£Ê½×´Ì¬ĞÅÏ¢ to be done
 	workType = checkAssignValid(&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 	printf("workType:  %d\n",workType);
 }
 
+
+void setMsg22RcvTime(VDLMsg22 * vdlMsg22,u8 month,u8 day,u8 hour,u8 minute,u8 second)
+{
+	vdlMsg22->rcvTime[0] = month;//ÔÂ
+	vdlMsg22->rcvTime[1] = day;//Ìì
+	vdlMsg22->rcvTime[2] = hour;//Ê±
+	vdlMsg22->rcvTime[3] = minute;//·Ö
+	vdlMsg22->rcvTime[4] = second;//Ãë
+}
 /************************************************************************
 * Name      : testMsg22
-* Brief     : äº§ç”Ÿæµ‹è¯•Msg22çš„åˆå§‹åŒ–æ¡ä»¶
+* Brief     : ²úÉú²âÊÔMsg22µÄ³õÊ¼»¯Ìõ¼ş
 *
 * Author    : Digital Design Team
-* Param     : vdlMsg22- è¾“å‡ºï¼Œvdlæ¶ˆæ¯20çš„å†…å®¹ç»“æ„ä½“
-* Param     : gps_infoStruct- è¾“å‡ºï¼Œgpsä¿¡æ¯å†…å®¹ç»“æ„ä½“
-* Param     : newArea- è¾“å…¥ï¼Œè®¾ç½®é€‰æ‹©å½“å‰æµ‹è¯•çš„åŒºåŸŸçš„å·ï¼Œ0-å¯»å€ï¼Œ1~9å¯¹åº”äº’ä¸é‡å çš„å¹¿æ’­åŒºåŸŸ >=10ï¼Œå¼€å§‹ä½¿ç”¨overlopAreaçš„å‚æ•°ä¸­
-* Param     : overlopArea- è¾“å…¥ï¼Œé…åˆnewAreaä½¿ç”¨ï¼Œå½“newArea=10æ—¶ï¼Œç”¨äºå•ç‹¬è®¾ç½®æœ¬èˆ¹çš„ç»çº¬åº¦ä½ç½®æ­£å¥½æ»¡è¶³åœ¨2~9å·åŒºåŸŸå†…éƒ¨
-*												  å½“newArea=11æ—¶ï¼Œç”¨äºè®¾ç½®ç¬¬10ä¸ªåŒºåŸŸèŒƒå›´æ­£å¥½ä¸å‰é¢2~9ä¸ªå·åŒºåŸŸè¿›è¡Œéƒ¨åˆ†é‡å 
+* Param     : vdlMsg22- Êä³ö£¬vdlÏûÏ¢20µÄÄÚÈİ½á¹¹Ìå
+* Param     : gps_infoStruct- Êä³ö£¬gpsĞÅÏ¢ÄÚÈİ½á¹¹Ìå
+* Param     : newArea- ÊäÈë£¬ÉèÖÃÑ¡Ôñµ±Ç°²âÊÔµÄÇøÓòµÄºÅ£¬0-Ñ°Ö·£¬1~9¶ÔÓ¦»¥²»ÖØµşµÄ¹ã²¥ÇøÓò >=10£¬¿ªÊ¼Ê¹ÓÃoverlopAreaµÄ²ÎÊıÖĞ
+* Param     : overlopArea- ÊäÈë£¬ÅäºÏnewAreaÊ¹ÓÃ£¬µ±newArea=10Ê±£¬ÓÃÓÚµ¥¶ÀÉèÖÃ±¾´¬µÄ¾­Î³¶ÈÎ»ÖÃÕıºÃÂú×ãÔÚ2~9ºÅÇøÓòÄÚ²¿
+*												  µ±newArea=11Ê±£¬ÓÃÓÚÉèÖÃµÚ10¸öÇøÓò·¶Î§ÕıºÃÓëÇ°Ãæ2~9¸öºÅÇøÓò½øĞĞ²¿·ÖÖØµş
 * Return    : void
 ************************************************************************/
 void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8 overlopArea)
@@ -445,42 +461,41 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 	u8 i = newArea;
 	u8 j = overlopArea;
 	isVDLMsg22NewIn = SET;
-	vdlMsg22->isBroadcast = 0;//0-å¹¿æ’­ 1-å¯»å€
+	vdlMsg22->isBroadcast = 0;//0-¹ã²¥ 1-Ñ°Ö·
 	//vdlMsg22->baseMMSI = 111111111;
 	vdlMsg22->MMSI = 111111111;
 	vdlMsg22->handOverArea = 5;
 	//vdlMsg22->TxRxMode = 1;	//1-chnanelA 2-channelB 0-channelAB
-	vdlMsg22->rcvTime[0] = 12;//æœˆ
-	vdlMsg22->rcvTime[1] = 31;//å¤©
-	vdlMsg22->rcvTime[2] = 23;//æ—¶
-	vdlMsg22->rcvTime[3] = 59;//åˆ†
-	vdlMsg22->rcvTime[4] = 59;//ç§’
+	vdlMsg22->rcvTime[0] = 12;//ÔÂ
+	vdlMsg22->rcvTime[1] = 31;//Ìì
+	vdlMsg22->rcvTime[2] = 23;//Ê±
+	vdlMsg22->rcvTime[3] = 50;//·Ö
+	vdlMsg22->rcvTime[4] = 59;//Ãë
 	switch(i)
 	{
-	case 0://å¯»å€ å¯¹åº”çš„MMSIï¼š3333333333
+	case 0://Ñ°Ö· ¶ÔÓ¦µÄOWNMMSI£º3333333333
 		{
-			//testGPS_InfoStructPara(gps_infoStruct,28980000,71950200,23,59,50);//åœ¨åŒºåŸŸ1èŒƒå›´å†…
 			vdlMsg22->isBroadcast = 1;
 			vdlMsg22->latitude1 = 853;
 			vdlMsg22->logitude1 = 81380; 
 			vdlMsg22->latitude2 = 0;
 			vdlMsg22->logitude2 = 0;
-			vdlMsg22->TxRxMode = 1;
+			vdlMsg22->TxRxMode = 2;//TXB RXA/RXB
 			break;
 		}
-	case 1://åŒºåŸŸ1(ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š120Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š118Â°))
+	case 1://ÇøÓò1(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º120¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º118¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 72000;
 			vdlMsg22->latitude2 = 28800;
 			vdlMsg22->logitude2 = 70800;
-			vdlMsg22->TxRxMode = 1;
+			vdlMsg22->TxRxMode = 1;//TXA RXA/RXB
 			break;
 		}
-	case 2://åŒºåŸŸ2(ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š118Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š116Â°))
+	case 2://ÇøÓò2(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º118¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º116¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 70800;
 			vdlMsg22->latitude2 = 28800;
@@ -488,9 +503,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			vdlMsg22->TxRxMode = 1;
 			break;
 		}
-	case 3://åŒºåŸŸ3(ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š116Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š114Â°))
+	case 3://ÇøÓò3(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º116¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º114¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 69600;
 			vdlMsg22->latitude2 = 28800;
@@ -498,9 +513,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			vdlMsg22->TxRxMode = 1;
 			break;
 		}
-	case 4://åŒºåŸŸ4(ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š114Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š112Â°))
+	case 4://ÇøÓò4(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º114¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º112¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 68400;
 			vdlMsg22->latitude2 = 28800;
@@ -508,9 +523,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			vdlMsg22->TxRxMode = 1;
 			break;
 		}
-	case 5://åŒºåŸŸ5(ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š112Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š110Â°))
+	case 5://ÇøÓò5(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º112¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º110¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 67200;
 			vdlMsg22->latitude2 = 28800;
@@ -518,9 +533,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			vdlMsg22->TxRxMode = 1;
 			break;
 		}
-	case 6://åŒºåŸŸ6(ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š110Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š108Â°))
+	case 6://ÇøÓò6(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º110¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º108¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 66000;
 			vdlMsg22->latitude2 = 28800;
@@ -528,9 +543,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			vdlMsg22->TxRxMode = 1;
 			break;
 		}
-	case 7://åŒºåŸŸ7(ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š108Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š106Â°))
+	case 7://ÇøÓò7(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º108¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º106¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 64800;
 			vdlMsg22->latitude2 = 28800;
@@ -538,9 +553,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			vdlMsg22->TxRxMode = 1;
 			break;
 		}
-	case 8://åŒºåŸŸ8(ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š106Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š104Â°))
+	case 8://ÇøÓò8(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º106¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º104¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 63600;
 			vdlMsg22->latitude2 = 28800;
@@ -548,9 +563,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			vdlMsg22->TxRxMode = 1;
 			break;
 		}
-	case 9://åŒºåŸŸ9ï¼Œä¸ä¸Šè¿°8ä¸ªåŒºåŸŸæœªé‡å (ä¸œåŒ—è§’(çº¬åº¦ï¼š50Â°  ç»åº¦ï¼š104Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š48Â° ç»åº¦ï¼š102Â°))
+	case 9://ÇøÓò9£¬ÓëÉÏÊö8¸öÇøÓòÎ´ÖØµş(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º104¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º102¡ã))
 		{
-			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//åœ¨åŒºåŸŸ1èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°ï¼Œç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
 			vdlMsg22->latitude1 = 30000;
 			vdlMsg22->logitude1 = 62400;
 			vdlMsg22->latitude2 = 28800;
@@ -558,63 +573,74 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			vdlMsg22->TxRxMode = 1;
 			break;
 		}
-	case 10://è®¾ç½®æµ‹è¯•ç‰©çš„ä½ç½®åˆ†åˆ«æ»¡è¶³åœ¨ä¸Šè¿°çš„ç¬¬2~ç¬¬9ä¸ªåŒºåŸŸå†…éƒ¨
+	//case 12://ÕâÖÖ±¾´¬µÄgpsÎ»ÖÃ£¬²»ÔÚMsg22µÄ×÷ÓÃ·¶Î§ÄÚ
+	//	{
+	//		testGPS_InfoStructPara(gps_infoStruct,28980000,71400000,23,59,51);//ÔÚÇøÓò1·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã£¬¾­¶È£º119¡ã£©
+	//		vdlMsg22->latitude1 = 30000;//(¶«±±½Ç(Î³¶È£º50¡ã  ¾­¶È£º104¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º48¡ã ¾­¶È£º102¡ã))
+	//		vdlMsg22->logitude1 = 62400;
+	//		vdlMsg22->latitude2 = 28800;
+	//		vdlMsg22->logitude2 = 61200;
+	//		vdlMsg22->TxRxMode = 0;//TXA RXA/RXB
+	//		//setMsg22RcvTime(vdlMsg22,)
+	//		break;
+	//	}
+	case 10://ÉèÖÃ²âÊÔÎïµÄÎ»ÖÃ·Ö±ğÂú×ãÔÚÉÏÊöµÄµÚ2~µÚ9¸öÇøÓòÄÚ²¿
 		{
-			isVDLMsg22NewIn = RESET;//è®¾ç½®æ²¡æœ‰æ–°çš„Msg22ï¼Œä»…ä»…ä¿®æ”¹GPSçš„ç»çº¬åº¦ ,ä¿®æ”¹æ•ˆæœæ˜¯ï¼Œåœ¨ç›¸åº”åŒºåŸŸå†…ï¼Œä¸”ä¸åœ¨åˆ‡æ¢åŒºèŒƒå›´å†…
+			isVDLMsg22NewIn = RESET;//ÉèÖÃÃ»ÓĞĞÂµÄMsg22£¬½ö½öĞŞ¸ÄGPSµÄ¾­Î³¶È ,ĞŞ¸ÄĞ§¹ûÊÇ£¬ÔÚÏàÓ¦ÇøÓòÄÚ£¬ÇÒ²»ÔÚÇĞ»»Çø·¶Î§ÄÚ
 			switch(j)
 			{
 			case 2:
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,70200000,12,59,52);//åœ¨åŒºåŸŸ2èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°  ç»åº¦ï¼š117Â°ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,70200000,12,59,52);//ÔÚÇøÓò2·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã  ¾­¶È£º117¡ã£©
 					break;
 				}
 			case 3:
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,69000000,12,59,53);//åœ¨åŒºåŸŸ3èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°  ç»åº¦ï¼š115Â°ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,69000000,12,59,53);//ÔÚÇøÓò3·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã  ¾­¶È£º115¡ã£©
 					break;
 				}
 			case 4:
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,67800000,12,59,54);//åœ¨åŒºåŸŸ4èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°  ç»åº¦ï¼š113Â°ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,67800000,12,59,54);//ÔÚÇøÓò4·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã  ¾­¶È£º113¡ã£©
 					break;
 				}
 			case 5:
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,66600000,12,59,55);//åœ¨åŒºåŸŸ5èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°  ç»åº¦ï¼š111Â°ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,66600000,12,59,55);//ÔÚÇøÓò5·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã  ¾­¶È£º111¡ã£©
 					break;
 				}
 			case 6:
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,65400000,12,59,56);//åœ¨åŒºåŸŸ6èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°  ç»åº¦ï¼š109Â°ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,65400000,12,59,56);//ÔÚÇøÓò6·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã  ¾­¶È£º109¡ã£©
 					break;
 				}
 			case 7:
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,64200000,12,59,57);//åœ¨åŒºåŸŸ7èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°  ç»åº¦ï¼š107Â°ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,64200000,12,59,57);//ÔÚÇøÓò7·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã  ¾­¶È£º107¡ã£©
 					break;
 				}
 			case 8:
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,63000000,12,59,58);//åœ¨åŒºåŸŸ8èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°  ç»åº¦ï¼š105Â°ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,63000000,12,59,58);//ÔÚÇøÓò8·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã  ¾­¶È£º105¡ã£©
 					break;
 				}
 			case 9:
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,61800000,12,59,59);//åœ¨åŒºåŸŸ9èŒƒå›´å†…ï¼ˆçº¬åº¦ï¼š48.3Â°  ç»åº¦ï¼š103Â°ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,61800000,12,59,59);//ÔÚÇøÓò9·¶Î§ÄÚ£¨Î³¶È£º48.3¡ã  ¾­¶È£º103¡ã£©
 					break;
 				}
 
 			}
 			break;
 		}
-	case 11://åŒºåŸŸ11ï¼Œé€‰æ‹©å’Œä¸Šè¿°å„ä¸ªåŒºåŸŸå‘ç”Ÿé‡å 
+	case 11://ÇøÓò11£¬Ñ¡ÔñºÍÉÏÊö¸÷¸öÇøÓò·¢ÉúÖØµş
 		{
-			switch(j)//åº”è¯¥ç”¨è¯¥éƒ¨åˆ†æ¥æµ‹è¯•å„ç§è¦†ç›–æƒ…å†µ   to be changed 
+			switch(j)//Ó¦¸ÃÓÃ¸Ã²¿·ÖÀ´²âÊÔ¸÷ÖÖ¸²¸ÇÇé¿ö   to be changed 
 			{
 			
-			case 2://éƒ¨åˆ†é‡å åŒºåŸŸ2(ä¸œåŒ—è§’(çº¬åº¦ï¼š51Â°  ç»åº¦ï¼š118Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š49Â° ç»åº¦ï¼š116Â°)) ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š117.917ï¼‰
+			case 2://²¿·ÖÖØµşÇøÓò2(¶«±±½Ç(Î³¶È£º51¡ã  ¾­¶È£º118¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º49¡ã ¾­¶È£º116¡ã)) £¨Î³¶È£º48.3¡ã ¾­¶È£º117.917£©
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,70750200,12,59,52);//åœ¨åŒºåŸŸ2èŒƒå›´å†…
+					testGPS_InfoStructPara(gps_infoStruct,28980000,70750200,12,59,52);//ÔÚÇøÓò2·¶Î§ÄÚ
 					vdlMsg22->latitude1 = 30600;
 					vdlMsg22->logitude1 = 70800;
 					vdlMsg22->latitude2 = 29400;
@@ -622,9 +648,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 					vdlMsg22->TxRxMode = 0;
 					break;
 				}
-			case 3://éƒ¨åˆ†é‡å åŒºåŸŸ3(ä¸œåŒ—è§’(çº¬åº¦ï¼š51Â°  ç»åº¦ï¼š116Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š49Â° ç»åº¦ï¼š114Â°)) ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š115.917ï¼‰
+			case 3://²¿·ÖÖØµşÇøÓò3(¶«±±½Ç(Î³¶È£º51¡ã  ¾­¶È£º116¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º49¡ã ¾­¶È£º114¡ã)) £¨Î³¶È£º48.3¡ã ¾­¶È£º115.917£©
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,69550200,12,59,53);//åœ¨åŒºåŸŸ3èŒƒå›´å†…
+					testGPS_InfoStructPara(gps_infoStruct,28980000,69550200,12,59,53);//ÔÚÇøÓò3·¶Î§ÄÚ
 					vdlMsg22->latitude1 = 30600;
 					vdlMsg22->logitude1 = 69600;
 					vdlMsg22->latitude2 = 29400;
@@ -632,9 +658,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 					vdlMsg22->TxRxMode = 0;
 					break;
 				}
-			case 4://éƒ¨åˆ†é‡å åŒºåŸŸ4(ä¸œåŒ—è§’(çº¬åº¦ï¼š51Â°  ç»åº¦ï¼š114Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š49Â° ç»åº¦ï¼š112Â°))
+			case 4://²¿·ÖÖØµşÇøÓò4(¶«±±½Ç(Î³¶È£º51¡ã  ¾­¶È£º114¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º49¡ã ¾­¶È£º112¡ã))
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,68350200,12,59,54);//åœ¨åŒºåŸŸ4èŒƒå›´å†… ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š113.917ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,68350200,12,59,54);//ÔÚÇøÓò4·¶Î§ÄÚ £¨Î³¶È£º48.3¡ã ¾­¶È£º113.917£©
 					vdlMsg22->latitude1 = 30600;
 					vdlMsg22->logitude1 = 68400;
 					vdlMsg22->latitude2 = 29400;
@@ -642,9 +668,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 					vdlMsg22->TxRxMode = 0;
 					break;
 				}
-			case 5://éƒ¨åˆ†é‡å åŒºåŸŸ5(ä¸œåŒ—è§’(çº¬åº¦ï¼š51Â°  ç»åº¦ï¼š112Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š49Â° ç»åº¦ï¼š110Â°))
+			case 5://²¿·ÖÖØµşÇøÓò5(¶«±±½Ç(Î³¶È£º51¡ã  ¾­¶È£º112¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º49¡ã ¾­¶È£º110¡ã))
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,67150200,12,59,55);//åœ¨åŒºåŸŸ5èŒƒå›´å†… ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š111.917ï¼‰ 
+					testGPS_InfoStructPara(gps_infoStruct,28980000,67150200,12,59,55);//ÔÚÇøÓò5·¶Î§ÄÚ £¨Î³¶È£º48.3¡ã ¾­¶È£º111.917£© 
 					vdlMsg22->latitude1 = 30600;
 					vdlMsg22->logitude1 = 67200;
 					vdlMsg22->latitude2 = 29400;
@@ -652,9 +678,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 					vdlMsg22->TxRxMode = 0;
 					break;
 				}
-			case 6://éƒ¨åˆ†é‡å åŒºåŸŸ6(ä¸œåŒ—è§’(çº¬åº¦ï¼š51Â°  ç»åº¦ï¼š110Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š49Â° ç»åº¦ï¼š108Â°))
+			case 6://²¿·ÖÖØµşÇøÓò6(¶«±±½Ç(Î³¶È£º51¡ã  ¾­¶È£º110¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º49¡ã ¾­¶È£º108¡ã))
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,65950200,12,59,56);//åœ¨åŒºåŸŸ6èŒƒå›´å†… ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š109.917ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,65950200,12,59,56);//ÔÚÇøÓò6·¶Î§ÄÚ £¨Î³¶È£º48.3¡ã ¾­¶È£º109.917£©
 					vdlMsg22->latitude1 = 30600;
 					vdlMsg22->logitude1 = 66000;
 					vdlMsg22->latitude2 = 29400;
@@ -662,9 +688,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 					vdlMsg22->TxRxMode = 0;
 					break;
 				}
-			case 7://éƒ¨åˆ†é‡å åŒºåŸŸ7(ä¸œåŒ—è§’(çº¬åº¦ï¼š51Â°  ç»åº¦ï¼š108Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š49Â° ç»åº¦ï¼š106Â°))
+			case 7://²¿·ÖÖØµşÇøÓò7(¶«±±½Ç(Î³¶È£º51¡ã  ¾­¶È£º108¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º49¡ã ¾­¶È£º106¡ã))
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,64750200,12,59,57);//åœ¨åŒºåŸŸ7èŒƒå›´å†… ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š107.917ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,64750200,12,59,57);//ÔÚÇøÓò7·¶Î§ÄÚ £¨Î³¶È£º48.3¡ã ¾­¶È£º107.917£©
 					vdlMsg22->latitude1 = 30600;
 					vdlMsg22->logitude1 = 64800;
 					vdlMsg22->latitude2 = 29400;
@@ -672,9 +698,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 					vdlMsg22->TxRxMode = 0;
 					break;
 				}
-			case 8://éƒ¨åˆ†é‡å åŒºåŸŸ8(ä¸œåŒ—è§’(çº¬åº¦ï¼š51Â°  ç»åº¦ï¼š106Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š49Â° ç»åº¦ï¼š104Â°))
+			case 8://²¿·ÖÖØµşÇøÓò8(¶«±±½Ç(Î³¶È£º51¡ã  ¾­¶È£º106¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º49¡ã ¾­¶È£º104¡ã))
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,63550200,12,59,58);//åœ¨åŒºåŸŸ8èŒƒå›´å†… ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š105.917ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,63550200,12,59,58);//ÔÚÇøÓò8·¶Î§ÄÚ £¨Î³¶È£º48.3¡ã ¾­¶È£º105.917£©
 					vdlMsg22->latitude1 = 30600;
 					vdlMsg22->logitude1 = 63600;
 					vdlMsg22->latitude2 = 29400;
@@ -682,9 +708,9 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 					vdlMsg22->TxRxMode = 0;
 					break;
 				}
-			case 9://éƒ¨åˆ†é‡å åŒºåŸŸ9(ä¸œåŒ—è§’(çº¬åº¦ï¼š51Â°  ç»åº¦ï¼š104Â°)ã€è¥¿å—è§’(çº¬åº¦ï¼š49Â° ç»åº¦ï¼š102Â°))
+			case 9://²¿·ÖÖØµşÇøÓò9(¶«±±½Ç(Î³¶È£º51¡ã  ¾­¶È£º104¡ã)¡¢Î÷ÄÏ½Ç(Î³¶È£º49¡ã ¾­¶È£º102¡ã))
 				{
-					testGPS_InfoStructPara(gps_infoStruct,28980000,62350200,12,59,59);//åœ¨åŒºåŸŸ9èŒƒå›´å†… ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š103.917ï¼‰
+					testGPS_InfoStructPara(gps_infoStruct,28980000,62350200,12,59,59);//ÔÚÇøÓò9·¶Î§ÄÚ £¨Î³¶È£º48.3¡ã ¾­¶È£º103.917£©
 					vdlMsg22->latitude1 = 30600;
 					vdlMsg22->logitude1 = 62400;
 					vdlMsg22->latitude2 = 29400;
@@ -697,21 +723,21 @@ void testMsg22(VDLMsg22 * vdlMsg22,GPS_InfoStruct * gps_infoStruct,u8 newArea,u8
 			break;
 		}
 	}
-
+	
 }
 
 /************************************************************************
 * Name      : testMsg22Handover
-* Brief     : ç”¨äºè®¾ç½®æ¡ä»¶æµ‹è¯•åˆ‡æ¢åŒº
+* Brief     : ÓÃÓÚÉèÖÃÌõ¼ş²âÊÔÇĞ»»Çø
 *
 * Author    : Digital Design Team
-* Param     : fsm_msg22Struct- è¾“å‡ºï¼ŒçŠ¶æ€æœºä¸­å­˜æ”¾æ¶ˆæ¯22å†…å®¹ç»“æ„ä½“
-* Param     : gps_infoStruct- è¾“å‡ºï¼Œgpsä¿¡æ¯å†…å®¹ç»“æ„ä½“ï¼Œä¸»è¦ä½¿ç”¨å…¶ä¸­çš„ç»çº¬åº¦å’Œutcæ—¶é—´
+* Param     : fsm_msg22Struct- Êä³ö£¬×´Ì¬»úÖĞ´æ·ÅÏûÏ¢22ÄÚÈİ½á¹¹Ìå
+* Param     : gps_infoStruct- Êä³ö£¬gpsĞÅÏ¢ÄÚÈİ½á¹¹Ìå£¬Ö÷ÒªÊ¹ÓÃÆäÖĞµÄ¾­Î³¶ÈºÍutcÊ±¼ä
 * Return    : void
 ************************************************************************/
 void testMsg22Handover(FSM_Msg22Struct * fsm_msg22Struct,GPS_InfoStruct * gps_infoStruct)
 {
-	//è®¾ç½®å½“å‰Msg22çš„æŒ‡é…åŒºåŸŸæ˜¯åŒºåŸŸ3ï¼Œä¸Šä¸€ä¸ªåŒºåŸŸæ˜¯2ï¼Œæœ¬èˆ¹ä½ç½®å¤„åœ¨åŒºåŸŸ3çš„åˆ‡æ¢åŒºå†…
+	//ÉèÖÃµ±Ç°Msg22µÄÖ¸ÅäÇøÓòÊÇÇøÓò3£¬ÉÏÒ»¸öÇøÓòÊÇ2£¬±¾´¬Î»ÖÃ´¦ÔÚÇøÓò3µÄÇĞ»»ÇøÄÚ
 	fsm_msg22Struct->currentArea = 3;
 	fsm_msg22Struct->groupManageStruct[2].assignOverTime[0] = 0;
 	fsm_msg22Struct->groupManageStruct[2].handOverArea = 5;
@@ -728,16 +754,16 @@ void testMsg22Handover(FSM_Msg22Struct * fsm_msg22Struct,GPS_InfoStruct * gps_in
 	fsm_msg22Struct->groupManageStruct[1].northEastLongitude = 118.0;
 	fsm_msg22Struct->groupManageStruct[1].southWestLatitude = 48.0;
 	fsm_msg22Struct->groupManageStruct[1].southWestLongitude = 116.0;
-	fsm_msg22Struct->groupManageStruct[1].transChannel = channelB;
-	testGPS_InfoStructPara(gps_infoStruct,28980000,69550200,0,19,59);//åœ¨åŒºåŸŸ3èŒƒå›´å†… ï¼ˆçº¬åº¦ï¼š48.3Â° ç»åº¦ï¼š115.917ï¼‰
+	fsm_msg22Struct->groupManageStruct[1].transChannel = CHANNELB;
+	testGPS_InfoStructPara(gps_infoStruct,28980000,69550200,0,19,59);//ÔÚÇøÓò3·¶Î§ÄÚ £¨Î³¶È£º48.3¡ã ¾­¶È£º115.917£©
 }
 
 /************************************************************************
 * Name      : testMsg22Function
-* Brief     : æµ‹è¯•æ‰€æœ‰çš„Msg22çš„åŠŸèƒ½ä»£ç 
+* Brief     : ²âÊÔËùÓĞµÄMsg22µÄ¹¦ÄÜ´úÂë
 *
 * Author    : Digital Design Team
-* Param     : functionNumm- è¾“å…¥ï¼Œç”¨äºè®¾ç½®æµ‹è¯•å†…å®¹ï¼Œ1-åŒºåŸŸæµ‹è¯•ï¼Œ2-åˆ‡æ¢åŒºæµ‹è¯•ï¼Œ3-ä¿¡é“æµ‹è¯•
+* Param     : functionNumm- ÊäÈë£¬ÓÃÓÚÉèÖÃ²âÊÔÄÚÈİ£¬1-ÇøÓò²âÊÔ£¬2-ÇĞ»»Çø²âÊÔ£¬3-ĞÅµÀ²âÊÔ
 * Return    : void
 ************************************************************************/
 void testMsg22Function(u8 functionNum)
@@ -746,67 +772,96 @@ void testMsg22Function(u8 functionNum)
 	u8 newNum = 0;
 	u8 overlopNum = 0;
 	u8 workType = AUTO;
-	if (fNum == 1)//æµ‹è¯•åŒºåŸŸ
+	if (fNum == 1)//²âÊÔÇøÓò
 	{
 		
 		for (newNum = 0; newNum < 26; newNum ++)
 		{
 			
-			if (newNum < 10)// 0~9 è®¾ç½®æ–°åŒºåŸŸ
+			if (newNum < 10)// 0~9 ÉèÖÃĞÂÇøÓò
 			{
 				testMsg22(&recVDLMsg22,&gps_infoStruct,newNum,0);
 			}
-			else if(newNum < 18) //10~17 å¯¹åº”2~9 è®¾ç½®æœ¬èˆ¹åœ¨ç›¸åº”çš„åŒºåŸŸå†…
+			else if(newNum < 18) //10~17 ¶ÔÓ¦2~9 ÉèÖÃ±¾´¬ÔÚÏàÓ¦µÄÇøÓòÄÚ
 			{
 				testMsg22(&recVDLMsg22,&gps_infoStruct,10,(newNum - 8));
 			}
-			else if(newNum < 26)//18~25 å¯¹åº”2~9 è®¾ç½®é‡å åŒºåŸŸ 
+			else if(newNum < 26)//18~25 ¶ÔÓ¦2~9 ÉèÖÃÖØµşÇøÓò 
 			{
 				overlopNum = newNum - 16;
 				testMsg22(&recVDLMsg22,&gps_infoStruct,11,overlopNum);
 			}
-			//æ”¶é›†æ–°æ¶ˆæ¯IDå·
+			//ÊÕ¼¯ĞÂÏûÏ¢IDºÅ
 			collectNewMsg(&ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
 			//testCollectNewMsg(&ais_rcvMsgIDStruct,isVDLMsg15NewIn,&recVDLMsg15,isVDLMsg20NewIn,isVDLMsg22NewIn,isVDLMsg23NewIn,&fsm_controlStruct);
-			//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰æŒ‡é…ç±»æ¶ˆæ¯ï¼Œåˆ™æ›´æ–°ç›¸åº”çš„æŒ‡é…å†…å®¹
+			//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞÖ¸ÅäÀàÏûÏ¢£¬Ôò¸üĞÂÏàÓ¦µÄÖ¸ÅäÄÚÈİ
 			updataAssignContent(&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 			
-			//æ£€æµ‹å½“å‰èˆ¹ç«™æ˜¯å¦å·¥ä½œåœ¨æŒ‡é…æ¨¡å¼ï¼Œè‹¥åœ¨ï¼Œåˆ™è¿”å›å…·ä½“çš„æ¨¡å¼çŠ¶æ€ä¿¡æ¯ to be done
+			//¼ì²âµ±Ç°´¬Õ¾ÊÇ·ñ¹¤×÷ÔÚÖ¸ÅäÄ£Ê½£¬ÈôÔÚ£¬Ôò·µ»Ø¾ßÌåµÄÄ£Ê½×´Ì¬ĞÅÏ¢ to be done
 			workType = checkAssignValid(&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 			printf("workType:  %d\n",workType);
 		}
 	}
-	else if (fNum == 2)//åˆ‡æ¢åŒºæµ‹è¯• è®¾ç½®å½“å‰Msg22çš„æŒ‡é…åŒºåŸŸæ˜¯åŒºåŸŸ3ï¼Œä¸Šä¸€ä¸ªåŒºåŸŸæ˜¯2ï¼Œæœ¬èˆ¹ä½ç½®å¤„åœ¨åŒºåŸŸ3çš„åˆ‡æ¢åŒºå†…
+	else if (fNum == 2)//ÇĞ»»Çø²âÊÔ ÉèÖÃµ±Ç°Msg22µÄÖ¸ÅäÇøÓòÊÇÇøÓò3£¬ÉÏÒ»¸öÇøÓòÊÇ2£¬±¾´¬Î»ÖÃ´¦ÔÚÇøÓò3µÄÇĞ»»ÇøÄÚ
 	{
 		testMsg22Handover(&fsm_controlStruct.fsm_msg22Struct,&gps_infoStruct);
-		//æ”¶é›†æ–°æ¶ˆæ¯IDå·
+		//ÊÕ¼¯ĞÂÏûÏ¢IDºÅ
 		collectNewMsg(&ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
 		//testCollectNewMsg(&ais_rcvMsgIDStruct,isVDLMsg15NewIn,&recVDLMsg15,isVDLMsg20NewIn,isVDLMsg22NewIn,isVDLMsg23NewIn,&fsm_controlStruct);
-		//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰æŒ‡é…ç±»æ¶ˆæ¯ï¼Œåˆ™æ›´æ–°ç›¸åº”çš„æŒ‡é…å†…å®¹
+		//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞÖ¸ÅäÀàÏûÏ¢£¬Ôò¸üĞÂÏàÓ¦µÄÖ¸ÅäÄÚÈİ
 		updataAssignContent(&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 
-		//æ£€æµ‹å½“å‰èˆ¹ç«™æ˜¯å¦å·¥ä½œåœ¨æŒ‡é…æ¨¡å¼ï¼Œè‹¥åœ¨ï¼Œåˆ™è¿”å›å…·ä½“çš„æ¨¡å¼çŠ¶æ€ä¿¡æ¯ to be done
+		//¼ì²âµ±Ç°´¬Õ¾ÊÇ·ñ¹¤×÷ÔÚÖ¸ÅäÄ£Ê½£¬ÈôÔÚ£¬Ôò·µ»Ø¾ßÌåµÄÄ£Ê½×´Ì¬ĞÅÏ¢ to be done
 		workType = checkAssignValid(&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 		//printf("workType:  %d\n",workType);
 	}
-	else if (fNum == 3)//ä¿¡é“æµ‹è¯•
+	else if (fNum == 3)//ĞÅµÀ²âÊÔ
 	{
 
 	}
+	else if (fNum == 4)//¹ã²¥ÏûÏ¢22ºÍÑ°Ö·ÏûÏ¢22µÄĞÅµÀ¹ÜÀí²âÊÔ
+	{
+		//ÏÈ·¢ËÍ¹ã²¥ÏûÏ¢22£¬Ö¸¶¨Ò»ÖÖĞÅµÀ¹¤×÷·½Ê½£¬ÔÙ·¢ËÍÑ°Ö·ÏûÏ¢22£¬Ö¸¶¨ÁíÒ»ÖÖĞÅµÀ¹¤×÷·½Ê½,²é¿´ĞÅµÀ±ä»¯
+		//ÔÙÁ¬Ğø·¢15´Î¹ã²¥ÏûÏ¢22£¬Ó¦¸ÃÉè¶¨Ã¿·ÖÖÓ·¢Ò»´Î£¬²é¿´ĞÅµÀ±ä»¯Çé¿ö
+		//½«±¾´¬ÒÆ³öÖÁÑ°Ö·ºÍ¹ã²¥¶¼²»×÷ÓÃµÄÎ»ÖÃ
+		for(newNum = 0; newNum < 19; newNum ++)
+		{
+			if (newNum == 1)//Ñ°Ö·ÏûÏ¢¶ÔÓ¦µÄMMSIÎª333333333
+			{
+				testMsg22(&recVDLMsg22,&gps_infoStruct,0,0);
+			}
+			else if (newNum == 17)//±¾´¬Õ¾µÄÎ»ÖÃ¼È²»ÔÚÑ°Ö··¶Î§£¬Ò²²»ÔÚÇøÓò·¶Î§ÄÚ
+			{
+				testMsg22(&recVDLMsg22,&gps_infoStruct,12,0);
+			}
+			else//±¾´¬Õ¾ÔÚÇøÓò·¶Î§ÄÚ
+			{
+				testMsg22(&recVDLMsg22,&gps_infoStruct,1,0);
+			}
+			collectNewMsg(&ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
+			//testCollectNewMsg(&ais_rcvMsgIDStruct,isVDLMsg15NewIn,&recVDLMsg15,isVDLMsg20NewIn,isVDLMsg22NewIn,isVDLMsg23NewIn,&fsm_controlStruct);
+			//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞÖ¸ÅäÀàÏûÏ¢£¬Ôò¸üĞÂÏàÓ¦µÄÖ¸ÅäÄÚÈİ
+			updataAssignContent(&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
+
+			//¼ì²âµ±Ç°´¬Õ¾ÊÇ·ñ¹¤×÷ÔÚÖ¸ÅäÄ£Ê½£¬ÈôÔÚ£¬Ôò·µ»Ø¾ßÌåµÄÄ£Ê½×´Ì¬ĞÅÏ¢ to be done
+			workType = checkAssignValid(&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
+		}
+	}
+
 }
 
 /************************************************************************
 * Name      : testMsg23Info
-* Brief     : ç”¨äºç”Ÿæˆæ¶ˆæ¯23çš„æµ‹è¯•æ¡ä»¶
+* Brief     : ÓÃÓÚÉú³ÉÏûÏ¢23µÄ²âÊÔÌõ¼ş
 *
 * Author    : Digital Design Team
-* Param     : gps_infoStruct- è¾“å‡ºï¼Œgpsä¿¡æ¯å†…å®¹ç»“æ„ä½“
-* Param     : worktype- è¾“å…¥ï¼Œè®¾ç½®æµ‹è¯•æ¡ä»¶
-*			  1-æœ¬èˆ¹ä¸åœ¨Msg23çš„æŒ‡é…åŒºåŸŸ   2-æœ¬èˆ¹åœ¨Msg23çš„æŒ‡é…åŒºåŸŸï¼ŒæŒ‡é…æœ‰æ•ˆï¼Œåœ¨å¯‚é™æœŸ
-*			  3-æœ¬èˆ¹åœ¨Msg23çš„æŒ‡é…åŒºåŸŸï¼ŒæŒ‡é…æœ‰æ•ˆï¼Œä¸åœ¨å¯‚é™æœŸ(ä»¥ä¸Šä¸ºMsg23å•ç‹¬æµ‹è¯•)
-*             (ä»¥ä¸‹ä¸ºé…åˆMsg22åŒºåŸŸ1çš„è”åˆæµ‹è¯•)
-*			  4-æœ¬èˆ¹åœ¨Msg23çš„æŒ‡é…åŒºåŸŸ1
-*			  5-æœ¬èˆ¹åœ¨Msg23çš„æŒ‡é…åŒºåŸŸ3
+* Param     : gps_infoStruct- Êä³ö£¬gpsĞÅÏ¢ÄÚÈİ½á¹¹Ìå
+* Param     : worktype- ÊäÈë£¬ÉèÖÃ²âÊÔÌõ¼ş
+*			  1-±¾´¬²»ÔÚMsg23µÄÖ¸ÅäÇøÓò   2-±¾´¬ÔÚMsg23µÄÖ¸ÅäÇøÓò£¬Ö¸ÅäÓĞĞ§£¬ÔÚ¼Å¾²ÆÚ
+*			  3-±¾´¬ÔÚMsg23µÄÖ¸ÅäÇøÓò£¬Ö¸ÅäÓĞĞ§£¬²»ÔÚ¼Å¾²ÆÚ(ÒÔÉÏÎªMsg23µ¥¶À²âÊÔ)
+*             (ÒÔÏÂÎªÅäºÏMsg22ÇøÓò1µÄÁªºÏ²âÊÔ)
+*			  4-±¾´¬ÔÚMsg23µÄÖ¸ÅäÇøÓò1
+*			  5-±¾´¬ÔÚMsg23µÄÖ¸ÅäÇøÓò3
 * Return    : void
 ************************************************************************/
 void testMsg23Info(GPS_InfoStruct * gps_infoStruct,u8 worktype)
@@ -817,22 +872,22 @@ void testMsg23Info(GPS_InfoStruct * gps_infoStruct,u8 worktype)
 	{
 	case 1:
 		{
-			testGPS_InfoStructPara(gps_infoStruct,16200000,72000000,12,59,59);//ä¸åœ¨Msg23æŒ‡é…åŒºåŸŸå†… ï¼ˆçº¬åº¦ï¼š27Â° ç»åº¦ï¼š120Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,16200000,72000000,12,59,59);//²»ÔÚMsg23Ö¸ÅäÇøÓòÄÚ £¨Î³¶È£º27¡ã ¾­¶È£º120¡ã£©
 			break;
 		}
 	case 2:
 		{
-			testGPS_InfoStructPara(gps_infoStruct,17400000,71400000,12,59,59);//åœ¨Msg23æŒ‡é…åŒºåŸŸå†…ï¼Œ æŒ‡é…æœ‰æ•ˆï¼Œä½†åœ¨å¯‚é™æœŸï¼ˆçº¬åº¦ï¼š29Â° ç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,17400000,71400000,12,59,59);//ÔÚMsg23Ö¸ÅäÇøÓòÄÚ£¬ Ö¸ÅäÓĞĞ§£¬µ«ÔÚ¼Å¾²ÆÚ£¨Î³¶È£º29¡ã ¾­¶È£º119¡ã£©
 			break;
 		}
 	case 3:
 		{
-			testGPS_InfoStructPara(gps_infoStruct,17400000,71400000,0,19,59);//åœ¨Msg23æŒ‡é…åŒºåŸŸå†…ï¼Œ æŒ‡é…æœ‰æ•ˆï¼Œä¸åœ¨å¯‚é™æœŸï¼ˆçº¬åº¦ï¼š29Â° ç»åº¦ï¼š119Â°ï¼‰
+			testGPS_InfoStructPara(gps_infoStruct,17400000,71400000,0,19,59);//ÔÚMsg23Ö¸ÅäÇøÓòÄÚ£¬ Ö¸ÅäÓĞĞ§£¬²»ÔÚ¼Å¾²ÆÚ£¨Î³¶È£º29¡ã ¾­¶È£º119¡ã£©
 			break;
 		}
 	case 4:
 		{
-			recVDLMsg23.latitude1 = 30000;//(ä¸œåŒ—è§’çº¬åº¦ï¼š50Â°ï¼Œç»åº¦120Â°ï¼Œè¥¿å—è§’çº¬åº¦48Â°ï¼Œç»åº¦118Â°)
+			recVDLMsg23.latitude1 = 30000;//(¶«±±½ÇÎ³¶È£º50¡ã£¬¾­¶È120¡ã£¬Î÷ÄÏ½ÇÎ³¶È48¡ã£¬¾­¶È118¡ã)
 			recVDLMsg23.logitude1 = 72000;
 			recVDLMsg23.latitude2 = 28800;
 			recVDLMsg23.logitude2 = 70800;
@@ -841,7 +896,7 @@ void testMsg23Info(GPS_InfoStruct * gps_infoStruct,u8 worktype)
 		}
 	case 5:
 		{
-			recVDLMsg23.latitude1 = 30000;//(ä¸œåŒ—è§’çº¬åº¦ï¼š50Â°ï¼Œç»åº¦116Â°ï¼Œè¥¿å—è§’çº¬åº¦48Â°ï¼Œç»åº¦114Â°)
+			recVDLMsg23.latitude1 = 30000;//(¶«±±½ÇÎ³¶È£º50¡ã£¬¾­¶È116¡ã£¬Î÷ÄÏ½ÇÎ³¶È48¡ã£¬¾­¶È114¡ã)
 			recVDLMsg23.logitude1 = 69600;
 			recVDLMsg23.latitude2 = 28800;
 			recVDLMsg23.logitude2 = 68400;
@@ -855,12 +910,12 @@ void testMsg23Info(GPS_InfoStruct * gps_infoStruct,u8 worktype)
 
 /************************************************************************
 * Name      : testMsg23Function
-* Brief     : æµ‹è¯•æ‰€æœ‰çš„Msg22çš„åŠŸèƒ½ä»£ç 
+* Brief     : ²âÊÔËùÓĞµÄMsg22µÄ¹¦ÄÜ´úÂë
 *
 * Author    : Digital Design Team
-* Param     : functionNum- è¾“å…¥ï¼Œç”¨äºè®¾ç½®æµ‹è¯•å†…å®¹ï¼Œ
-*			  1-æœ¬èˆ¹ä¸åœ¨Msg23çš„æŒ‡é…åŒºåŸŸ   2-æœ¬èˆ¹åœ¨Msg23çš„æŒ‡é…åŒºåŸŸï¼ŒæŒ‡é…æœ‰æ•ˆï¼Œä½†åœ¨å¯‚é™æœŸ
-*										  3-æœ¬èˆ¹åœ¨Msg23çš„æŒ‡é…åŒºåŸŸï¼ŒæŒ‡é…æœ‰æ•ˆï¼Œä¸åœ¨å¯‚é™æœŸ
+* Param     : functionNum- ÊäÈë£¬ÓÃÓÚÉèÖÃ²âÊÔÄÚÈİ£¬
+*			  1-±¾´¬²»ÔÚMsg23µÄÖ¸ÅäÇøÓò   2-±¾´¬ÔÚMsg23µÄÖ¸ÅäÇøÓò£¬Ö¸ÅäÓĞĞ§£¬µ«ÔÚ¼Å¾²ÆÚ
+*										  3-±¾´¬ÔÚMsg23µÄÖ¸ÅäÇøÓò£¬Ö¸ÅäÓĞĞ§£¬²»ÔÚ¼Å¾²ÆÚ
 * Return    : void
 ************************************************************************/
 void testMsg23Function(u8 functionNum)
@@ -868,13 +923,13 @@ void testMsg23Function(u8 functionNum)
 	u8 workType = 0;
 	testMsg23Info(&gps_infoStruct,functionNum);
 
-	//æ”¶é›†æ–°æ¶ˆæ¯IDå·
+	//ÊÕ¼¯ĞÂÏûÏ¢IDºÅ
 	collectNewMsg(&ais_rcvMsgIDStruct,&recVDLMsg15,&fsm_controlStruct);
 	//testCollectNewMsg(&ais_rcvMsgIDStruct,isVDLMsg15NewIn,&recVDLMsg15,isVDLMsg20NewIn,isVDLMsg22NewIn,isVDLMsg23NewIn,&fsm_controlStruct);
-	//æ ¹æ®æ”¶é›†çš„æ–°çš„æ¶ˆæ¯IDå·ï¼Œè‹¥æœ‰æŒ‡é…ç±»æ¶ˆæ¯ï¼Œåˆ™æ›´æ–°ç›¸åº”çš„æŒ‡é…å†…å®¹
+	//¸ù¾İÊÕ¼¯µÄĞÂµÄÏûÏ¢IDºÅ£¬ÈôÓĞÖ¸ÅäÀàÏûÏ¢£¬Ôò¸üĞÂÏàÓ¦µÄÖ¸ÅäÄÚÈİ
 	updataAssignContent(&recVDLMsg20,&recVDLMsg22,&recVDLMsg23,&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 
-	//æ£€æµ‹å½“å‰èˆ¹ç«™æ˜¯å¦å·¥ä½œåœ¨æŒ‡é…æ¨¡å¼ï¼Œè‹¥åœ¨ï¼Œåˆ™è¿”å›å…·ä½“çš„æ¨¡å¼çŠ¶æ€ä¿¡æ¯ to be done
+	//¼ì²âµ±Ç°´¬Õ¾ÊÇ·ñ¹¤×÷ÔÚÖ¸ÅäÄ£Ê½£¬ÈôÔÚ£¬Ôò·µ»Ø¾ßÌåµÄÄ£Ê½×´Ì¬ĞÅÏ¢ to be done
 	workType = checkAssignValid(&gps_infoStruct,&fsm_controlStruct,&fsm_dataStruct);
 	printf("workType:  %d\n",workType);
 }

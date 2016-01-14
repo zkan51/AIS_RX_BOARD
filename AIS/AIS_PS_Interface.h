@@ -19,6 +19,9 @@
 
 #include "AIS_PS_Struct.h"
 
+#include "FSMControl.h"
+#include "stm32f4xx.h"  //使用了FlagStatus 替换bool
+
 /* SPI数据缓冲区的大小 */
 #define MAX_FPGA_VDL_DATA_LEN     1024
 
@@ -64,7 +67,7 @@ void getLongitudeFromBuffer(u32 *const longitude, const u8 *dataBuffer, u8 start
 void getLatitudeFromBuffer(u32 *const latitude, const u8 *dataBuffer, u8 startByte, u8 startBit);
 
 /** 检查MMSI是否为基站MMSI */
-bool isValidBSMMSI(u32 MMSI);
+FlagStatus isValidBSMMSI(u32 MMSI);
 
 u32  getMMSI(u8 const *dataBuffer, u8 start, FlagStatus isMSB);
 MsgIdSlotOffset getAskedMsgInfo(u8 const *dataBuffer, u8 start, FlagStatus isMSB);

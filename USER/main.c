@@ -4,6 +4,7 @@
 #include "APP.h"
 #include "UART1.h"
 #include "UART2.h"
+#include "UART3.h"
 #include "SPI.h"
 #include "SPI3.h"
 #include "TIMER2.h"

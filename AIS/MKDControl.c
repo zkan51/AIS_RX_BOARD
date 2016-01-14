@@ -5,9 +5,9 @@
 * @version   
 * @date      2015/12/2   20:17
 ********************************************************************
-* @brief     å»ºç«‹MCUå’Œä¸Šä½æœºä¹‹é—´çš„äº¤äº’åŠŸèƒ½ï¼ŒåŒ…æ‹¬ï¼š
-*			 1ã€æœ¬èˆ¹å’Œå®ƒèˆ¹çš„è·å–çš„åŸå§‹æ•°æ®çš„å°è£…å’ŒæŒ‰ç…§61162æ ¼å¼çš„æ‰“åŒ…ï¼Œå¹¶ä¸Šä¼ ç»™ä¸Šä½æœº
-*			 2ã€ä¸Šä½æœºå®‰å…¨ç±»æ•°æ®çš„å¤„ç†å’Œé‡æ–°æ‰“åŒ…ï¼Œå‘é€ç»™MCUï¼Œå¹¶ç¡®è®¤åé¦ˆä¿¡æ¯
+* @brief     ½¨Á¢MCUºÍÉÏÎ»»úÖ®¼äµÄ½»»¥¹¦ÄÜ£¬°üÀ¨£º
+*			 1¡¢±¾´¬ºÍËü´¬µÄ»ñÈ¡µÄÔ­Ê¼Êı¾İµÄ·â×°ºÍ°´ÕÕ61162¸ñÊ½µÄ´ò°ü£¬²¢ÉÏ´«¸øÉÏÎ»»ú
+*			 2¡¢ÉÏÎ»»ú°²È«ÀàÊı¾İµÄ´¦ÀíºÍÖØĞÂ´ò°ü£¬·¢ËÍ¸øMCU£¬²¢È·ÈÏ·´À¡ĞÅÏ¢
 *
 * Copyright (C) NanJing Sandemarine Electric Co., Ltd
 * All Rights Reserved
@@ -15,19 +15,18 @@
 */
 #include "MKDControl.h"
 #include "testMKDControl.h"
-#include "APP.h"
 
-////////////////////////////////////å˜é‡å®šä¹‰åŒº////////////////////////////////////////////////////
+////////////////////////////////////±äÁ¿¶¨ÒåÇø////////////////////////////////////////////////////
 
 MKD_ControlStruct mkd_controlStruct;
 MKD_DataStruct mkd_dataStruct;
 
 /************************************************************************
 * Name      : rstMKDFramedStruct
-* Brief     : æ¸…ç©ºmkd_framedStructçš„å†…å®¹ï¼Œç”¨äºå­˜æ”¾æ–°çš„ä¿¡æ¯
+* Brief     : Çå¿Õmkd_framedStructµÄÄÚÈİ£¬ÓÃÓÚ´æ·ÅĞÂµÄĞÅÏ¢
 *
 * Author    : Digital Design Team
-* Param     : mkd_framedStruct-ç»„å¸§ç»“æ„ä½“ï¼Œç”¨äºå­˜æ”¾61162å°è£…å¥½çš„æ¶ˆæ¯å†…å®¹åŠå…¶è¾…åŠ©ä¿¡æ¯
+* Param     : mkd_framedStruct-×éÖ¡½á¹¹Ìå£¬ÓÃÓÚ´æ·Å61162·â×°ºÃµÄÏûÏ¢ÄÚÈİ¼°Æä¸¨ÖúĞÅÏ¢
 * Return    : void
 ************************************************************************/
 void rstMKDFramedStruct(MKD_FramedStruct * mkd_framedStruct)
@@ -45,10 +44,10 @@ void rstMKDFramedStruct(MKD_FramedStruct * mkd_framedStruct)
 
 /************************************************************************
 * Name      : rstMKDContentToBeFramedStruct
-* Brief     : æ¸…ç©ºmkd_toBeframeStructçš„å†…å®¹ï¼Œç”¨äºå­˜æ”¾æ–°çš„ä¿¡æ¯
+* Brief     : Çå¿Õmkd_toBeframeStructµÄÄÚÈİ£¬ÓÃÓÚ´æ·ÅĞÂµÄĞÅÏ¢
 *
 * Author    : Digital Design Team
-* Param     : mkd_toBeframeStruct-å¾…ç»„å¸§ç»“æ„ä½“ï¼Œç”¨äºæš‚æ—¶å­˜æ”¾ç»„å¸§å‰æ‰€éœ€çš„æ‰€æœ‰ä¿¡æ¯
+* Param     : mkd_toBeframeStruct-´ı×éÖ¡½á¹¹Ìå£¬ÓÃÓÚÔİÊ±´æ·Å×éÖ¡Ç°ËùĞèµÄËùÓĞĞÅÏ¢
 * Return    : void
 ************************************************************************/
 void rstMKDContentToBeFramedStruct(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct)
@@ -67,7 +66,7 @@ void rstMKDContentToBeFramedStruct(MKD_ContentToBeFramedStruct * mkd_toBeframeSt
 	{
 		mkd_toBeframeStruct->frameHead[i] = 0;
 		i ++;
-	}
+	}	
 	mkd_toBeframeStruct->frameType = 0;
 	mkd_toBeframeStruct->sentenceNum = 0;
 	mkd_toBeframeStruct->totalNum = 0;
@@ -76,38 +75,38 @@ void rstMKDContentToBeFramedStruct(MKD_ContentToBeFramedStruct * mkd_toBeframeSt
 
 /************************************************************************
 * Name      : chnage611626bitASCIIto8bitASCII
-* Brief     : æŒ‰ç…§61162åè®®ï¼Œå°†6bitçš„ASCIImç è½¬æ¢ä¸º8bitçš„ASCIIç 
+* Brief     : °´ÕÕ61162Ğ­Òé£¬½«6bitµÄASCIImÂë×ª»»Îª8bitµÄASCIIÂë
 *
 * Author    : Digital Design Team
-* Param     : len-6bitASCIIç çš„é•¿åº¦
-* Param     : sour-61162ä¸­çš„6bitASCIIç çš„å­˜æ”¾åœ°å€
-* Param     : dest-61162ä¸­çš„8bitASCIIç çš„å­˜æ”¾åœ°å€
+* Param     : len-6bitASCIIÂëµÄ³¤¶È
+* Param     : sour-61162ÖĞµÄ6bitASCIIÂëµÄ´æ·ÅµØÖ·
+* Param     : dest-61162ÖĞµÄ8bitASCIIÂëµÄ´æ·ÅµØÖ·
 * Return    : void
 ************************************************************************/
 void chnage611626bitASCIIto8bitASCII(u8 len,u8 * sour,u8 * dest)
 {
 	u8 i = 0;
-	//å…ˆå°†61162ä¸­çš„6bitASCIIç è½¬æ¢æˆæ ‡å‡†8bitASCIIç 
+	//ÏÈ½«61162ÖĞµÄ6bitASCIIÂë×ª»»³É±ê×¼8bitASCIIÂë
 	for (i = 0; i < len; i ++)
 	{
-		if (*(sour+i) < 40) //å€¼å°äº101000
+		if (*(sour+i) < 40) //ÖµĞ¡ÓÚ101000
 		{
-			*(dest+i) = *(sour+i) + 48;//åŠ ä¸Š00110000
+			*(dest+i) = *(sour+i) + 48;//¼ÓÉÏ00110000 
 		}
-		else//å€¼å¤§äºç­‰äº101000
+		else//Öµ´óÓÚµÈÓÚ101000
 		{
-			*(dest+i) = *(sour+i) + 56;//åŠ ä¸Š00111000
+			*(dest+i) = *(sour+i) + 56;//¼ÓÉÏ00111000
 		}
 	}
 }
 
 /************************************************************************
 * Name      : change1371ContentsTo61162
-* Brief     : å°†1371åè®®çš„æ¯”ç‰¹å†…å®¹ï¼ŒæŒ‰ç…§å¯¹åº”å…³ç³»è½¬æ¢ä¸º61162åè®®ä¸­çš„6æ¯”ç‰¹ASCIIç å°è£…å†…å®¹
+* Brief     : ½«1371Ğ­ÒéµÄ±ÈÌØÄÚÈİ£¬°´ÕÕ¶ÔÓ¦¹ØÏµ×ª»»Îª61162Ğ­ÒéÖĞµÄ6±ÈÌØASCIIÂë·â×°ÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : fsm_frameStruct-1371ä¸­æ¶ˆæ¯å°è£…å†…å®¹
-* Param     : mkd_toBeframeStruct-61162ä¸­ç»„å¸§æ‰€éœ€çš„æ¶ˆæ¯å†…å®¹ï¼Œæœªå®Œæˆç»„å¸§
+* Param     : fsm_frameStruct-1371ÖĞÏûÏ¢·â×°ÄÚÈİ
+* Param     : mkd_toBeframeStruct-61162ÖĞ×éÖ¡ËùĞèµÄÏûÏ¢ÄÚÈİ£¬Î´Íê³É×éÖ¡
 * Return    : void
 ************************************************************************/
 void change1371ContentsTo61162(FSM_FrameStruct * fsm_frameStruct,MKD_ContentToBeFramedStruct * mkd_toBeframeStruct)
@@ -118,15 +117,15 @@ void change1371ContentsTo61162(FSM_FrameStruct * fsm_frameStruct,MKD_ContentToBe
 	u8 tmp611626bit = 0;
 	u8 i = 0;
 	u8 bias = 0;
-	//éœ€è¦å…ˆæ¸…é™¤mkd_toBeframeStruct ä¸­çš„å€¼
+	//ĞèÒªÏÈÇå³ımkd_toBeframeStruct ÖĞµÄÖµ
 	rstMKDContentToBeFramedStruct(mkd_toBeframeStruct);
 	for (i = 0; i < (fsm_frameStruct->encapDataLen/8); i += 3)
 	{
-		//å…ˆå°†1371åè®®å†…å®¹ï¼ŒæŒ‰ç…§3å­—èŠ‚å–å‡ºï¼Œè‹¥ä¸è¶³3å­—èŠ‚ï¼Œéœ€è¦ä¿è¯å–å‡ºçš„å†…å®¹ä¸º6çš„æ•´æ•°å€ï¼Œè‹¥ä¸æ»¡è¶³ï¼Œåˆ™åœ¨æœ«å°¾è¡¥0
-		//å­—èŠ‚æŒ‰ç…§ä¸‹æ ‡ä»ä½åˆ°é«˜å–å‡ºï¼Œå¹¶ä¾æ¬¡æŒ‰ç…§ä»ä½åˆ°é«˜å­˜æ”¾åˆ°tmp13716bitä¸­
-		if (i+2 > fsm_frameStruct->encapDataLen/8)//1371ä¸­çš„å°è£…æ¶ˆæ¯å­—èŠ‚æ•°ä¸æ˜¯æ­£å¥½ä¸º3çš„å€æ•°
+		//ÏÈ½«1371Ğ­ÒéÄÚÈİ£¬°´ÕÕ3×Ö½ÚÈ¡³ö£¬Èô²»×ã3×Ö½Ú£¬ĞèÒª±£Ö¤È¡³öµÄÄÚÈİÎª6µÄÕûÊı±¶£¬Èô²»Âú×ã£¬ÔòÔÚÄ©Î²²¹0
+		//×Ö½Ú°´ÕÕÏÂ±ê´ÓµÍµ½¸ßÈ¡³ö£¬²¢ÒÀ´Î°´ÕÕ´ÓµÍµ½¸ß´æ·Åµ½tmp13716bitÖĞ
+		if (i+2 > fsm_frameStruct->encapDataLen/8)//1371ÖĞµÄ·â×°ÏûÏ¢×Ö½ÚÊı²»ÊÇÕıºÃÎª3µÄ±¶Êı
 		{
-			//è‹¥å¤šä½™1ä¸ªå­—èŠ‚,è¡¥4bit å­˜æ”¾ä¸º
+			//Èô¶àÓà1¸ö×Ö½Ú,²¹4bit ´æ·ÅÎª
 			if ((fsm_frameStruct->encapDataLen/8 - i) == 1)
 			{
 				//tmpThr8bits = fsm_frameStruct->encapDataByte[i]<<4;   
@@ -136,7 +135,7 @@ void change1371ContentsTo61162(FSM_FrameStruct * fsm_frameStruct,MKD_ContentToBe
 				tmp13716bitLen = 2;
 
 			}
-			else//è‹¥å¤šä½™2ä¸ªå­—èŠ‚,è¡¥2bit (fsm_frameStruct->encapDataLen/8 - i) == 2
+			else//Èô¶àÓà2¸ö×Ö½Ú,²¹2bit (fsm_frameStruct->encapDataLen/8 - i) == 2
 			{
 				//tmpThr8bits = fsm_frameStruct->encapDataByte[i]<<10
 				//			+ fsm_frameStruct->encapDataByte[i+1]<<2;
@@ -147,7 +146,7 @@ void change1371ContentsTo61162(FSM_FrameStruct * fsm_frameStruct,MKD_ContentToBe
 				tmp13716bitLen = 3;
 			}
 		}
-		else//æ­£å¥½å–å‡ºä¸‰ä¸ªå­—èŠ‚
+		else//ÕıºÃÈ¡³öÈı¸ö×Ö½Ú
 		{
 			//tmpThr8bits = fsm_frameStruct->encapDataByte[i] << 16
 			//			 + fsm_frameStruct->encapDataByte[i+1] << 8
@@ -159,7 +158,7 @@ void change1371ContentsTo61162(FSM_FrameStruct * fsm_frameStruct,MKD_ContentToBe
 			tmp13716bitLen = 4;
 
 		}
-		//å°†1371ä¸­çš„äºŒè¿›åˆ¶ç ï¼Œç›´æ¥ç»„åˆæˆ61162ä¸­çš„6bit(æš‚æ—¶è¿™æ ·å¤„ç†ï¼Œå¦‚æœä¸å¯¹ï¼Œå†æ”¹),å†è½¬æ¢ä¸º61162ä¸­çš„8bitASCIIç 
+		//½«1371ÖĞµÄ¶ş½øÖÆÂë£¬Ö±½Ó×éºÏ³É61162ÖĞµÄ6bit(ÔİÊ±ÕâÑù´¦Àí£¬Èç¹û²»¶Ô£¬ÔÙ¸Ä),ÔÙ×ª»»Îª61162ÖĞµÄ8bitASCIIÂë
 		chnage611626bitASCIIto8bitASCII(tmp13716bitLen,tmp13716bit,&mkd_toBeframeStruct->frameEncapContentByte[bias]);
 		bias += tmp13716bitLen;
 	}
@@ -168,11 +167,11 @@ void change1371ContentsTo61162(FSM_FrameStruct * fsm_frameStruct,MKD_ContentToBe
 
 /************************************************************************
 * Name      : changeOtherShipContentTo61162
-* Brief     : å°†FPGAä¸²å£ä¸ŠæŠ¥çš„vdlæ¶ˆæ¯ä¸­çš„8å­—èŠ‚å†…å®¹ï¼Œè½¬æ¢ä¸º61162åè®®ä¸­çš„6bitASCIIç çš„å½¢å¼
+* Brief     : ½«FPGA´®¿ÚÉÏ±¨µÄvdlÏûÏ¢ÖĞµÄ8×Ö½ÚÄÚÈİ£¬×ª»»Îª61162Ğ­ÒéÖĞµÄ6bitASCIIÂëµÄĞÎÊ½
 *
 * Author    : Digital Design Team
-* Param     : otherShipMsg-FPGAä¸²å£æ¥æ”¶åˆ°çš„å®ƒèˆ¹çš„åŸå§‹æ•°æ®å†…å®¹ï¼Œä¸»è¦ä½¿ç”¨å…¶ä¸­çš„å°è£…æ•°æ®ä¿¡æ¯
-* Param     : mkd_toBeframeStruct-61162å¾…ç»„å¸§ä¿¡æ¯ï¼Œä¸»è¦ä½¿ç”¨å…¶ä¸­å­˜æ”¾å°†1371äºŒè¿›åˆ¶æ•°æ®ä¿®æ”¹ä¸º61162å¯¹åº”çš„6bit ASCIIç çš„å°è£…å†…å®¹
+* Param     : otherShipMsg-FPGA´®¿Ú½ÓÊÕµ½µÄËü´¬µÄÔ­Ê¼Êı¾İÄÚÈİ£¬Ö÷ÒªÊ¹ÓÃÆäÖĞµÄ·â×°Êı¾İĞÅÏ¢
+* Param     : mkd_toBeframeStruct-61162´ı×éÖ¡ĞÅÏ¢£¬Ö÷ÒªÊ¹ÓÃÆäÖĞ´æ·Å½«1371¶ş½øÖÆÊı¾İĞŞ¸ÄÎª61162¶ÔÓ¦µÄ6bit ASCIIÂëµÄ·â×°ÄÚÈİ
 * Return    : void
 ************************************************************************/
 void changeOtherShipContentTo61162(FPGAVDLData * otherShipMsg,MKD_ContentToBeFramedStruct *mkd_toBeframeStruct)
@@ -183,15 +182,15 @@ void changeOtherShipContentTo61162(FPGAVDLData * otherShipMsg,MKD_ContentToBeFra
 	u8 tmp611626bit = 0;
 	u8 i = 0;
 	u8 bias = 0;
-	//éœ€è¦å…ˆæ¸…é™¤mkd_toBeframeStruct ä¸­çš„å€¼
+	//ĞèÒªÏÈÇå³ımkd_toBeframeStruct ÖĞµÄÖµ
 	rstMKDContentToBeFramedStruct(mkd_toBeframeStruct);
 	for (i = 0; i < otherShipMsg->frameBytes; i += 3)
 	{
-		//å…ˆå°†1371åè®®å†…å®¹ï¼ŒæŒ‰ç…§3å­—èŠ‚å–å‡ºï¼Œè‹¥ä¸è¶³3å­—èŠ‚ï¼Œéœ€è¦ä¿è¯å–å‡ºçš„å†…å®¹ä¸º6çš„æ•´æ•°å€ï¼Œè‹¥ä¸æ»¡è¶³ï¼Œåˆ™åœ¨æœ«å°¾è¡¥0
-		//å­—èŠ‚æŒ‰ç…§ä¸‹æ ‡ä»ä½åˆ°é«˜å–å‡ºï¼Œå¹¶ä¾æ¬¡æŒ‰ç…§ä»ä½åˆ°é«˜å­˜æ”¾åˆ°tmp13716bitä¸­
-		if (i+3 > otherShipMsg->frameBytes)//1371ä¸­çš„å°è£…æ¶ˆæ¯å­—èŠ‚æ•°ä¸æ˜¯æ­£å¥½ä¸º3çš„å€æ•°
+		//ÏÈ½«1371Ğ­ÒéÄÚÈİ£¬°´ÕÕ3×Ö½ÚÈ¡³ö£¬Èô²»×ã3×Ö½Ú£¬ĞèÒª±£Ö¤È¡³öµÄÄÚÈİÎª6µÄÕûÊı±¶£¬Èô²»Âú×ã£¬ÔòÔÚÄ©Î²²¹0
+		//×Ö½Ú°´ÕÕÏÂ±ê´ÓµÍµ½¸ßÈ¡³ö£¬²¢ÒÀ´Î°´ÕÕ´ÓµÍµ½¸ß´æ·Åµ½tmp13716bitÖĞ
+		if (i+3 > otherShipMsg->frameBytes)//1371ÖĞµÄ·â×°ÏûÏ¢×Ö½ÚÊı²»ÊÇÕıºÃÎª3µÄ±¶Êı
 		{
-			//è‹¥å¤šä½™1ä¸ªå­—èŠ‚,è¡¥4bit å­˜æ”¾ä¸º
+			//Èô¶àÓà1¸ö×Ö½Ú,²¹4bit ´æ·ÅÎª
 			if ((otherShipMsg->frameBytes - i) == 1)
 			{  
 				mkd_toBeframeStruct->fillBits = 4;
@@ -200,7 +199,7 @@ void changeOtherShipContentTo61162(FPGAVDLData * otherShipMsg,MKD_ContentToBeFra
 				tmp13716bitLen = 2;
 
 			}
-			else//è‹¥å¤šä½™2ä¸ªå­—èŠ‚,è¡¥2bit (fsm_frameStruct->encapDataLen/8 - i) == 2
+			else//Èô¶àÓà2¸ö×Ö½Ú,²¹2bit (fsm_frameStruct->encapDataLen/8 - i) == 2
 			{
 
 				mkd_toBeframeStruct->fillBits = 2;
@@ -211,7 +210,7 @@ void changeOtherShipContentTo61162(FPGAVDLData * otherShipMsg,MKD_ContentToBeFra
 				tmp13716bitLen = 3;
 			}
 		}
-		else//æ­£å¥½å–å‡ºä¸‰ä¸ªå­—èŠ‚
+		else//ÕıºÃÈ¡³öÈı¸ö×Ö½Ú
 		{
 			tmp13716bit[0] = (otherShipMsg->frameData[i] & 0xFC)>>2;
 			tmp13716bit[1] = (otherShipMsg->frameData[i] & 0x03)<< 4;
@@ -222,21 +221,21 @@ void changeOtherShipContentTo61162(FPGAVDLData * otherShipMsg,MKD_ContentToBeFra
 			tmp13716bitLen = 4;
 
 		}
-		//å°†1371ä¸­çš„äºŒè¿›åˆ¶ç ï¼Œç›´æ¥ç»„åˆæˆ61162ä¸­çš„6bit(æš‚æ—¶è¿™æ ·å¤„ç†ï¼Œå¦‚æœä¸å¯¹ï¼Œå†æ”¹),å†è½¬æ¢ä¸º61162ä¸­çš„8bitASCIIç 
+		//½«1371ÖĞµÄ¶ş½øÖÆÂë£¬Ö±½Ó×éºÏ³É61162ÖĞµÄ6bit(ÔİÊ±ÕâÑù´¦Àí£¬Èç¹û²»¶Ô£¬ÔÙ¸Ä),ÔÙ×ª»»Îª61162ÖĞµÄ8bitASCIIÂë
 		chnage611626bitASCIIto8bitASCII(tmp13716bitLen,tmp13716bit,&mkd_toBeframeStruct->frameEncapContentByte[bias]);
 		bias += tmp13716bitLen;
 	}
 	mkd_toBeframeStruct->frameEncapContentByteLen = bias;
-	// æµ‹è¯•ä»£ç ï¼Œå¯ä»¥æ³¨è§£
-	//testChangeOtherShipContentTo61162(otherShipMsg,mkd_toBeframeStruct);
+	// ²âÊÔ´úÂë£¬¿ÉÒÔ×¢½â
+	testChangeOtherShipContentTo61162(otherShipMsg,mkd_toBeframeStruct);
 }
 /************************************************************************
 * Name      : changeOwnShipContentTo61162
-* Brief     : å°†æœ¬èˆ¹ç”Ÿæˆçš„vdlæ¶ˆæ¯ä¸­çš„8å­—èŠ‚å†…å®¹ï¼Œè½¬æ¢ä¸º61162åè®®ä¸­çš„6bitASCIIç çš„å½¢å¼
+* Brief     : ½«±¾´¬Éú³ÉµÄvdlÏûÏ¢ÖĞµÄ8×Ö½ÚÄÚÈİ£¬×ª»»Îª61162Ğ­ÒéÖĞµÄ6bitASCIIÂëµÄĞÎÊ½
 *
 * Author    : Digital Design Team
-* Param     : ownShipInfo_struct- æœ¬èˆ¹ä¸­äº§ç”Ÿçš„å³å°†å‘é€åˆ°VDLé“¾è·¯ä¸Šçš„1371çš„ä¿¡æ¯å†…å®¹ï¼Œä¸»è¦è®°å½•å¾…å‘é€å¸§çš„å°è£…æ•°æ®å†…å®¹ï¼Œé•¿åº¦å’Œä¿¡é“
-* Param     : mkd_toBeframeStruct- 61162å¾…ç»„å¸§ä¿¡æ¯ï¼Œä¸»è¦ä½¿ç”¨å…¶ä¸­å­˜æ”¾å°†1371äºŒè¿›åˆ¶æ•°æ®ä¿®æ”¹ä¸º61162å¯¹åº”çš„6bit ASCIIç çš„å°è£…å†…å®¹
+* Param     : ownShipInfo_struct- ±¾´¬ÖĞ²úÉúµÄ¼´½«·¢ËÍµ½VDLÁ´Â·ÉÏµÄ1371µÄĞÅÏ¢ÄÚÈİ£¬Ö÷Òª¼ÇÂ¼´ı·¢ËÍÖ¡µÄ·â×°Êı¾İÄÚÈİ£¬³¤¶ÈºÍĞÅµÀ
+* Param     : mkd_toBeframeStruct- 61162´ı×éÖ¡ĞÅÏ¢£¬Ö÷ÒªÊ¹ÓÃÆäÖĞ´æ·Å½«1371¶ş½øÖÆÊı¾İĞŞ¸ÄÎª61162¶ÔÓ¦µÄ6bit ASCIIÂëµÄ·â×°ÄÚÈİ
 * Return    : void
 ************************************************************************/
 void changeOwnShipContentTo61162(OwnShipInfo_Struct * ownShipInfo_struct,MKD_ContentToBeFramedStruct * mkd_toBeframeStruct)
@@ -247,24 +246,24 @@ void changeOwnShipContentTo61162(OwnShipInfo_Struct * ownShipInfo_struct,MKD_Con
 	u8 tmp611626bit = 0;
 	u8 i = 0;
 	u8 bias = 0;
-	//éœ€è¦å…ˆæ¸…é™¤mkd_toBeframeStruct ä¸­çš„å€¼
+	//ĞèÒªÏÈÇå³ımkd_toBeframeStruct ÖĞµÄÖµ
 	rstMKDContentToBeFramedStruct(mkd_toBeframeStruct);
 	for (i = 0; i < ownShipInfo_struct->vdl_encapDataByteLen; i += 3)
 	{
-		//å…ˆå°†1371åè®®å†…å®¹ï¼ŒæŒ‰ç…§3å­—èŠ‚å–å‡ºï¼Œè‹¥ä¸è¶³3å­—èŠ‚ï¼Œéœ€è¦ä¿è¯å–å‡ºçš„å†…å®¹ä¸º6çš„æ•´æ•°å€ï¼Œè‹¥ä¸æ»¡è¶³ï¼Œåˆ™åœ¨æœ«å°¾è¡¥0
-		//å­—èŠ‚æŒ‰ç…§ä¸‹æ ‡ä»ä½åˆ°é«˜å–å‡ºï¼Œå¹¶ä¾æ¬¡æŒ‰ç…§ä»ä½åˆ°é«˜å­˜æ”¾åˆ°tmp13716bitä¸­
-		if (i+3 > ownShipInfo_struct->vdl_encapDataByteLen)//1371ä¸­çš„å°è£…æ¶ˆæ¯å­—èŠ‚æ•°ä¸æ˜¯æ­£å¥½ä¸º3çš„å€æ•°
+		//ÏÈ½«1371Ğ­ÒéÄÚÈİ£¬°´ÕÕ3×Ö½ÚÈ¡³ö£¬Èô²»×ã3×Ö½Ú£¬ĞèÒª±£Ö¤È¡³öµÄÄÚÈİÎª6µÄÕûÊı±¶£¬Èô²»Âú×ã£¬ÔòÔÚÄ©Î²²¹0
+		//×Ö½Ú°´ÕÕÏÂ±ê´ÓµÍµ½¸ßÈ¡³ö£¬²¢ÒÀ´Î°´ÕÕ´ÓµÍµ½¸ß´æ·Åµ½tmp13716bitÖĞ
+		if (i+3 > ownShipInfo_struct->vdl_encapDataByteLen)//1371ÖĞµÄ·â×°ÏûÏ¢×Ö½ÚÊı²»ÊÇÕıºÃÎª3µÄ±¶Êı
 		{
-			//è‹¥å¤šä½™1ä¸ªå­—èŠ‚,è¡¥4bit å­˜æ”¾ä¸º
+			//Èô¶àÓà1¸ö×Ö½Ú,²¹4bit ´æ·ÅÎª
 			if ((ownShipInfo_struct->vdl_encapDataByteLen - i) == 1)
-			{
+			{  
 				mkd_toBeframeStruct->fillBits = 4;
 				tmp13716bit[0] = (ownShipInfo_struct->vdl_encapDataByte[i] & 0xFC)>>2;
 				tmp13716bit[1] = (ownShipInfo_struct->vdl_encapDataByte[i] & 0x03)<<4;
 				tmp13716bitLen = 2;
 
 			}
-			else//è‹¥å¤šä½™2ä¸ªå­—èŠ‚,è¡¥2bit (fsm_frameStruct->encapDataLen/8 - i) == 2
+			else//Èô¶àÓà2¸ö×Ö½Ú,²¹2bit (fsm_frameStruct->encapDataLen/8 - i) == 2
 			{
 
 				mkd_toBeframeStruct->fillBits = 2;
@@ -275,7 +274,7 @@ void changeOwnShipContentTo61162(OwnShipInfo_Struct * ownShipInfo_struct,MKD_Con
 				tmp13716bitLen = 3;
 			}
 		}
-		else//æ­£å¥½å–å‡ºä¸‰ä¸ªå­—èŠ‚
+		else//ÕıºÃÈ¡³öÈı¸ö×Ö½Ú
 		{
 			tmp13716bit[0] = (ownShipInfo_struct->vdl_encapDataByte[i] & 0xFC)>>2;
 			tmp13716bit[1] = (ownShipInfo_struct->vdl_encapDataByte[i] & 0x03)<< 4;
@@ -286,22 +285,22 @@ void changeOwnShipContentTo61162(OwnShipInfo_Struct * ownShipInfo_struct,MKD_Con
 			tmp13716bitLen = 4;
 
 		}
-		//å°†1371ä¸­çš„äºŒè¿›åˆ¶ç ï¼Œç›´æ¥ç»„åˆæˆ61162ä¸­çš„6bit(æš‚æ—¶è¿™æ ·å¤„ç†ï¼Œå¦‚æœä¸å¯¹ï¼Œå†æ”¹),å†è½¬æ¢ä¸º61162ä¸­çš„8bitASCIIç 
+		//½«1371ÖĞµÄ¶ş½øÖÆÂë£¬Ö±½Ó×éºÏ³É61162ÖĞµÄ6bit(ÔİÊ±ÕâÑù´¦Àí£¬Èç¹û²»¶Ô£¬ÔÙ¸Ä),ÔÙ×ª»»Îª61162ÖĞµÄ8bitASCIIÂë
 		chnage611626bitASCIIto8bitASCII(tmp13716bitLen,tmp13716bit,&mkd_toBeframeStruct->frameEncapContentByte[bias]);
 		bias += tmp13716bitLen;
 	}
 	mkd_toBeframeStruct->frameEncapContentByteLen = bias;
 	mkd_toBeframeStruct->aisChannel = ownShipInfo_struct->vdl_channel;//
-	// æµ‹è¯•ä»£ç ï¼Œå¯ä»¥æ³¨è§£
+	// ²âÊÔ´úÂë£¬¿ÉÒÔ×¢½â 
 	//testChangeOwnShipContentTo61162(ownShipInfo_struct,mkd_toBeframeStruct);
 }
 /************************************************************************
 * Name      : updataToBeFrameInfo
-* Brief     : æ ¹æ®FPGAä¸²å£æ¥æ”¶çš„vdlæ¶ˆæ¯ï¼Œå‡†å¤‡61162åè®®æ ¼å¼æ‰€éœ€è¦çš„å¸§å¤´å’Œå¸§å°¾æ•°æ®å†…å®¹
+* Brief     : ¸ù¾İFPGA´®¿Ú½ÓÊÕµÄvdlÏûÏ¢£¬×¼±¸61162Ğ­Òé¸ñÊ½ËùĞèÒªµÄÖ¡Í·ºÍÖ¡Î²Êı¾İÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : mkd_toBeframeStruct- éœ€è¦å°è£…æˆ61162åè®®æ ¼å¼çš„å‡†å¤‡æ¶ˆæ¯å†…å®¹ä¿¡æ¯ï¼Œä½¿ç”¨é™¤äº†å°è£…æ¶ˆæ¯å†…å®¹å¤–çš„å…¶ä»–çš„æ•°æ®å†…å®¹
-* Param     : id-ç”¨äºæŒ‡ç¤ºå½“å‰éœ€è¦ç”Ÿæˆçš„æ¶ˆæ¯IDå·ï¼Œ
+* Param     : mkd_toBeframeStruct- ĞèÒª·â×°³É61162Ğ­Òé¸ñÊ½µÄ×¼±¸ÏûÏ¢ÄÚÈİĞÅÏ¢£¬Ê¹ÓÃ³ıÁË·â×°ÏûÏ¢ÄÚÈİÍâµÄÆäËûµÄÊı¾İÄÚÈİ
+* Param     : id-ÓÃÓÚÖ¸Ê¾µ±Ç°ĞèÒªÉú³ÉµÄÏûÏ¢IDºÅ£¬ 
 * Return    : void
 ************************************************************************/
 void updataToBeFrameInfo(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_IdIndicator id)
@@ -309,11 +308,11 @@ void updataToBeFrameInfo(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_I
 	u8 i = 0;
 	if (id == VDM || id == VDO)
 	{
-		mkd_toBeframeStruct->frameType = '!';//â€˜!â€™ç¬¦å·
+		mkd_toBeframeStruct->frameType = '!';//¡®!¡¯·ûºÅ
 	}
 	else //ABK TXT ALR
 	{
-		mkd_toBeframeStruct->frameType = '$';//â€˜$â€™ç¬¦å·
+		mkd_toBeframeStruct->frameType = '$';//¡®$¡¯·ûºÅ
 	}
 	mkd_toBeframeStruct->frameHead[0] = 'A';
 	mkd_toBeframeStruct->frameHead[1] = 'I';
@@ -347,27 +346,27 @@ void updataToBeFrameInfo(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_I
 	default:
 		break;
 	}
-	if (mkd_toBeframeStruct->frameEncapContentByteLen < 60)//ä¸€ä¸ªåˆ†æ®µå®Œæˆ
+	if (mkd_toBeframeStruct->frameEncapContentByteLen < 60)//Ò»¸ö·Ö¶ÎÍê³É
 	{
 		mkd_toBeframeStruct->totalNum = 1;
 	}
-	else if (mkd_toBeframeStruct->frameEncapContentByteLen < 120)//ä¸¤ä¸ªåˆ†æ®µå®Œæˆ
+	else if (mkd_toBeframeStruct->frameEncapContentByteLen < 120)//Á½¸ö·Ö¶ÎÍê³É
 	{
 		mkd_toBeframeStruct->totalNum = 2;
 	}
-	else//ç°åœ¨è®¤ä¸ºåˆ†æ®µæ•°ä¸ä¼šè¶…è¿‡3ä¸ª
+	else//ÏÖÔÚÈÏÎª·Ö¶ÎÊı²»»á³¬¹ı3¸ö
 	{
 		mkd_toBeframeStruct->totalNum = 3;
 	}
-	mkd_toBeframeStruct->sequenceNum = 0;//(mkd_toBeframeStruct->sequenceNum + 1)%10;è¦ä¸Šä¸€ä¸ªæ¶ˆæ¯çš„æ ¼å¼å’Œè¯¥æ¶ˆæ¯æ ¼å¼ä¸€è‡´ï¼Œæ‰ç”¨åŠ 1ï¼Œå¦åˆ™ä¸æ“ä½œ
+	mkd_toBeframeStruct->sequenceNum = 0;//(mkd_toBeframeStruct->sequenceNum + 1)%10;ÒªÉÏÒ»¸öÏûÏ¢µÄ¸ñÊ½ºÍ¸ÃÏûÏ¢¸ñÊ½Ò»ÖÂ£¬²ÅÓÃ¼Ó1£¬·ñÔò²»²Ù×÷
 }
 /************************************************************************
 * Name      : updataVDMorVDOFrame
-* Brief     : å°†61162æŒ‰ç…§å†…å®¹åˆ†å¼€å­˜æ”¾çš„å¾…ç»„å¸§ä¿¡æ¯ï¼Œç»„åˆåœ¨ä¸€èµ·å®Œæˆç»„å¸§ï¼Œå¹¶è®¡ç®—æ ¡éªŒä½æ·»åŠ ç›¸åº”ä½
+* Brief     : ½«61162°´ÕÕÄÚÈİ·Ö¿ª´æ·ÅµÄ´ı×éÖ¡ĞÅÏ¢£¬×éºÏÔÚÒ»ÆğÍê³É×éÖ¡£¬²¢¼ÆËãĞ£ÑéÎ»Ìí¼ÓÏàÓ¦Î»
 *
 * Author    : Digital Design Team
-* Param     : mkd_toBeframeStruct- å¾…ç»„å¸§çš„ä¿¡æ¯å†…å®¹
-* Param     : mkd_dataStruct-ä¸Šä½æœºçš„æ•°æ®ç»“æ„ä½“ï¼Œç”¨äºå­˜æ”¾ç»„å¸§å®Œæˆåçš„ç›¸åº”æ¶ˆæ¯å†…å®¹
+* Param     : mkd_toBeframeStruct- ´ı×éÖ¡µÄĞÅÏ¢ÄÚÈİ
+* Param     : mkd_dataStruct-ÉÏÎ»»úµÄÊı¾İ½á¹¹Ìå£¬ÓÃÓÚ´æ·Å×éÖ¡Íê³ÉºóµÄÏàÓ¦ÏûÏ¢ÄÚÈİ
 * Return    : void
 ************************************************************************/
 void updataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_DataStruct * mkd_dataStruct)
@@ -380,22 +379,21 @@ void updataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_D
 	u8 tmp = 0;
   	u8 subSection = 0;
 	u8 subSectionLen = 0;
-	static u8 MsgQueueBias;
-	while (subSection < mkd_toBeframeStruct->totalNum)//subSection å¯¹åº”ç›¸åº”çš„åˆ†æ®µé¡ºåºå·
+	while (subSection < mkd_toBeframeStruct->totalNum)//subSection ¶ÔÓ¦ÏàÓ¦µÄ·Ö¶ÎË³ĞòºÅ
 	{
-		//æ¸…é›¶mkd_frameStructç»“æ„ä½“
+		//ÇåÁãmkd_frameStruct½á¹¹Ìå
 		subSection ++;
-		//å…ˆæ‰¾åˆ°ä¸€ä¸ªå¯ä¾›å†™å…¥çš„æ–°çš„ç»“æ„ä½“
+		//ÏÈÕÒµ½Ò»¸ö¿É¹©Ğ´ÈëµÄĞÂµÄ½á¹¹Ìå
 		i = 0;
 		while (mkd_dataStruct->mkd_framedStruct[i].mkd_msgState != MSGOLD)
 		{
 			i++;
 		}
-		if (i < MAXMKDFRAMELEN)//è¿˜æœ‰å¯ä¾›å†™å…¥çš„ç»“æ„ä½“ç©ºé—´
+		if (i < MAXMKDFRAMELEN)//»¹ÓĞ¿É¹©Ğ´ÈëµÄ½á¹¹Ìå¿Õ¼ä
 		{
 			rstMKDFramedStruct(&mkd_dataStruct->mkd_framedStruct[i]);
 			bias = 0;
-			if (subSection == 1 && mkd_toBeframeStruct->frameEncapContentByteLen > 60)//è¿™ä¸ªæ—¶å€™éœ€è¦åˆ†æˆå¤šä¸ªåˆ†æ®µ  æš‚æ—¶è®¤ä¸ºæ²¡æœ‰è¶…è¿‡3ä¸ªæ—¶éš™çš„é•¿åº¦
+			if (subSection == 1 && mkd_toBeframeStruct->frameEncapContentByteLen > 60)//Õâ¸öÊ±ºòĞèÒª·Ö³É¶à¸ö·Ö¶Î  ÔİÊ±ÈÏÎªÃ»ÓĞ³¬¹ı3¸öÊ±Ï¶µÄ³¤¶È
 			{
 				subSectionLen = 60;
 			}
@@ -403,7 +401,7 @@ void updataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_D
 			{
 				subSectionLen = 60;
 			}
-			else //ç¬¬ä¸€ä¸ªç¬¬äºŒä¸ªæˆ–è€…ç¬¬ä¸‰ä¸ªåˆ†æ®µä¸è¶³60çš„æ•´æ•°å€çš„æƒ…å†µ
+			else //µÚÒ»¸öµÚ¶ş¸ö»òÕßµÚÈı¸ö·Ö¶Î²»×ã60µÄÕûÊı±¶µÄÇé¿ö
 			{
 				subSectionLen = mkd_toBeframeStruct->frameEncapContentByteLen - (subSection-1)*60;
 			}
@@ -411,45 +409,45 @@ void updataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_D
 			{
 				switch (bias)
 				{
-				case 0: //ï¼ æ¶ˆæ¯ç±»å‹1
+				case 0: //£¡ ÏûÏ¢ÀàĞÍ1
 					{
 						mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = mkd_toBeframeStruct->frameType;
 						bias = 1;
 						break;
 					}
-				case 1: //aaccc æ¶ˆæ¯ç±»å‹2
+				case 1: //aaccc ÏûÏ¢ÀàĞÍ2
 					{
 						bias = 6;
 						while(mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen < bias)
 							mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = mkd_toBeframeStruct->frameHead[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen -1];
 						break;
 					}
-				case 7: //æ€»åˆ†æ®µæ•° 1~9
+				case 7: //×Ü·Ö¶ÎÊı 1~9
 					{
-						mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = mkd_toBeframeStruct->totalNum+0x30;//å˜åŒ–ä¸ºå¯¹åº”ç‚¹ASCIIç 
+						mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = mkd_toBeframeStruct->totalNum+0x30;//±ä»¯Îª¶ÔÓ¦µãASCIIÂë
 						bias = 8;
 						break;
 					}
-				case 9: //åˆ†æ®µé¡ºåºå· 1~9
+				case 9: //·Ö¶ÎË³ĞòºÅ 1~9
 					{
-						//å¯èƒ½æœ‰å¤šä¸ªåˆ†æ®µ
+						//¿ÉÄÜÓĞ¶à¸ö·Ö¶Î
 						mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = subSection+0x30;
 						bias = 10;
 						break;
 					}
-				case 11://æ¶ˆæ¯åºåˆ—å· 0~9
+				case 11://ÏûÏ¢ĞòÁĞºÅ 0~9 
 					{
 						mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = mkd_toBeframeStruct->sequenceNum+0x30;
 						bias = 12;
 						break;
 					}
-				case 13: //AISå‘é€ä¿¡é“
+				case 13: //AIS·¢ËÍĞÅµÀ
 					{
-						mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = mkd_toBeframeStruct->aisChannel+0x41;//è½¬æ¢ä¸ºAã€B
+						mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = mkd_toBeframeStruct->aisChannel+0x41;//×ª»»ÎªA¡¢B
 						bias = 14;
 						break;
 					}
-				case 15://å°è£…çš„1371çš„æ¶ˆæ¯   //å¦‚æœå°è£…ä¿¡æ¯é•¿åº¦è¶…è¿‡äº†60ï¼Œåˆ™éœ€è¦åˆ†æ®µæˆå¤šä¸ª
+				case 15://·â×°µÄ1371µÄÏûÏ¢   //Èç¹û·â×°ĞÅÏ¢³¤¶È³¬¹ıÁË60£¬ÔòĞèÒª·Ö¶Î³É¶à¸ö
 					{
 						bias = 15+subSectionLen;
 						biasSub = (subSection-1)*60;
@@ -458,73 +456,61 @@ void updataVDMorVDOFrame(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct,MKD_D
 							= mkd_toBeframeStruct->frameEncapContentByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen+biasSub-15];
 						break;
 					}
-				case 6:case 8:case 10:case 12:case 14: //åˆ†å‰²ç”¨çš„','
+				case 6:case 8:case 10:case 12:case 14: //·Ö¸îÓÃµÄ','
 					{
 						mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = 0x2C;
 						bias += 1;
 						break;
 					}
-				default:break;//ä¸è¯¥å‡ºç°çš„æƒ…å†µ
+				default:break;//²»¸Ã³öÏÖµÄÇé¿ö
 				}
 			}
-			mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = 0x2C;//å°è£…1371æ¶ˆæ¯å†…å®¹åçš„','
-			//å¡«å……åº”è¯¥æ˜¯åœ¨æœ€åä¸€ä¸ªåˆ†æ®µä¸­æ·»åŠ ï¼Œå…¶ä»–çš„æ•´æ•°åˆ†æ®µä¸­ï¼Œä¸éœ€è¦
-			if (subSection == mkd_toBeframeStruct->totalNum)//å·²ç»æ˜¯æœ€åä¸€ä¸ªåˆ†æ®µäº†
+			mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = 0x2C;//·â×°1371ÏûÏ¢ÄÚÈİºóµÄ','
+			//Ìî³äÓ¦¸ÃÊÇÔÚ×îºóÒ»¸ö·Ö¶ÎÖĞÌí¼Ó£¬ÆäËûµÄÕûÊı·Ö¶ÎÖĞ£¬²»ĞèÒª
+			if (subSection == mkd_toBeframeStruct->totalNum)//ÒÑ¾­ÊÇ×îºóÒ»¸ö·Ö¶ÎÁË
 			{
-				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = mkd_toBeframeStruct->fillBits+0x30;//æ¯”ç‰¹å¡«å……
+				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = mkd_toBeframeStruct->fillBits+0x30;//±ÈÌØÌî³ä
 			}
-			else//ä¸æ˜¯æœ€åä¸€ä¸ªåˆ†æ®µ
+			else//²»ÊÇ×îºóÒ»¸ö·Ö¶Î
 			{
-				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = 0+0x30;//æ¯”ç‰¹å¡«å……
+				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = 0+0x30;//±ÈÌØÌî³ä
 			}
-			mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = 0x2A;//æ ¡éªŒå’Œå‰çš„'*'ç¬¦å·
+			mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen++] = 0x2A;//Ğ£ÑéºÍÇ°µÄ'*'·ûºÅ
 			j = 1;
 			tmpCheck = 0;
-			while (j < mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen-1)//è®¡ç®—é™¤äº†ï¼ * è¿™ä¸¤ä¸ªç¬¦å·ï¼Œä¸”åœ¨è¿™ä¸¤ä¸ªç¬¦å·ä¹‹é—´çš„å°è£…ä¿¡æ¯çš„å¼‚æˆ–ç»“æœ
+			while (j < mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen-1)//¼ÆËã³ıÁË£¡ * ÕâÁ½¸ö·ûºÅ£¬ÇÒÔÚÕâÁ½¸ö·ûºÅÖ®¼äµÄ·â×°ĞÅÏ¢µÄÒì»ò½á¹û
 			{
 				tmpCheck ^=  mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[j];
 				j ++;
 			}
 			tmp = (tmpCheck &0xF0)>>4;
 			if(tmp < 10)//0~9
-				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmp + 0x30;//0~9åŠ 48ï¼ˆ0x30)å¯¹åº”ä¸º0x30~0x39
+				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmp + 0x30;//0~9¼Ó48£¨0x30)¶ÔÓ¦Îª0x30~0x39
 			else
-				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmp + 0x37;//A~FåŠ 55ï¼ˆ0x37ï¼‰å¯¹åº”ä¸º0x65~0x70
+				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmp + 0x37;//A~F¼Ó55£¨0x37£©¶ÔÓ¦Îª0x65~0x70
 			tmp = tmpCheck &0x0F;
 			if(tmp < 10)//0~9
-				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmp + 0x30;//0~9åŠ 48ï¼ˆ0x30)å¯¹åº”ä¸º0x30~0x39
+				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmp + 0x30;//0~9¼Ó48£¨0x30)¶ÔÓ¦Îª0x30~0x39
 			else
-				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmp + 0x37;//A~FåŠ 55ï¼ˆ0x37ï¼‰å¯¹åº”ä¸º0x65~0x70
-			//mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmpCheck;//å­˜æ”¾æ ¡éªŒå’Œ
-			mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = 0x0D;//å­˜æ”¾ç»“æŸç¬¦
+				mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmp + 0x37;//A~F¼Ó55£¨0x37£©¶ÔÓ¦Îª0x65~0x70
+			//mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = tmpCheck;//´æ·ÅĞ£ÑéºÍ
+			mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = 0x0D;//´æ·Å½áÊø·û
 			mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen ++] = 0x0A;
 			mkd_dataStruct->mkd_framedStruct[i].mkd_msgState = MSGNEW;
 			mkd_dataStruct->mkd_framedStruct[i].mkd_broadChannel = mkd_toBeframeStruct->aisChannel;
-			//ç”Ÿæˆå¥½çš„å®ƒèˆ¹æˆ–è‡ªèˆ¹æ¶ˆæ¯å­—èŠ‚æµä»¥FIFOæ–¹å¼å‹å…¥æ¶ˆæ¯é˜Ÿåˆ—å¼€å§‹
-			MsgQ_Mkd_Buf[MsgQueueBias][0] = 0;//ç¬¬ä¸€ä¸ªå­—èŠ‚è®°å½•æ¶ˆæ¯å†…å®¹çš„é•¿åº¦
-			MsgQ_Mkd_Buf[MsgQueueBias][1] = mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen;//ç¬¬ä¸€ä¸ªå­—èŠ‚è®°å½•æ¶ˆæ¯å†…å®¹çš„é•¿åº¦
-			for(j = 0; j < mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByteLen; j ++)
-			{
-				//å°†å°è£…æ¶ˆæ¯å­˜æ”¾åˆ°äºŒç»´æ•°ç»„ä¸­
-				MsgQ_Mkd_Buf[MsgQueueBias][j+2] = mkd_dataStruct->mkd_framedStruct[i].mkd_encapDataByte[j];
-			}
-			OSQPost(Q_mkd_ais,&MsgQ_Mkd_Buf[MsgQueueBias]);
-			MsgQueueBias ++;
-			MsgQueueBias %= MSG_QUEUE_MKD_NUM;
-			//å‹å…¥æ¶ˆæ¯é˜Ÿåˆ—ç»“æŸ
-			//æµ‹è¯•ç”¨ï¼Œå¯ä»¥æ³¨è§£æ‰
-			//testUpdataVDMorVDOFrame(mkd_toBeframeStruct,&mkd_dataStruct->mkd_framedStruct[i]);
-		}
+			//²âÊÔÓÃ£¬¿ÉÒÔ×¢½âµô
+			testUpdataVDMorVDOFrame(mkd_toBeframeStruct,&mkd_dataStruct->mkd_framedStruct[i]);
+		}		
 	}
 }
 
 /************************************************************************
 * Name      : MKDInit
-* Brief     : åˆå§‹åŒ–ä¸Šä½æœºçš„æ§åˆ¶åŠŸèƒ½çŠ¶æ€ï¼Œè®¾å®šæœ€å¼€å§‹æ²¡æœ‰æ–°çš„æ¶ˆæ¯ï¼Œç›¸åº”çš„æ¶ˆæ¯çŠ¶æ€å…¨éƒ¨è®¾å®šä¸ºMSGOLDç­‰
+* Brief     : ³õÊ¼»¯ÉÏÎ»»úµÄ¿ØÖÆ¹¦ÄÜ×´Ì¬£¬Éè¶¨×î¿ªÊ¼Ã»ÓĞĞÂµÄÏûÏ¢£¬ÏàÓ¦µÄÏûÏ¢×´Ì¬È«²¿Éè¶¨ÎªMSGOLDµÈ
 *
 * Author    : Digital Design Team
-* Param     : mkd_controlStruct-ä¸Šä½æœºæ§åˆ¶åŠŸèƒ½çš„æ§åˆ¶ç»“æ„ä½“
-* Param     : mkd_dataStruct-ä¸Šä½æœºçš„æ•°æ®ç»“æ„ä½“ï¼Œç”¨äºå­˜æ”¾å‘ä¸Šä½æœºä¸ŠæŠ¥çš„æ–°æ¶ˆæ¯å†…å®¹
+* Param     : mkd_controlStruct-ÉÏÎ»»ú¿ØÖÆ¹¦ÄÜµÄ¿ØÖÆ½á¹¹Ìå
+* Param     : mkd_dataStruct-ÉÏÎ»»úµÄÊı¾İ½á¹¹Ìå£¬ÓÃÓÚ´æ·ÅÏòÉÏÎ»»úÉÏ±¨µÄĞÂÏûÏ¢ÄÚÈİ
 * Return    : void
 ************************************************************************/
 void MKDInit(MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct)
@@ -542,11 +528,11 @@ void MKDInit(MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStru
 
 /************************************************************************
 * Name      : getOwn61162ToBeFramedInfo
-* Brief     : ä»çŠ¶æ€æœºå¤„è·å–æœ€æ–°çš„è¦å‘é€åˆ°VDLé“¾è·¯å±‚çš„æ–°çš„å°è£…æ¶ˆæ¯å†…å®¹ï¼Œå¹¶å°†å…¶å­˜æ”¾åˆ°ä¸Šä½æœºæ§åˆ¶ç»“æ„ä¸­çš„ç›¸åº”ä½ç½®ï¼Œä»¥ä¾›åç»­ç”Ÿæˆç›¸åº”çš„VDOæ¶ˆæ¯
+* Brief     : ´Ó×´Ì¬»ú´¦»ñÈ¡×îĞÂµÄÒª·¢ËÍµ½VDLÁ´Â·²ãµÄĞÂµÄ·â×°ÏûÏ¢ÄÚÈİ£¬²¢½«Æä´æ·Åµ½ÉÏÎ»»ú¿ØÖÆ½á¹¹ÖĞµÄÏàÓ¦Î»ÖÃ£¬ÒÔ¹©ºóĞøÉú³ÉÏàÓ¦µÄVDOÏûÏ¢
 *
 * Author    : Digital Design Team
-* Param     : mkd_controlStruct- ä¸Šä½æœºçš„æ§åˆ¶ç»“æ„ä½“ï¼Œä½¿ç”¨å…¶ä¸­çš„å­˜æ”¾1371å°è£…æ¶ˆæ¯ownShipInfoStructç»“æ„ä½“æ•°ç»„
-* Param     : fsm_dataStruct- çŠ¶æ€æœºçš„è¾“å‡ºæ•°æ®ç»“æ„ä½“ï¼Œä½¿ç”¨å…¶ä¸­çš„æ–°äº§ç”Ÿçš„å¾…å‘é€çš„1371å°è£…æ¶ˆæ¯ç»“æ„ä½“
+* Param     : mkd_controlStruct- ÉÏÎ»»úµÄ¿ØÖÆ½á¹¹Ìå£¬Ê¹ÓÃÆäÖĞµÄ´æ·Å1371·â×°ÏûÏ¢ownShipInfoStruct½á¹¹ÌåÊı×é 
+* Param     : fsm_dataStruct- ×´Ì¬»úµÄÊä³öÊı¾İ½á¹¹Ìå£¬Ê¹ÓÃÆäÖĞµÄĞÂ²úÉúµÄ´ı·¢ËÍµÄ1371·â×°ÏûÏ¢½á¹¹Ìå
 * Return    : void
 ************************************************************************/
 void getOwn61162ToBeFramedInfo(MKD_ControlStruct * mkd_controlStruct,FSM_DataStruct * fsm_dataStruct)
@@ -554,11 +540,11 @@ void getOwn61162ToBeFramedInfo(MKD_ControlStruct * mkd_controlStruct,FSM_DataStr
 	u8 i = 0;
 	u8 j = 0;
 	u8 k = 0;
-	while(i < FRAMELENGTH)//åˆ¤æ–­ä¸€ä¸ªæ—¶éš™çš„æ¶ˆæ¯
+	while(i < FRAMELENGTH)//ÅĞ¶ÏÒ»¸öÊ±Ï¶µÄÏûÏ¢
 	{
-		if (fsm_dataStruct->fsm_frameStruct[i].msgState == MSGNEW)// æœ‰æ–°çš„FSMæ–°æ¶ˆæ¯
+		if (fsm_dataStruct->fsm_frameStruct[i].msgState == MSGNEW)// ÓĞĞÂµÄFSMĞÂÏûÏ¢
 		{
-			//å°†å°è£…çš„å†…å®¹ï¼Œé•¿åº¦ï¼Œä¿¡é“èµ‹ç»™ä¸Šä½æœºçš„ç¼“å†²åŒº
+			//½«·â×°µÄÄÚÈİ£¬³¤¶È£¬ĞÅµÀ¸³¸øÉÏÎ»»úµÄ»º³åÇø
 			j = 0;
 			while (mkd_controlStruct->ownShipInfoStruct[j].vdlMsgState != MSGOLD)
 			{
@@ -566,7 +552,7 @@ void getOwn61162ToBeFramedInfo(MKD_ControlStruct * mkd_controlStruct,FSM_DataStr
 				if (j >= MAXOWNINFOLEN)
 					break;
 			}
-			if (j < MAXOWNINFOLEN)//æ‰¾åˆ°ä¸€ä¸ªæ–°çš„å¯ä»¥è¦†ç›–çš„ç»“æ„ä½“
+			if (j < MAXOWNINFOLEN)//ÕÒµ½Ò»¸öĞÂµÄ¿ÉÒÔ¸²¸ÇµÄ½á¹¹Ìå
 			{
 				for (k = 0; k < fsm_dataStruct->fsm_frameStruct[j].encapDataLen/8; k ++)
 				{
@@ -576,13 +562,13 @@ void getOwn61162ToBeFramedInfo(MKD_ControlStruct * mkd_controlStruct,FSM_DataStr
 				mkd_controlStruct->ownShipInfoStruct[j].vdl_channel = fsm_dataStruct->fsm_frameStruct[i].broadChannel;
 				mkd_controlStruct->ownShipInfoStruct[j].vdlMsgState = MSGNEW;
 			}
-
+			
 		}
 		i ++;
 	}
-	if (fsm_dataStruct->fsm_frame19Struct.msgState == MSGNEW)//æœ‰æ¶ˆæ¯19çš„æ–°æ¶ˆæ¯
+	if (fsm_dataStruct->fsm_frame19Struct.msgState == MSGNEW)//ÓĞÏûÏ¢19µÄĞÂÏûÏ¢
 	{
-		//å°†å°è£…çš„å†…å®¹ï¼Œé•¿åº¦ï¼Œä¿¡é“èµ‹ç»™ä¸Šä½æœºçš„ç¼“å†²åŒº
+		//½«·â×°µÄÄÚÈİ£¬³¤¶È£¬ĞÅµÀ¸³¸øÉÏÎ»»úµÄ»º³åÇø
 		j = 0;
 		while (mkd_controlStruct->ownShipInfoStruct[j].vdlMsgState != MSGOLD)
 		{
@@ -590,7 +576,7 @@ void getOwn61162ToBeFramedInfo(MKD_ControlStruct * mkd_controlStruct,FSM_DataStr
 			if (j >= MAXOWNINFOLEN)
 				break;
 		}
-		if (j < MAXOWNINFOLEN)//æ‰¾åˆ°ä¸€ä¸ªæ–°çš„å¯ä»¥è¦†ç›–çš„ç»“æ„ä½“
+		if (j < MAXOWNINFOLEN)//ÕÒµ½Ò»¸öĞÂµÄ¿ÉÒÔ¸²¸ÇµÄ½á¹¹Ìå
 		{
 			for (k = 0; k < fsm_dataStruct->fsm_frame19Struct.encapDataLen/8; k ++)
 			{
@@ -604,22 +590,22 @@ void getOwn61162ToBeFramedInfo(MKD_ControlStruct * mkd_controlStruct,FSM_DataStr
 }
 /************************************************************************
 * Name      : mkd_collectNewMsg
-* Brief     : æ”¶é›†å®ƒèˆ¹æ¶ˆæ¯ï¼Œè‹¥æœ‰ï¼Œåˆ™å°†å…¶è½¬åŒ–ä¸ºç¬¦åˆ61162åè®®æ ¼å¼çš„æ•°æ®å†…å®¹
+* Brief     : ÊÕ¼¯Ëü´¬ÏûÏ¢£¬ÈôÓĞ£¬Ôò½«Æä×ª»¯Îª·ûºÏ61162Ğ­Òé¸ñÊ½µÄÊı¾İÄÚÈİ
 *
 * Author    : Digital Design Team
-* Param     : vdlOtherData-æ¥æ”¶çš„å®ƒèˆ¹çš„å®Œæ•´æ¶ˆæ¯çš„ç»“æ„ä½“ï¼Œå­˜æ”¾ç»„æˆ61162åè®®æ¶ˆæ¯æ‰€éœ€çš„å…¨éƒ¨åŸå§‹æ•°æ®ä¿¡æ¯
-* Param     : mkd_controlStruct-ä¸Šä½æœºæ§åˆ¶ç»“æ„ä½“ï¼Œç”¨äºå­˜æ”¾ä¸­é—´å˜é‡ä¿¡æ¯
-* Param     : mkd_dataStruct-ä¸Šä½æœºæ•°æ®ç»“æ„ä½“ï¼Œç”¨äºå­˜æ”¾æŒ‰ç…§61162åè®®ç»„å¸§å®Œæˆçš„åˆ†æ®µæ¶ˆæ¯å†…å®¹
-* Param		: id- ç”¨äºæŒ‡ç¤ºç”Ÿæˆ61162æ¶ˆæ¯çš„æ ‡è¯†
+* Param     : vdlOtherData-½ÓÊÕµÄËü´¬µÄÍêÕûÏûÏ¢µÄ½á¹¹Ìå£¬´æ·Å×é³É61162Ğ­ÒéÏûÏ¢ËùĞèµÄÈ«²¿Ô­Ê¼Êı¾İĞÅÏ¢
+* Param     : mkd_controlStruct-ÉÏÎ»»ú¿ØÖÆ½á¹¹Ìå£¬ÓÃÓÚ´æ·ÅÖĞ¼ä±äÁ¿ĞÅÏ¢
+* Param     : mkd_dataStruct-ÉÏÎ»»úÊı¾İ½á¹¹Ìå£¬ÓÃÓÚ´æ·Å°´ÕÕ61162Ğ­Òé×éÖ¡Íê³ÉµÄ·Ö¶ÎÏûÏ¢ÄÚÈİ
+* Param		: id- ÓÃÓÚÖ¸Ê¾Éú³É61162ÏûÏ¢µÄ±êÊ¶
 * Return    : void
 ************************************************************************/
 void mkd_collecVDLShipMsg(FPGAVDLData * vdlOtherData,MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct,MKD_IdIndicator id)
 {
-	//å½“å­˜åœ¨å®ƒèˆ¹æ¶ˆæ¯æ—¶
+	//µ±´æÔÚËü´¬ÏûÏ¢Ê±
 	if (id == VDM)
 	{
 		changeOtherShipContentTo61162(vdlOtherData,&mkd_controlStruct->mkd_toBeFrameStruct);
-
+		
 	}
 	else if (id == VDO)
 	{
@@ -633,26 +619,26 @@ void mkd_collecVDLShipMsg(FPGAVDLData * vdlOtherData,MKD_ControlStruct * mkd_con
 
 /************************************************************************
 * Name      : mkd_collectNewMsg
-* Brief     : æ”¶é›†ä¸Šä½æœºæ–°æ¥æ”¶çš„æ–°æ¥æ”¶çš„ç›¸åº”æ¶ˆæ¯ï¼Œå¹¶å°†æ¶ˆæ¯æŒ‰ç…§61162çš„åè®®è§„å®šæŒ‰ç…§æ ¼å¼è¿›è¡Œå°è£…
+* Brief     : ÊÕ¼¯ÉÏÎ»»úĞÂ½ÓÊÕµÄĞÂ½ÓÊÕµÄÏàÓ¦ÏûÏ¢£¬²¢½«ÏûÏ¢°´ÕÕ61162µÄĞ­Òé¹æ¶¨°´ÕÕ¸ñÊ½½øĞĞ·â×°
 *
 * Author    : Digital Design Team
-* Param     : isOtherShipMsgNewIn- FPGAä¸²å£æ¥æ”¶çš„å®ƒèˆ¹vdlæ–°æ¶ˆæ¯æ ‡å¿—
-* Param     : vdlOtherData- FPGAä¸²å£æ¥æ”¶çš„å®ƒèˆ¹vdlæ–°æ¶ˆæ¯çš„å…·ä½“å†…å®¹
-* Param     : mkd_controlStruct- ä¸Šä½æœºçš„æ§åˆ¶ç»“æ„ä½“ï¼Œç”¨äºå­˜æ”¾ä¸­é—´æ•°æ®å†…å®¹
-* Param     : mkd_dataStruct- ä¸Šä½æœºçš„æ•°æ®ç»“æ„ä½“ï¼Œç”¨äºå­˜æ”¾æŒ‰ç…§61162åè®®ç»„å¸§å¥½çš„æ¶ˆæ¯å†…å®¹
+* Param     : isOtherShipMsgNewIn- FPGA´®¿Ú½ÓÊÕµÄËü´¬vdlĞÂÏûÏ¢±êÖ¾
+* Param     : vdlOtherData- FPGA´®¿Ú½ÓÊÕµÄËü´¬vdlĞÂÏûÏ¢µÄ¾ßÌåÄÚÈİ
+* Param     : mkd_controlStruct- ÉÏÎ»»úµÄ¿ØÖÆ½á¹¹Ìå£¬ÓÃÓÚ´æ·ÅÖĞ¼äÊı¾İÄÚÈİ
+* Param     : mkd_dataStruct- ÉÏÎ»»úµÄÊı¾İ½á¹¹Ìå£¬ÓÃÓÚ´æ·Å°´ÕÕ61162Ğ­Òé×éÖ¡ºÃµÄÏûÏ¢ÄÚÈİ
 * Return    : void
 ************************************************************************/
 void mkd_collectNewMsg(FlagStatus * isOtherShipMsgNewIn,FPGAVDLData * vdlOtherData,MKD_ControlStruct * mkd_controlStruct,MKD_DataStruct * mkd_dataStruct)
 {
 	u8 i = 0;
-	if (* isOtherShipMsgNewIn == SET)//æœ‰æ–°çš„ä»–èˆ¹æ¶ˆæ¯æ¥æ”¶åˆ° VDM
+	if (* isOtherShipMsgNewIn == SET)//ÓĞĞÂµÄËû´¬ÏûÏ¢½ÓÊÕµ½ VDM
 	{
 		mkd_collecVDLShipMsg(vdlOtherData,mkd_controlStruct,mkd_dataStruct,VDM);
 		* isOtherShipMsgNewIn = RESET;
 	}
 	while(i < MAXOWNINFOLEN)
 	{
-		if (mkd_controlStruct->ownShipInfoStruct[i].vdlMsgState == MSGNEW)//æœ‰æ–°çš„è‡ªèˆ¹æ¶ˆæ¯åˆ° VDO
+		if (mkd_controlStruct->ownShipInfoStruct[i].vdlMsgState == MSGNEW)//ÓĞĞÂµÄ×Ô´¬ÏûÏ¢µ½ VDO
 		{
 			mkd_controlStruct->ownShipInfoBias = i;
 			mkd_collecVDLShipMsg(vdlOtherData,mkd_controlStruct,mkd_dataStruct,VDO);
@@ -660,10 +646,10 @@ void mkd_collectNewMsg(FlagStatus * isOtherShipMsgNewIn,FPGAVDLData * vdlOtherDa
 		}
 		i ++;
 	}
-	//else if ()//æœ‰æ–°çš„å®‰å…¨ç¡®è®¤æ¶ˆæ¯ ABK
+	//else if ()//ÓĞĞÂµÄ°²È«È·ÈÏÏûÏ¢ ABK
 	//{
 	//}
-	//else if ()//æœ‰æ–°çš„æŠ¥è­¦æ¶ˆæ¯TXT ALR
+	//else if ()//ÓĞĞÂµÄ±¨¾¯ÏûÏ¢TXT ALR
 	//{
 	//}
 }

@@ -16,9 +16,8 @@
 
 #include "myStdDef.h"
 #include "AIS_PS_Interface.h"
-#include "UART3.h"
-#include "UART2.h"
-#include "UART1.h"
+#include "mkdData.h"
+#include "gps.h"
 
 #include <time.h>
 #include <math.h> 
@@ -249,4 +248,3 @@ void generateCycleContent(workTypeIndicator workType,GPS_InfoStruct * gps_infoSt
 
 
 #endif
-

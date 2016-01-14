@@ -506,7 +506,7 @@ ReserveSlotInfo getReserveSlotInfo(u8 const *dataBuffer, u8 start, FlagStatus is
 *              MID 为地区编号，M最低位2，最高位7
 * Return : bool  -   是否合法
 ************************************************************************/
-bool isValidBSMMSI(u32 MMSI){
+FlagStatus isValidBSMMSI(u32 MMSI){
 	u32 minMMSI = 2000000;
 	u32 maxMMSI = 8000000;
 	if (MMSI > minMMSI && MMSI < maxMMSI)

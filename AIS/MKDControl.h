@@ -5,7 +5,7 @@
 * @version   
 * @date      2015/12/2   19:32
 ********************************************************************
-* @brief     定义MKDControl.c中使用的结构体和函数接口
+* @brief     ����MKDControl.c��ʹ�õĽṹ��ͺ����ӿ�
 *			
 * Copyright (C) NanJing Sandemarine Electric Co., Ltd
 * All Rights Reserved
@@ -17,21 +17,21 @@
 
 #include "myStdDef.h"
 #include "AIS_PS_Interface.h"
-#include "UART2.h"
-#include "UART3.h"
+#include "mkdData.h"
+#include "gps.h"
 
 
 #include "FSMControl.h"
 
-////////////////////////////////////define 声明区////////////////////////////////////////////////////
-#define MAXMKDFRAMELEN 10//一个上位机执行间隔可以缓存的最大的向上位机上报的消息数
-#define MAXOWNINFOLEN 3	 //一次上位机执行间隔中，可以缓存的最多的向上位机上报的本船的消息数
+////////////////////////////////////define ������////////////////////////////////////////////////////
+#define MAXMKDFRAMELEN 10//һ����λ��ִ�м�����Ի������������λ���ϱ�����Ϣ��
+#define MAXOWNINFOLEN 3	 //һ����λ��ִ�м���У����Ի������������λ���ϱ��ı�������Ϣ��
 
-////////////////////////////////////enum 声明区////////////////////////////////////////////////////
+////////////////////////////////////enum ������////////////////////////////////////////////////////
 
 typedef enum{
 
-	safeCfmMsg = 0x11,//安全消息的确认消息
+	safeCfmMsg = 0x11,//��ȫ��Ϣ��ȷ����Ϣ
 
 
 }MKD_MsgTypeIndicator;
@@ -44,72 +44,72 @@ typedef enum{
 	TXT = 5
 }MKD_IdIndicator;
 
-////////////////////////////////////struct 声明区////////////////////////////////////////////////////
+////////////////////////////////////struct ������////////////////////////////////////////////////////
 typedef struct{
-	u8 frameType;//用于区分 固定格式$，或者是非固定格式!
-	u8 frameHead[5];//用于存放消息类型号
-	u8 totalNum;//总分段数，取值1~9
-	u8 sentenceNum;//在总分段数中的顺序号，取值1~9
-	u8 aisChannel;//在AIS信道上发送的指示，用A或B来指代
-	u8 sequenceNum;//用于区分不同消息的序列号，在0~9之间循环
-	u8 frameEncapContentByte[120];//存放1371按照61162协议格式对应的消息内容 ,可能会超过1个时隙长度 60+60
-	u8 frameEncapContentByteLen;//存放1371消息转换为61162协议封装消息的6比特的长度
-	u8 fillBits;			//为保证61162中封装的1371消息内容为6的整数倍，取值为0~5
+	u8 frameType;//�������� �̶���ʽ$�������Ƿǹ̶���ʽ!
+	u8 frameHead[5];//���ڴ����Ϣ���ͺ�
+	u8 totalNum;//�ֶܷ�����ȡֵ1~9
+	u8 sentenceNum;//���ֶܷ����е�˳��ţ�ȡֵ1~9
+	u8 aisChannel;//��AIS�ŵ��Ϸ��͵�ָʾ����A��B��ָ��
+	u8 sequenceNum;//�������ֲ�ͬ��Ϣ�����кţ���0~9֮��ѭ��
+	u8 frameEncapContentByte[120];//���1371����61162Э���ʽ��Ӧ����Ϣ���� ,���ܻᳬ��1��ʱ϶���� 60+60
+	u8 frameEncapContentByteLen;//���1371��Ϣת��Ϊ61162Э���װ��Ϣ��6���صĳ���
+	u8 fillBits;			//Ϊ��֤61162�з�װ��1371��Ϣ����Ϊ6����������ȡֵΪ0~5
 }MKD_ContentToBeFramedStruct;
 
 typedef struct{
 
-	u8 mkd_encapDataByte[82];//61162协议内容，按照字节的形式进行存储 
-	//封装内容按照协议内容顺序，按照数组下标从低到高，顺序依次写入
-	u8 mkd_encapDataByteLen;//封装内容长度  字节长度
-	BchannelIndicator mkd_broadChannel;//广播信道   
-	MKD_MsgTypeIndicator mkd_msgType;//消息类型   用于区分安全类消息和一般消息，如果是安全类消息的确认消息，还是需要马上上传给上位机，不等待   
-	MsgHandleState mkd_msgState;//消息处理的状态  使用MSGNEW-刚生成消息还没有上传给上位机 MSGOLD-已经上传给上位机，后续消息可以覆盖该结构体 
+	u8 mkd_encapDataByte[82];//61162Э�����ݣ������ֽڵ���ʽ���д洢 
+	//��װ���ݰ���Э������˳�򣬰��������±�ӵ͵��ߣ�˳������д��
+	u8 mkd_encapDataByteLen;//��װ���ݳ���  �ֽڳ���
+	BchannelIndicator mkd_broadChannel;//�㲥�ŵ�   
+	MKD_MsgTypeIndicator mkd_msgType;//��Ϣ����   �������ְ�ȫ����Ϣ��һ����Ϣ������ǰ�ȫ����Ϣ��ȷ����Ϣ��������Ҫ�����ϴ�����λ�������ȴ�   
+	MsgHandleState mkd_msgState;//��Ϣ������״̬  ʹ��MSGNEW-��������Ϣ��û���ϴ�����λ�� MSGOLD-�Ѿ��ϴ�����λ����������Ϣ���Ը��Ǹýṹ�� 
 
-}MKD_FramedStruct;// 上位机中定义的它船和本船的上报格式消息，不区分具体内容，用于短消息，一帧就是一个分段，有的消息可能有多个分段
+}MKD_FramedStruct;// ��λ���ж���������ͱ������ϱ���ʽ��Ϣ�������־������ݣ����ڶ���Ϣ��һ֡����һ���ֶΣ��е���Ϣ�����ж���ֶ�
 
 
 //typedef struct{
 
 
-//}MKD_LFrameStruct;//上位机中定义需要将一个消息分成多个分组发送的消息，暂时没有想到相应的用处
+//}MKD_LFrameStruct;//��λ���ж�����Ҫ��һ����Ϣ�ֳɶ�����鷢�͵���Ϣ����ʱû���뵽��Ӧ���ô�
 
 
 
 typedef struct  
 {
-	u8 vdl_encapDataByte[40];//FPGA串口接收的它船的vdl链路的完整消息，考虑到1371中的消息19可能占到2个时隙，最大长度是312/8=39
-	u8 vdl_encapDataByteLen;//FPGA串口接收的它船vdl链路消息的字节长度
-	u8 vdl_channel;//消息的接收信道，A或B
-	MsgHandleState vdlMsgState;// 接收消息的处理状态，MSGNEW 或者 MSGOLD
+	u8 vdl_encapDataByte[40];//FPGA���ڽ��յ�������vdl��·��������Ϣ�����ǵ�1371�е���Ϣ19����ռ��2��ʱ϶����󳤶���312/8=39
+	u8 vdl_encapDataByteLen;//FPGA���ڽ��յ�����vdl��·��Ϣ���ֽڳ���
+	u8 vdl_channel;//��Ϣ�Ľ����ŵ���A��B
+	MsgHandleState vdlMsgState;// ������Ϣ�Ĵ���״̬��MSGNEW ���� MSGOLD
 
-}OwnShipInfo_Struct;//接收的自船的vdl封装消息
+}OwnShipInfo_Struct;//���յ��Դ���vdl��װ��Ϣ
 
 typedef struct{
 
-	MKD_ContentToBeFramedStruct mkd_toBeFrameStruct;//存放待组帧的通用消息结构体
-	OwnShipInfo_Struct ownShipInfoStruct[MAXOWNINFOLEN];//自船存放的vdl封装信息结构体数组
-	u8 ownShipInfoBias;//自船vdl信息结构体中信息处理的偏置，取值为0~MAXOWNINFOLEN-1
+	MKD_ContentToBeFramedStruct mkd_toBeFrameStruct;//��Ŵ���֡��ͨ����Ϣ�ṹ��
+	OwnShipInfo_Struct ownShipInfoStruct[MAXOWNINFOLEN];//�Դ���ŵ�vdl��װ��Ϣ�ṹ������
+	u8 ownShipInfoBias;//�Դ�vdl��Ϣ�ṹ������Ϣ������ƫ�ã�ȡֵΪ0~MAXOWNINFOLEN-1
 
 }MKD_ControlStruct;
 
 typedef struct{
 
-	MKD_FramedStruct mkd_framedStruct[MAXMKDFRAMELEN];//存放打包好的向上位机汇报的满足61162格式的消息
+	MKD_FramedStruct mkd_framedStruct[MAXMKDFRAMELEN];//��Ŵ���õ�����λ���㱨������61162��ʽ����Ϣ
 
-}MKD_DataStruct;//上位机中存放的用于和上位机交互的消息及其辅助内容
-
-
+}MKD_DataStruct;//��λ���д�ŵ����ں���λ����������Ϣ���丨������
 
 
-////////////////////////////////////变量接口声明////////////////////////////////////////////////////
+
+
+////////////////////////////////////�����ӿ�����////////////////////////////////////////////////////
 
 extern MKD_ControlStruct mkd_controlStruct;
 extern MKD_DataStruct mkd_dataStruct;
 
 
 
-////////////////////////////////////function 声明区////////////////////////////////////////////////////
+////////////////////////////////////function ������////////////////////////////////////////////////////
 void rstMKDFramedStruct(MKD_FramedStruct * mkd_framedStruct);
 void rstMKDContentToBeFramedStruct(MKD_ContentToBeFramedStruct * mkd_toBeframeStruct);
 

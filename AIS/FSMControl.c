@@ -1,4 +1,5 @@
-/*********************************************************************
+/**
+********************************************************************
 * @file      FSMControl.c
 * @author    Digital Design Team
 * @version   V3.5.0
@@ -8,7 +9,9 @@
 *			 处理的消息包括Msg14,Msg15，Msg18,Msg19，Msg20,Msg22,Msg23,Msg24
 * Copyright (C) NanJing Sandemarine Electric Co., Ltd
 * All Rights Reserved
-**********************************************************************/
+*********************************************************************
+*/
+
 #include "FSMControl.h"
 #include "testFSMControl.h"
 ///////////////////////////全局变量区///////////////////////////////////////
@@ -526,9 +529,9 @@ void getMsg22ChannelManagerInfo(VDLMsg22 * vdlMsg22,FSM_Msg22Struct * fsm_msg22S
 	//记录指配超时时间
 	if (j == 8) //保留至寻址结构体
 	{
-		i = generate8bitRandNum();//产生0~255范围的随机数
+		//i = generate8bitRandNum();//产生0~255范围的随机数 测试代码，先注解
 		fsm_msg22Struct->addrManageStruct.assignOverTime[0] = vdlMsg22->rcvTime[2]; //小时
-		fsm_msg22Struct->addrManageStruct.assignOverTime[1] = (i / 60) + 4 + vdlMsg22->rcvTime[3];//分钟 待加上报告间隔的值 to be added
+		fsm_msg22Struct->addrManageStruct.assignOverTime[1] = (i / 60) + 4 + vdlMsg22->rcvTime[3];//分钟 待加上报告间隔的值 to be added,要产生4~8min的随机超时
 		fsm_msg22Struct->addrManageStruct.assignOverTime[2] = (i % 60) + vdlMsg22->rcvTime[4];//秒  带加上报告间隔的值 to be added
 		if (fsm_msg22Struct->addrManageStruct.assignOverTime[2] >= 60)
 		{
@@ -568,7 +571,7 @@ void getMsg22ChannelManagerInfo(VDLMsg22 * vdlMsg22,FSM_Msg22Struct * fsm_msg22S
 	}
 	else//保存至广播结构体，偏移量为j = biasLen的值
 	{
-		i = generate8bitRandNum();//产生0~255范围的随机数
+		//i = generate8bitRandNum();//产生0~255范围的随机数
 		fsm_msg22Struct->groupManageStruct[j].assignOverTime[0] = vdlMsg22->rcvTime[2]; //小时
 		fsm_msg22Struct->groupManageStruct[j].assignOverTime[1] = (i / 60) + 4 + vdlMsg22->rcvTime[3];//分钟 待加上报告间隔的值 to be added
 		fsm_msg22Struct->groupManageStruct[j].assignOverTime[2] = (i % 60) + vdlMsg22->rcvTime[4];//秒  带加上报告间隔的值 to be added
@@ -1173,7 +1176,7 @@ u8 checkFSMMsg22Struct(GPS_InfoStruct * gps_infoStruct,FSM_ControlStruct * fsm_c
 		result = MSG22;
 		fsm_controlStruct->fsm_msg22Struct.currentArea = 9;
 		i = 9;
-		fsm_controlStruct->fsm_msg22Struct.addrManageStruct.assignOverTime[0] = 24; //测试用，实际时要恢复，to be changed
+		//fsm_controlStruct->fsm_msg22Struct.addrManageStruct.assignOverTime[0] = 24; //测试用，实际时要恢复，to be changed
 	}
 	else//广播
 	{
@@ -1455,7 +1458,11 @@ void rstFSMFrame19Struct(FSM_Frame19Struct * fsm_frame19Struct)
 /************************************************************************
 * Name      : generateMsg14encapData
 * Brief     : 用于生成消息14的封装数据内容
-*
+*			  按照1371协议消息14的格式，对内容进行封装，对于封装消息，
+*			  BBM（Bool）：     高地址    ……      低地址
+*						        高内容	  ……	    低内容
+*			  封装内容（字节）：低地址	  ……		高地址
+*								高内容    ……      低地址
 * Author    : Digital Design Team
 * Param     : ais_bbmMsgStruct- 输入，上位机接收的安全相关的内容
 * Param     : fsm_frameStruct- 输出，输出的消息14的待组帧结构体
@@ -1505,8 +1512,8 @@ void generateMsg14encapData(AIS_BBMMsgStruct * ais_bbmMsgStruct,FSM_FrameStruct 
 			while (j < i)  //encapData数组中低位先放数据，高位再放数据
 			{
 				//fsm_frameStruct->encapData[lenBias+j] = *(longTmp + j);
-				sub = (lenBias+j) / 8;
-				disp = 7 - (lenBias+j) % 8;
+				sub = (lenBias+i-1-j) / 8;
+				disp =7 - (lenBias+i-1-j) % 8;
 				if (*(longTmp+j))
 				{
 					fsm_frameStruct->encapDataByte[sub] |= (0x01 << disp);
@@ -1515,7 +1522,10 @@ void generateMsg14encapData(AIS_BBMMsgStruct * ais_bbmMsgStruct,FSM_FrameStruct 
 				j ++;
 			}
 		}
-		
+		if (fsm_frameStruct->encapDataLen%8)//有余数，则说明之前的封装内容有填充，需要保证是8的整数倍
+		{
+			fsm_frameStruct->encapDataLen = (fsm_frameStruct->encapDataLen / 8) * 8;
+		}
 		fieldNum ++;
 	}
 }
@@ -1859,7 +1869,7 @@ void generateMsg24AencapData(AIS_StaticDataStruct * ais_staticDataStruct, FSM_Fr
 			case 2: tmp = 0;i = 2;break;					//转发指示
 			case 3: tmp = OWNMMSI; i = 30;break;				//MMSI 
 			case 4: tmp = 0; i = 2;break;					//A部分标号 0-A部分，1-B部分
-			case 5: longTmp = ais_staticDataStruct->shipName; i =120;break;	//船名 120bit，怎么分配合适了
+			case 5: longTmp = ais_staticDataStruct->shipName; i =120;break;	//船名 120bit，有可能占不完全部的120bit，则需要自动在前面填零处理吧
 
 			default:;
 		}
@@ -1884,8 +1894,8 @@ void generateMsg24AencapData(AIS_StaticDataStruct * ais_staticDataStruct, FSM_Fr
 		{
 			while (j < i)  //encapData数组中低位先放数据，高位再放数据
 			{
-				sub = (lenBias+j) / 8;
-				disp = 7 - (lenBias+j) % 8;
+				sub = (lenBias+i-1-j) / 8;
+				disp = 7 - (lenBias+i-1-j) % 8;
 				if (*(longTmp+j))
 				{
 					fsm_frameStruct->encapDataByte[sub] |= (0x01 << disp);
@@ -1893,6 +1903,10 @@ void generateMsg24AencapData(AIS_StaticDataStruct * ais_staticDataStruct, FSM_Fr
 				//fsm_frameStruct->encapData[lenBias+j] = *(longTmp + i-1-j);
 				fsm_frameStruct->encapDataLen ++;
 				j ++;
+			}
+			if (fsm_frameStruct->encapDataLen % 8)//有余数
+			{
+				fsm_frameStruct->encapDataLen = (fsm_frameStruct->encapDataLen/8) * 8;
 			}
 		}
 		
@@ -2063,8 +2077,8 @@ void generateMsg24BencapData(AIS_StaticDataStruct * ais_staticDataStruct, FSM_Fr
 		{
 			while (j < i)  //encapData数组中低位先放数据，高位再放数据
 			{
-				sub = (lenBias+j) / 8;
-				disp = 7 - (lenBias+j) % 8;
+				sub = (lenBias+i-1-j) / 8;
+				disp = 7 - (lenBias+i-1-j) % 8;
 				if (*(longTmp+j))
 				{
 					fsm_frameStruct->encapDataByte[sub] |= (0x01 << disp);

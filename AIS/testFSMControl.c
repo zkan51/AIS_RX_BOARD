@@ -12,9 +12,10 @@
 *********************************************************************
 */
 #include "FSMControl.h"
-#include "UART2.h"
-#include <stdlib.h>
-//#include <conio.h>
+#include "stdio.h"
+
+//#include<conio.h>
+#include<stdlib.h>
 //#include "AIS_PS_Interface.h"
 //#include "AIS_PS_Struct.h"
 
@@ -31,10 +32,24 @@
 ************************************************************************/
 void prinfBinary(u8 num)
 {
+	/*
 	int i = num;
 	char s[10];
-	//itoa(i, s, 2);   //转换成字符串，进制基数为2
+	itoa(i, s, 2);   //转换成字符串，进制基数为2
 	printf("%s",s);  //输出
+	*/
+	int i = 0;
+	for(i = 8; i > 0; i --)
+	{
+		if((num>>(i-1))&0x01)
+		{
+			printf("1");
+		}
+		else
+		{
+			printf("0");
+		}
+	}
 }
 
 /************************************************************************
@@ -681,9 +696,9 @@ void testCheckFSMMsg23Struct(GPS_InfoStruct * gps_infoStruct,FSM_Msg23Struct * f
 ************************************************************************/
 void testGenerateCycleContent(u8 workType,GPS_InfoStruct * gps_infoStruct,AIS_StaticDataStruct * ais_staticDataStruct,VDLMsg15 * rcvVDLMsg15,FSM_ControlStruct * fsm_controlStruct,FSM_DataStruct * fsm_dataStruct)
 {
-//	u8 i = 0;
-//	u8 j = 0;
-//	u8 k = 0;
+	u8 i = 0;
+	u8 j = 0;
+	u8 k = 0;
 	printf("\n");
 	printf("/////////testGenerateCycleContent function start/////////////\r\n");
 	printf("the current work type is\n");
