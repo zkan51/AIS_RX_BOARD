@@ -16,6 +16,7 @@
 #include "UART2.h"
 #include "UART3.h"
 #include "SPI.h"
+#include "SPI3.h"
 #include "RNG.h"
 #include "ucos_ii.h"
 #include "AIS_PS_Interface.h"
@@ -92,14 +93,14 @@ void ais_tran_task(void *pdata)
 			if(DMA_GetCurrentMemoryTarget(DMA1_Stream3) == 1)
 			{
 				for(i=0;i<SPI2_RX_LEN;i++)
-			     {Putc_UART1(SPI2_RX0[i]);}
-				 Putc_UART1('a');
+			     {Putc_UART3(SPI2_RX0[i]);}
+				 Putc_UART3('a');
 			}
 			else
 			{
 				for(i=0;i<SPI2_RX_LEN;i++)
-			     {Putc_UART1(SPI2_RX1[i]);}
-				 Putc_UART1('b');
+			     {Putc_UART3(SPI2_RX1[i]);}
+				 Putc_UART3('b');
 			}
 			//OSQPost(QSem,(void*)SPI2_RX1);//发送到消息队列缓存
 //			OS_EXIT_CRITICAL();//开启全局中断
@@ -115,9 +116,21 @@ void ais_tran_task(void *pdata)
 ***********************************************************************************/
 void ais_analysis_task(void *pdata)
 {
-	u8 *s;u8 err;
-	s = OSQPend(QSem,0,&err);//从消息队列中获取消息
+	//u8 *s;u8 err;
+	u32 i;
+	u8 buf[76]="!AIVDM,1,1,0,A,h<30h<30h<30h<30h<30h<30h<30h<30h<30h<30h<30h<30h<30h0,4*1D\r\n";
+	//s = OSQPend(QSem,0,&err);//从消息队列中获取消息
 	//SIG_PS_FPGA_ParseRecData(s);
+	while(1)
+	{
+		for(i=0;i<sizeof(buf);i++)
+		{
+		  SPI3_TX0[i]=buf[i];
+			//printf("^%x",buf[i]);
+		}
+		DMA_Cmd(DMA1_Stream7,ENABLE);
+		OSTimeDly(100);
+	}
 }
 /**********************************************************************************
 * Name      : gps_tran_task
@@ -329,10 +342,10 @@ void App_TaskStart(void)//
 	
 	OSTaskCreate(led_task,  (void*)0,(OS_STK*)&LED_TASK_STK[LED_STK_SIZE-1],  LED_TASK_PRIO);
 	OSTaskCreate(float_task,(void*)0,(OS_STK*)&FLOAT_TASK_STK[LED_STK_SIZE-1],FLOAT_TASK_PRIO);
-	//OSTaskCreate(ais_tran_task, (void*)0,(OS_STK*)&AIS_TASK_STK[AIS_TRAN_STK_SIZE-1],AIS_Tran_PRIO);
+	OSTaskCreate(ais_tran_task, (void*)0,(OS_STK*)&AIS_TASK_STK[AIS_TRAN_STK_SIZE-1],AIS_Tran_PRIO);
 	OSTaskCreate(gps_tran_task, (void*)0,(OS_STK*)&GPS_TASK_STK[GPS_TRAN_STK_SIZE-1],GPS_Tran_PRIO);
 
-	//OSTaskCreate(ais_analysis_task,(void*)0,(OS_STK*)&AIS_Analysis_TASK_STK[AIS_Analysis_STK_SIZE-1],AIS_Analysis_PRIO);
+	OSTaskCreate(ais_analysis_task,(void*)0,(OS_STK*)&AIS_Analysis_TASK_STK[AIS_Analysis_STK_SIZE-1],AIS_Analysis_PRIO);
   OSTaskCreate(mkd_control_task,(void*)0,(OS_STK*)&AIS_MKD_TASK_STK[AIS_MKD_STK_SIZE-1],AIS_MKD_PRIO);
 	OSTaskCreate(ais_mkd_trans_task,(void*)0,(OS_STK*)&AIS_MKD_TRANS_TASK_STK[AIS_MKD_TRANS_STK_SIZE-1],AIS_MKD_TRANS_PRIO);
 	OSTaskCreate(gps_mkd_trans_task,(void*)0,(OS_STK*)&GPS_MKD_TRANS_TASK_STK[GPS_MKD_TRANS_STK_SIZE-1],GPS_MKD_TRANS_PRIO);

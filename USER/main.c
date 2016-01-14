@@ -5,6 +5,7 @@
 #include "UART1.h"
 #include "UART2.h"
 #include "SPI.h"
+#include "SPI3.h"
 #include "TIMER2.h"
 #include "RNG.h"
 //#include "stdio.h"
@@ -36,9 +37,10 @@ int main(void)
 	UART2_Config(9600);//GPS数据传输接口
 	TIM2_Int_Init();//结合UART2进行不定长数据接收
 	UART3_Config(115200);//测试串口
-	//SPI2_Init();//AIS数据传输接口
+
 	RNG_Init();
-	
+	SPI2_Init();//AIS数据传输接口
+	SPI3_Init();//AIS数据传输接口
 	
 	MKDInit(&mkd_controlStruct,&mkd_dataStruct);
 	testVDMFunction(1);//产生VDM的测试数据
